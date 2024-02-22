@@ -1,0 +1,80 @@
+/* programs.css */
+.programs-container {
+    text-align: center;
+    padding: 50px; /* Adjust as needed for spacing */
+  }
+  
+  .programs-heading {
+    font-size: 25px;
+    font-weight: lighter;
+    margin-bottom: 30px;
+    color: #ff3700;
+  }
+  
+  .programs-row {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .program-card {
+    width: 30%;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .icon {
+    font-size: 48px;
+    margin-bottom: 15px; /* Adjust as needed for spacing */
+    color: #ff3700; /* Adjust icon color as needed */
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin-bottom: 15px; /* Adjust as needed for spacing */
+  }
+  
+  p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #555; /* Adjust text color as needed */
+  }
+
+  .learn-more-prog {
+    text-align: center;
+    margin-top: 100px;
+    /* transform: translateY(200px); */
+  }
+  
+  .learn-more-link-prog {
+    display: inline-block;
+    padding: 15px 40px;
+    background-color: rgb(238, 132, 3);
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 10px;
+    transition: all ease-in-out .4s;
+  }
+  
+  .learn-more-link-prog i {
+    margin-left: 5px;
+  }
+
+  .learn-more-prog a:hover {
+    color: rgb(255, 140, 0);
+    background-color: rgba(255, 140, 0, 0);
+    border: 1px solid rgb(255, 140, 0);
+  }
+
+  .learn-more-prog i{
+    background-color: white;
+    border-radius: 50%;
+    font-size: 25px;
+    color: rgb(238, 132, 3);
+    padding: 7px;
+    transform: translateY(3px);
+    width: 26px;
+  }
+  

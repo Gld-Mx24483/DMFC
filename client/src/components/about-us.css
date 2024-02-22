@@ -1,0 +1,87 @@
+/* about-us.css */
+.about-us-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px;
+    margin-top: 40px;
+  }
+  
+  .about-us-image {
+    flex: 1;
+    max-width: 50%;
+    padding-right: 20px; 
+    margin-left: 50px;
+  }
+  
+  .about-us-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .about-us-content {
+    flex: 1;
+    max-width: 50%;
+    color: #333;
+    margin-top: -80px;
+    padding-left: 50px;
+    padding-right: 200px;
+  }
+  
+  .about-us-content h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    margin-top: 0;
+    background-color: rgba(255, 90, 1, 0.122);
+    padding: 10px;
+    color: rgb(255, 64, 0);
+    width: 130px;
+    border-radius: 50px;
+    font-weight: lighter;
+  }
+
+  .about-us-container h3{
+    font-size: 50px;
+  }
+  
+  .about-us-content p {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  .contact-us{
+    transform: translateY(75px);
+  }
+  
+  .contact-us-link {
+    display: inline-block;
+    padding: 15px 40px;
+    background-color: rgb(238, 132, 3);
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 10px;
+    transition: all ease-in-out .4s;
+  }
+  
+  .contact-us-link i {
+    margin-left: 5px;
+  }
+
+  .contact-us a:hover {
+    color: rgb(255, 140, 0);
+    background-color: rgba(255, 140, 0, 0);
+    border: 1px solid rgb(255, 140, 0);
+  }
+
+  .contact-us i{
+    background-color: white;
+    border-radius: 50%;
+    font-size: 25px;
+    color: rgb(238, 132, 3);
+    padding: 7px;
+    transform: translateY(3px);
+    width: 26px;
+  }
+  

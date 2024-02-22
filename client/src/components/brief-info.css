@@ -1,0 +1,35 @@
+/* brief-info.css */
+.brief-info-navbar {
+    background: linear-gradient(rgba(29, 34, 41, 0.815), rgba(29, 34, 41, 0.815));
+    padding: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.66);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.108);
+  }
+  
+  .info-left {
+    display: flex;
+    align-items: center;
+    padding: 0px 20px;
+  }
+  
+  .info-left svg {
+    margin-right: 5px;
+    padding: 0px 10px;
+    font-size: 25px;
+  }
+  
+  .info-right {
+    display: flex;
+    align-items: center;
+    padding: 0px 20px;
+  }
+  
+  .info-right svg {
+    margin: 0 5px;
+    padding: 0px 10px;
+    font-size: 25px;
+  }
+  

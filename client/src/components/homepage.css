@@ -1,0 +1,86 @@
+/* homepage.css */
+.homepage-container {
+    background-image: linear-gradient(rgba(0, 29, 35, .8), rgba(0, 29, 35, 0.8)),
+    url(../Media/Pictures/Background-1.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    height: 100vh;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .centered-text{
+    text-align: center;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(150px);
+    font-size: 35px;
+    margin-left: 300px;
+    margin-right: 300px;
+  }
+
+  .centered-text p{
+    font-weight: lighter;
+    font-size: 30px;
+    color: white;
+  }
+
+  .learn-more {
+    text-align: center;
+    margin-top: 20px;
+    transform: translateY(200px);
+  }
+  
+  .learn-more-link {
+    display: inline-block;
+    padding: 15px 40px;
+    background-color: rgb(238, 132, 3);
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 10px;
+    transition: all ease-in-out .4s;
+  }
+  
+  .learn-more-link i {
+    margin-left: 5px;
+  }
+
+  .learn-more a:hover {
+    color: rgb(255, 140, 0);
+    background-color: rgba(255, 140, 0, 0);
+    border: 1px solid rgb(255, 140, 0);
+  }
+
+  .learn-more i{
+    background-color: white;
+    border-radius: 50%;
+    font-size: 25px;
+    color: rgb(238, 132, 3);
+    padding: 7px;
+    transform: translateY(3px);
+    width: 26px;
+  }
+
+body{
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bolder;
+}
+
+  .VisionMission{
+    background-color:rgba(0, 0, 0, 0.061);
+    height: 110vh;
+  }
+
+  .AboutUs{
+    height: 100vh;
+  }
+
+  .Programs{
+    height: 100vh;
+  }

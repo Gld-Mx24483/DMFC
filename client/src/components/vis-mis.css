@@ -1,0 +1,52 @@
+/* vis-mis.css */
+.vis-mis-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 100px;
+  }
+  
+  .vision-container,
+  .goal-container {
+    width: 48%; 
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(255, 64, 0, 0.754);
+  }
+
+  .vision-container h2,
+  .goal-container h2{
+    /* border: 2px solid black; */
+    font-size: 60px;
+    margin-top: -16px;
+  }
+
+  .vision-container{
+    transform: translateY(-20px);
+  }
+
+  .goal-container{
+    transform: translateY(400px);
+  }
+  
+  .icon {
+    font-size: 100px;
+    margin-bottom: 15px;
+    color: rgb(255, 64, 0);
+    padding: 15px;
+
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    padding-left: 10px;
+  }
+  
+  p {
+    font-size: 20px;
+    line-height: 1.5;
+    color: #555;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
