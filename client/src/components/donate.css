@@ -15,56 +15,89 @@
   }
   
   .left-half {
-    width: 45%;
+    width: 40%;
     text-align: left;
     padding: 20px;
-    border: 2px solid black;
+    
   }
 
   .left-half h3{
     font-size: 28px;
     margin-bottom: 20px;
     /* margin-top: 0; */
-    background-color: rgba(255, 90, 1, 0.122);
+    background-color: rgba(255, 255, 255, 0.735);
     padding: 10px;
     color: rgb(255, 64, 0);
-    width: 200px;
+    width: 151px;
     border-radius: 50px;
     font-weight: lighter;
   }
 
+  .left-half p{
+    color: rgba(255, 255, 255, 0.571);
+    padding: 30px;
+    padding-left: 15px;
+    width: 450px;
+  }
+
   .left-half h2{
-    font-size: 50px;
+    font-size: 60px;
+    color: white;
   }
   
   .right-half {
-    width: 45%;
+    width: 35%;
     padding: 20px;
+    background-color: rgb(255, 255, 255);
+    height: 500px;
+    border-radius: 10px;
   }
   
   form {
     display: flex;
     flex-direction: column;
-  }
-  
-  label {
-    margin-top: 10px;
+    transform: translateY(-20px);
+    padding: 50px;
   }
   
   input {
-    margin-bottom: 15px;
-    padding: 10px;
+    margin-bottom: 40px;
+    padding: 32px 40px;
+    outline: none;
+    border: none;
+    background-color: rgba(210, 210, 210, 0.252);
+    font-size: 20px;
+    transition: all 0.3s ease-in-out;
+    border-radius: 10px;
+  }
+
+  input:focus::placeholder {
+    transform: translateY(-25px); /* Move placeholder up when input is focused */
+    font-size: 15px; /* Decrease font size when input is focused */
+    transition: all 0.3s ease-in-out;
   }
   
   .donate-btn {
-    background-color: rgb(255, 140, 0);
+    display: inline-block;
+    padding: 15px 40px;
+    background-color: rgb(238, 132, 3);
     color: white;
-    padding: 10px;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 10px;
+    transition: all ease-in-out .4s;
+    width: 250px;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
+  }
+
+  .donate-btn i{
+    background-color: white;
+    border-radius: 50%;
+    font-size: 25px;
+    color: rgb(238, 132, 3);
+    padding: 7px;
+    transform: translateY(3px);
+    width: 26px;
   }
   
   .donate-btn:hover {
