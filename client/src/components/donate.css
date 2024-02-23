@@ -1,0 +1,76 @@
+/* donate.css */
+.donate-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    background-image: linear-gradient(rgba(0, 29, 35, .8), rgba(0, 29, 35, 0.8)),
+    url(../Media/Pictures/Hands-solidarity.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  .left-half {
+    width: 45%;
+    text-align: left;
+    padding: 20px;
+    border: 2px solid black;
+  }
+
+  .left-half h3{
+    font-size: 28px;
+    margin-bottom: 20px;
+    /* margin-top: 0; */
+    background-color: rgba(255, 90, 1, 0.122);
+    padding: 10px;
+    color: rgb(255, 64, 0);
+    width: 200px;
+    border-radius: 50px;
+    font-weight: lighter;
+  }
+
+  .left-half h2{
+    font-size: 50px;
+  }
+  
+  .right-half {
+    width: 45%;
+    padding: 20px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    margin-top: 10px;
+  }
+  
+  input {
+    margin-bottom: 15px;
+    padding: 10px;
+  }
+  
+  .donate-btn {
+    background-color: rgb(255, 140, 0);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .donate-btn:hover {
+    background-color: rgba(255, 140, 0, 0.8);
+  }
+  
+  .donate-btn svg {
+    margin-left: 5px;
+  }

@@ -5,6 +5,7 @@ import AboutUs from './about-us';
 import BriefInfo from './brief-info';
 import VisionMission from './vis-mis';
 import Programs from './programs';
+import Donate from './donate';
 import './homepage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -32,6 +33,9 @@ const Homepage = () => {
     </div>
     <div className='Programs'>
     <Programs />
+    </div>
+    <div className='Donate'>
+    <Donate />
     </div>
     </div>
   );
