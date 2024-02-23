@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh;
+    height: 100vh;
     background-image: linear-gradient(rgba(0, 29, 35, .8), rgba(0, 29, 35, 0.8)),
     url(../Media/Pictures/Hands-solidarity.jpg);
     background-size: cover;
@@ -72,8 +72,8 @@
   }
 
   input:focus::placeholder {
-    transform: translateY(-25px); /* Move placeholder up when input is focused */
-    font-size: 15px; /* Decrease font size when input is focused */
+    transform: translateY(-25px);
+    font-size: 15px;
     transition: all 0.3s ease-in-out;
   }
   

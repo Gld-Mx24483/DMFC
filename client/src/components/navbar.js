@@ -1,13 +1,27 @@
 // navbar.js
-import React from 'react';
+// import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './navbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  const handleScroll = () => {
+    const offset = window.scrollY;
+    setScrolled(offset > 0);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
-    <nav>
+    <nav className={scrolled ? 'scrolled' : ''}>
       <div className='logo-container'>
       <img src={require('../Media/Pictures/logo.png')} alt="Logo" className="logo" />
       <div className='logo-txt'>

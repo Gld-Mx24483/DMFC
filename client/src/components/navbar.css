@@ -3,7 +3,11 @@ nav {
     background: linear-gradient(rgba(29, 34, 41, 0.815), rgba(28, 28, 29, 0.06));
     padding: 8px;
     display: flex;
-    justify-content: flex-end; /* Align items to the right */
+    justify-content: flex-end;
+    margin-top: 51px;
+    position: fixed;
+    width: 100%;
+    transition: all .1s ease-in-out;
   }
   
   ul {
@@ -98,4 +102,15 @@ nav {
     height: 25px;
     width: 25px;
     margin-top: -15px;
+  }
+
+  nav.scrolled {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(rgb(29, 34, 41), rgba(28, 28, 29, 0.847));
+    padding: 8px;
+    z-index: 1000;
+    margin-top: 0;
   }
