@@ -18,7 +18,7 @@
     color: white;
     align-items: center;
     justify-content: center;
-    transform: translateY(150px);
+    transform: translateY(230px);
     font-size: 35px;
     margin-left: 300px;
     margin-right: 300px;
@@ -33,7 +33,7 @@
   .learn-more {
     text-align: center;
     margin-top: 20px;
-    transform: translateY(200px);
+    transform: translateY(270px);
   }
   
   .learn-more-link {
