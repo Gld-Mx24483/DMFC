@@ -6,6 +6,7 @@ import BriefInfo from './brief-info';
 import VisionMission from './vis-mis';
 import Programs from './programs';
 import Donate from './donate';
+import Footer from './footer';
 import './homepage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -36,6 +37,9 @@ const Homepage = () => {
     </div>
     <div className='Donate'>
     <Donate />
+    </div>
+    <div className='Footer'>
+    <Footer />
     </div>
     </div>
   );

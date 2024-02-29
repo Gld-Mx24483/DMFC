@@ -84,3 +84,7 @@ body{
   .Programs{
     height: 100vh;
   }
+
+  .Footer{
+    height: 36vh;
+  }

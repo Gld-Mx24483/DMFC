@@ -7,6 +7,7 @@ import Navbar from './components/navbar';
 import BriefInfo from './components/brief-info';
 import AboutUs from './components/about-us';
 import Donate from './components/donate';
+import Footer from './components/footer';
 import reportWebVitals from './reportWebVitals';
 import '@fortawesome/fontawesome-free/css/all.min.css'
 
@@ -21,6 +22,7 @@ root.render(
       <Route exact path="/brief-info" element={<BriefInfo />} />
       <Route exact path="/about-us" element={<AboutUs />} />
       <Route exact path="/donate" element={<Donate />} />
+      <Route exact path="/footer" element={<Footer />} />
       </Routes>
     </Router>
   </React.StrictMode>
