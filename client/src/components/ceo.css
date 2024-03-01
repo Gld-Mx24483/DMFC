@@ -1,0 +1,38 @@
+/* ceo.css */
+.ceo-sub-container {
+  display: flex;
+  box-shadow: 0 4px 8px rgba(24, 23, 22, 0.492);
+  width: 1100px;
+  transform: translate(100px, 150px); 
+  border-radius: 50px;
+  background-color: rgb(255, 255, 255);
+  margin-left: 15%;
+  height: 550px;
+}
+
+.ceo-text {
+  border-right: 1px solid rgba(0, 0, 0, 0.224);
+  padding-right: 20px;
+  width: 40%; 
+  margin-left: 50px; 
+}
+
+.ceo p {
+  font-size: 18px;
+  line-height: 1.5;
+  transform: translateY(35%);
+}
+
+.ceo-profile {
+  flex: 1;
+  max-width: 40%;
+  margin-left: 50px;
+  padding-top: 125px;
+  padding-bottom: 40px;
+}
+
+.ceo-profile img {
+  width: 50%;
+  height: auto;
+  border-radius: 10px;
+}

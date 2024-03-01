@@ -4,6 +4,7 @@ import Navbar from './navbar';
 import BriefInfo from './brief-info';
 import AboutUs from './about-us';
 import Footer from './footer';
+import Ceo from './ceo';
 import './about-us-main.css';
 
 const AboutUsMain = () => {
@@ -18,6 +19,9 @@ const AboutUsMain = () => {
       </div>
       <div className='about-uss'>
       <AboutUs />
+      </div>
+      <div className='ceo'>
+      <Ceo />
       </div>
       <div className='Footer-a'>
       <Footer />
