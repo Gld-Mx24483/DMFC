@@ -114,3 +114,8 @@ nav {
     z-index: 1000;
     margin-top: 0;
   }
+
+  .active a {
+    color: orange; /* Set your desired orange color here */
+  }
+  

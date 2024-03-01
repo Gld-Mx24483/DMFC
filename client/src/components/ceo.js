@@ -15,7 +15,7 @@ const Ceo = () => {
         </p>
       </div>
       <div className="ceo-profile">
-        <img src={require('../Media/Pictures/Dapo.jpg')} alt="Profile" />
+        <img src={require('../Media/Pictures/DF.jpg')} alt="Profile" />
       </div>
       </div>
     </div>
