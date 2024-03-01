@@ -1,4 +1,3 @@
-// 
 // navbar.js
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
@@ -38,8 +37,8 @@ const Navbar = () => {
         <li className={pathname === "/about-us-main" ? "active" : ""}>
           <Link to="/about-us-main">About Us</Link>
         </li>
-        <li className={pathname === "/programs" ? "active" : ""}>
-          <Link to="/programs">Programs</Link>
+        <li className={pathname === "/programs-main" ? "active" : ""}>
+          <Link to="/programs-main">Programs</Link>
         </li>
         <li className={pathname === "/get-involved" ? "active" : ""}>
           <Link to="/get-involved">Get Involved</Link>

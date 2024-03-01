@@ -1,0 +1,80 @@
+/* contact.css */
+.contact-container {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 200px;
+  }
+  
+  .left-halff {
+    width: 48%; 
+  }
+
+  .left-halff h1{
+    margin-left: 69px;
+    margin-top: 33px;
+    font-size: 40px;
+    /* margin-bottom: -15px; */
+  }
+  
+  .right-halff {
+    width: 48%; 
+  }
+
+  .right-halff h2{
+    font-size: 40px;
+  }
+
+  .right-halff p{
+    font-size: 18px;
+  }
+  
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    margin-top: -50px;
+  }
+  
+  .form-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .form-group input,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    /* margin-bottom: 10px; */
+  }
+  
+  /* Adjust the styles as needed */
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group input[type="tel"],
+  textarea {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 50px;
+    margin: 20px;
+  }
+  
+  .form-group input[type='tel']{
+    width: 42%;
+  }
+
+  textarea{
+    height: 200px;
+  }
+
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .contact-container {
+      flex-direction: column;
+    }
+  
+    .left-half,
+    .right-half {
+      width: 100%;
+    }
+  }
+  
