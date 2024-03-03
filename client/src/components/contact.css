@@ -2,30 +2,46 @@
 .contact-container {
     display: flex;
     justify-content: space-between;
-    margin-left: 200px;
+    margin-left: 300px;
+    width: 65%;
+    box-shadow: 0 4px 8px rgba(20, 20, 20, 0.754);
   }
   
   .left-halff {
-    width: 48%; 
+    width: 65%;
   }
 
   .left-halff h1{
     margin-left: 69px;
-    margin-top: 33px;
+    margin-top: 55px;
     font-size: 40px;
     /* margin-bottom: -15px; */
   }
   
   .right-halff {
-    width: 48%; 
+    width: 35%; 
+    background-color: rgb(255, 136, 0);
   }
 
   .right-halff h2{
     font-size: 40px;
+    color: white;
+    padding: 20px;
   }
 
   .right-halff p{
     font-size: 18px;
+    color: white;
+    font-weight: lighter;
+    padding: 20px;
+  }
+
+  .contact-icons{
+    border: 2px solid #e7e7e7c3;
+    padding: 15px;
+    font-size: 20px;
+    border-radius: 50%;
+    transform: translateY(18px);
   }
   
   .contact-form {
@@ -44,7 +60,6 @@
   textarea {
     width: 100%;
     padding: 10px;
-    /* margin-bottom: 10px; */
   }
   
   /* Adjust the styles as needed */
@@ -56,6 +71,11 @@
     border-radius: 5px;
     height: 50px;
     margin: 20px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background-color: white;
+    outline: none;
   }
   
   .form-group input[type='tel']{
@@ -64,6 +84,7 @@
 
   textarea{
     height: 200px;
+    font-size: 20px;
   }
 
   /* Responsive styles */

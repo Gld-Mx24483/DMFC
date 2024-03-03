@@ -18,7 +18,7 @@ const AboutUs = () => {
         empowering those who are in dire need of assistance and those who have been affected by insurmountable challenges and life detours. 
         </p>
         <div className="contact-us">
-        <a href='#contact-us' className='contact-us-link'>
+        <a href='./contact-us' className='contact-us-link'>
           Contact Us <i className='fas fa-arrow-right'></i>
         </a>
       </div>

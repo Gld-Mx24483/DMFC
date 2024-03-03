@@ -26,8 +26,7 @@ const Navbar = () => {
       <div className='logo-container'>
         <img src={require('../Media/Pictures/logo.png')} alt="Logo" className="logo" />
         <div className='logo-txt'>
-          <h1>DALMACH</h1>
-          <p>FOUNDATION</p>
+          <h1>DALMACH <br />FOUNDATION</h1>
         </div>
       </div>
       <ul>

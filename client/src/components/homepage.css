@@ -24,6 +24,10 @@
     margin-right: 300px;
   }
 
+  .centered-text h1{
+    animation: slideInUp 1s ease-out;
+  }
+
   .centered-text p{
     font-weight: lighter;
     font-size: 30px;

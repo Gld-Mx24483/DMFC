@@ -8,6 +8,7 @@ import Programs from './programs';
 import Donate from './donate';
 import Footer from './footer';
 import './homepage.css';
+import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Homepage = () => {
@@ -21,7 +22,7 @@ const Homepage = () => {
         <p>We Transform, Inspire & Impact Lives Through Love!</p>
       </div>
       <div className="learn-more">
-        <a href='#learn-more' className='learn-more-link'>
+        <a href='./programs-main' className='learn-more-link'>
           Learn More <i className='fas fa-arrow-right'></i>
         </a>
       </div>

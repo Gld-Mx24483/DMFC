@@ -6,7 +6,7 @@ import { faMapMarkerAlt, faPhone, faEnvelope } from '@fortawesome/free-solid-svg
 
 const Contact = () => {
   return (
-    <div>
+    <div className='main-ontact-container'>
       <div className="contact-container">
         <div className="left-halff">
             <h1>Keep in touch with us</h1>
@@ -30,13 +30,13 @@ const Contact = () => {
             feel free to reach out to us.
           </p>
           <p>
-            <FontAwesomeIcon icon={faMapMarkerAlt} /> Lagos, Nigeria
+            <FontAwesomeIcon icon={faMapMarkerAlt} className='contact-icons' /> Lagos, Nigeria
           </p>
           <p>
-            <FontAwesomeIcon icon={faPhone} /> +234 810 677 5111
+            <FontAwesomeIcon icon={faPhone} className='contact-icons' /> +234 810 677 5111
           </p>
           <p>
-            <FontAwesomeIcon icon={faEnvelope} /> foundation@gmail.com
+            <FontAwesomeIcon icon={faEnvelope} className='contact-icons' /> foundation@gmail.com
           </p>
         </div>
       </div>
