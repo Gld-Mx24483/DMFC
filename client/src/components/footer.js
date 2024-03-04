@@ -22,9 +22,9 @@ const Footer = () => {
       </div>
       <div className="footer-column">
         <h4>Quick Links</h4>
-        <p><a href="#">About Us</a></p>
-        <p><a href="#">Contact Us</a></p>
-        <p><a href="#">Programs</a></p>
+        <p><a href="./about-us-main">About Us</a></p>
+        <p><a href="./contact-us">Contact Us</a></p>
+        <p><a href="./programs-main">Programs</a></p>
         <p><a href="#">Support</a></p>
       </div>
       <div className="footer-column">

@@ -14,8 +14,8 @@ const VisMis = () => {
         <FontAwesomeIcon icon={faBinoculars} className="icon" />
         <h2>Vision</h2>
         <p>
-          To reach out to as many lives in Nigeria and Africa by giving hope and empowerment through love.
-          To have an academy in subsequent years from now, where we inculcate skills and values into young passionate less privileged.
+          To reach out to as many lives in Nigeria and Africa by giving hope and empowerment through love. <br /> <br />
+          To have an academy in subsequent years from now, where we inculcate skills and values into young passionate less privileged. <br /> <br />
           To raise influential young women through our DALMACH FEMININE PROGRAM (DFP), who will stand out to be a voice in their area of field or wherever they find themselves.
         </p>
       </div>
