@@ -40,7 +40,7 @@ const Programs = () => {
             Our feminine program aims to empower and uplift young women, providing them with the tools and support they need to thrive and become influential leaders.
           </p>
           <div className="learn-more-prog">
-        <a href='#learn-more-prog' className='learn-more-link-prog'>
+        <a href='./feminine' className='learn-more-link-prog'>
           Learn More <i className='fas fa-arrow-right'></i>
         </a>
       </div>

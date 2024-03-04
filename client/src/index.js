@@ -14,6 +14,7 @@ import AboutUsMain from './components/about-us-main';
 import ContactUs from './components/contact-us';
 import Outreach from './components/outreach';
 import Initiative from './components/initiative';
+import Feminine from './components/feminine';
 import reportWebVitals from './reportWebVitals';
 import '@fortawesome/fontawesome-free/css/all.min.css'
 
@@ -34,6 +35,7 @@ root.render(
       <Route exact path="/contact-us" element={<ContactUs />} />
       <Route exact path="/outreach" element={<Outreach />} />
       <Route exact path="/initiative" element={<Initiative />} />
+      <Route exact path="/feminine" element={<Feminine />} />
       </Routes>
     </Router>
   </React.StrictMode>
