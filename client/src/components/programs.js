@@ -16,7 +16,7 @@ const Programs = () => {
             Our outreach program is dedicated to reaching out to communities in need, providing assistance, support, and spreading love.
           </p>
           <div className="learn-more-prog">
-        <a href='#learn-more-prog' className='learn-more-link-prog'>
+        <a href='./outreach' className='learn-more-link-prog'>
           Learn More <i className='fas fa-arrow-right'></i>
         </a>
       </div>
@@ -28,7 +28,7 @@ const Programs = () => {
             The initiative program focuses on innovative projects and initiatives that bring positive change and empowerment to individuals and communities.
           </p>
           <div className="learn-more-prog">
-        <a href='#learn-more-prog' className='learn-more-link-prog'>
+        <a href='./initiative' className='learn-more-link-prog'>
           Learn More <i className='fas fa-arrow-right'></i>
         </a>
       </div>

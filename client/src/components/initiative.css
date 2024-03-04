@@ -1,0 +1,20 @@
+.Initiatee{
+    height: 150vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.initiative-main-container{
+    background-image: linear-gradient(rgba(0, 29, 35, .8), rgba(0, 29, 35, 0.8)),
+    url(../Media/Pictures/initiative.webp);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    height: 65vh;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
