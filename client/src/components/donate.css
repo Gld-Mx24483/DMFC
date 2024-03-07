@@ -107,3 +107,60 @@
   .donate-btn svg {
     margin-left: 5px;
   }
+  
+  @media only screen and (max-width: 400px) {
+    .donate-container {
+      height: auto; /* Adjust height */
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .left-half {
+      width: 100%;
+      text-align: center;
+      padding: 20px;
+    }
+  
+    .left-half h3 {
+      font-size: 20px; /* Adjust font size */
+      margin-bottom: 10px; /* Adjust margin */
+      width: 40%; /* Adjust width */
+      margin-left: 10px;
+    }
+  
+    .left-half p {
+      padding: 15px; /* Adjust padding */
+      width: 90%; /* Adjust width */
+    }
+  
+    .left-half h2 {
+      font-size: 40px; /* Adjust font size */
+    }
+  
+    .right-half {
+      width: 100%;
+      padding: 20px;
+      height: auto; /* Adjust height */
+      border-radius: 0; /* Remove border-radius */
+    }
+  
+    form {
+      padding: 20px; /* Adjust padding */
+    }
+  
+    input {
+      padding: 30px 15px;
+      font-size: 16px; /* Adjust font size */
+      margin-bottom: 20px; /* Adjust margin */
+    }
+  
+    .donate-btn {
+      padding: 12px 30px; /* Adjust padding */
+      font-size: 16px; /* Adjust font size */
+      width: 60%; /* Adjust width */
+    }
+  
+    .donate-btn i {
+      font-size: 20px; /* Adjust font size */
+    }
+  }

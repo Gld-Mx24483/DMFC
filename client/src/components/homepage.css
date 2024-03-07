@@ -82,13 +82,54 @@ body{
   }
 
   .AboutUs{
-    height: 100vh;
+    height: 110vh;
   }
 
   .Programs{
     height: 100vh;
+    background-color:rgba(0, 0, 0, 0.061);
   }
 
   .Footer{
     height: 36vh;
+  }
+
+  @media only screen and (max-width: 400px) {
+    .homepage-container {
+      height: 100vh;
+    }
+  
+    .centered-text {
+      transform: translateY(150px);
+      margin: 0 10px;
+    }
+  
+    .centered-text h1 {
+      font-size: 28px;
+    }
+  
+    .centered-text p {
+      font-size: 18px; /* Adjust font size as needed */
+    }
+  
+    .learn-more {
+      transform: translateY(180px); /* Adjust vertical positioning */
+    }
+  
+    .learn-more-link {
+      padding: 13px 30px; /* Adjust padding as needed */
+      font-size: 14px; /* Adjust font size as needed */
+    }
+  
+    .learn-more i {
+      font-size: 20px; /* Adjust font size as needed */
+      padding: 10px;
+    }
+
+    .VisionMission,
+  .AboutUs,
+  .Programs,
+  .Footer {
+    height: auto; /* Adjust as needed */
+  }
   }

@@ -126,3 +126,45 @@ p {
     transform: translateY(0);
   }
 }
+
+@media only screen and (max-width: 400px) {
+  .programs-container {
+    padding: 20px; /* Adjust as needed for spacing */
+  }
+
+  .programs-heading {
+    font-size: 20px; /* Adjust font size */
+    margin-bottom: 20px; /* Adjust margin */
+  }
+
+  .programs-row {
+    flex-direction: column; /* Stack program cards vertically */
+  }
+
+  .program-card {
+    width: 90%; /* Adjust width */
+    margin-bottom: 30px;
+  }
+
+  .learn-more-prog {
+    margin-top: 20px; /* Adjust margin */
+  }
+
+  .learn-more-link-prog {
+    padding: 12px 30px; /* Adjusted padding */
+    font-size: 14px; /* Adjust font size */
+  }
+
+  .learn-more-link-prog i {
+    font-size: 20px; /* Adjust font size */
+  }
+
+  h2 {
+    font-size: 20px; /* Adjust font size */
+    margin-bottom: 10px; /* Adjust margin */
+  }
+
+  p {
+    font-size: 14px; /* Adjust font size */
+  }
+}

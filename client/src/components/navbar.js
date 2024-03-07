@@ -3,15 +3,20 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './navbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faBars } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const { pathname } = useLocation(); // Get current pathname
 
   const handleScroll = () => {
     const offset = window.scrollY;
     setScrolled(offset > 0);
+  };
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
   };
 
   useEffect(() => {
@@ -22,14 +27,14 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className={scrolled ? 'scrolled' : ''}>
+    <nav className={`${scrolled ? 'scrolled' : ''} ${menuOpen ? 'menu-open' : ''}`}>
       <div className='logo-container'>
         <img src={require('../Media/Pictures/logo.png')} alt="Logo" className="logo" />
         <div className='logo-txt'>
           <h1>DALMACH <br />FOUNDATION</h1>
         </div>
       </div>
-      <ul>
+      <ul className={`nav-links ${menuOpen ? 'show' : ''}`}>
         <li className={pathname === "/" ? "active" : ""}>
           <Link to="/">Home</Link>
         </li>
@@ -51,6 +56,9 @@ const Navbar = () => {
           </Link>
         </li>
       </ul>
+      <div className="menu-icon" onClick={toggleMenu}>
+        <FontAwesomeIcon icon={faBars} />
+      </div>
     </nav>
   );
 };

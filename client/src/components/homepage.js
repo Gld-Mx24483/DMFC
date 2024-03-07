@@ -3,13 +3,10 @@ import React from 'react';
 import Navbar from './navbar';
 import AboutUs from './about-us';
 import BriefInfo from './brief-info';
-import VisionMission from './vis-mis';
 import Programs from './programs';
 import Donate from './donate';
 import Footer from './footer';
 import './homepage.css';
-import { Link, useLocation } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Homepage = () => {
   return (
@@ -29,9 +26,6 @@ const Homepage = () => {
     </div>
     <div className='AboutUs'>
       <AboutUs />
-    </div>
-    <div className='VisionMission'>
-    <VisionMission />
     </div>
     <div className='Programs'>
     <Programs />

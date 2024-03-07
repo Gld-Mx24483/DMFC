@@ -8,6 +8,7 @@ nav {
     position: fixed;
     width: 100%;
     transition: all ease-in-out .2s;
+    z-index: 100;
   }
   
   ul {
@@ -118,4 +119,93 @@ nav {
   .active a {
     color: orange;
   }
+
+  @media only screen and (max-width: 400px) {
+    nav{
+      margin-top: 0;
+      height: 35px; 
+    }
+
+    .logo {
+      height: 35px;
+    }
   
+    .logo-txt h1 {
+      font-size: 14px;
+      margin-top: -7px;
+    }
+  
+    .menu-icon {
+      display: block;
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
+      margin-right: 30px;
+      margin-top: 5px;
+    }
+  
+    .nav-links {
+      list-style: none;
+      margin-top: 15px;
+      position: absolute;
+      top: 36px;
+      right: 0;
+      height: auto;
+      background-color: rgba(26, 26, 35, 0.959);
+      /* width: 250px; */
+      width: 100%;
+      display: none;
+      flex-direction: column;
+      margin-right: 10px;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .nav-links.show {
+      display: flex;
+    }
+  
+    .nav-links li {
+      text-align: center;
+      margin: 10px 0;
+      transform: translateY(5px);
+    }
+
+    .nav-links a {
+      font-size: 16px;
+    }
+
+    .donate-link{
+      width: 200px;
+      padding-top: 13px;
+      padding-bottom: 1px;
+      border: none;
+    }
+
+    .donate-link:hover{
+      background-color: rgba(255, 255, 255, 0);
+    }
+
+    .donate-now-link{
+      border:1px solid rgb(255, 140, 0);
+      height: 40px;
+      padding-top: 15px;
+      margin-left: 20px;
+      margin-top: -20px;
+      border-radius: 10px;
+      transition: background-color 0.3s ease-out;
+      
+    }
+
+    .donate-now-link:hover{
+      background-color: rgb(255, 140, 0);
+    }
+
+    .donate-now-link p{
+      font-size: 16px;
+    }
+  
+    .menu-open {
+      justify-content: space-between;
+    }
+  }

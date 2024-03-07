@@ -4,6 +4,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+    margin-top: 70px;
   }
   
   .fem-content {
@@ -32,6 +33,7 @@
   .fem-content ul {
     list-style-type: disc;
     margin-left: 20px;
+    display: block;
   }
   
   li {

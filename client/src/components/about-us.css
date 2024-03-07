@@ -1,87 +1,147 @@
 /* about-us.css */
 .about-us-container {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 60px;
+  margin-top: 40px;
+}
+
+.image-text{
+  display: flex;
+}
+
+.about-us-image {
+  flex: 1;
+  max-width: 50%;
+  padding-right: 20px;
+  margin-left: 50px;
+}
+
+.about-us-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.about-us-content {
+  flex: 1;
+  max-width: 50%;
+  color: #333;
+  margin-top: -80px;
+  padding-left: 50px;
+  padding-right: 50px; /* Adjusted padding */
+}
+
+.about-us-content h2 {
+  font-size: 28px;
+  margin-top: 30px;
+  background-color: rgba(255, 90, 1, 0.122);
+  padding: 10px;
+  color: rgb(255, 64, 0);
+  width: 130px;
+  border-radius: 50px;
+  font-weight: lighter;
+}
+
+.about-us-container h3 {
+  font-size: 50px;
+  margin-top: 5px;
+}
+
+.about-us-content p {
+  font-size: 18px;
+  line-height: 1.9;
+}
+
+.contact-us {
+  margin-top: 20px;
+  margin-left: 19rem;
+}
+
+.contact-us-link {
+  display: inline-block;
+  padding: 15px 40px;
+  background-color: rgb(238, 132, 3);
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  border-radius: 10px;
+  transition: all ease-in-out 0.4s;
+}
+
+.contact-us-link i {
+  margin-left: 5px;
+}
+
+.contact-us a:hover {
+  color: rgb(255, 140, 0);
+  background-color: rgba(255, 140, 0, 0);
+  border: 1px solid rgb(255, 140, 0);
+}
+
+.contact-us i {
+  background-color: white;
+  border-radius: 50%;
+  font-size: 25px;
+  color: rgb(238, 132, 3);
+  padding: 7px;
+  transform: translateY(3px);
+  width: 26px;
+}
+
+@media only screen and (max-width: 400px) {
+  .about-us-container {
+    padding: 20px; /* Adjusted padding */
+  }
+
+  .image-text {
+    flex-direction: column; /* Stack image and text vertically */
     align-items: center;
-    padding: 60px;
-    margin-top: 40px;
   }
-  
+
   .about-us-image {
-    flex: 1;
-    max-width: 50%;
-    padding-right: 20px; 
-    margin-left: 50px;
+    max-width: 100%;
+    padding-right: 0;
+    margin-left: 0;
+    margin-bottom: 20px; /* Adjusted margin */
+    margin-top: 30px;
   }
-  
-  .about-us-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-  }
-  
+
   .about-us-content {
-    flex: 1;
-    max-width: 50%;
-    color: #333;
-    margin-top: -80px;
-    padding-left: 50px;
-    padding-right: 200px;
+    max-width: 100%;
+    padding-left: 20px; /* Adjusted padding */
+    padding-right: 20px; /* Adjusted padding */
+    text-align: center;
   }
-  
+
   .about-us-content h2 {
-    font-size: 28px;
-    margin-bottom: 20px;
-    margin-top: 0;
-    background-color: rgba(255, 90, 1, 0.122);
-    padding: 10px;
-    color: rgb(255, 64, 0);
-    width: 130px;
-    border-radius: 50px;
-    font-weight: lighter;
+    font-size: 22px; /* Adjust font size */
+    width: 100px; 
+    transform: translateY(-370px);/* Adjusted width */
+    margin-left: 85px;
   }
 
-  .about-us-container h3{
-    font-size: 50px;
+  .about-us-container h3 {
+    font-size: 36px; /* Adjust font size */
   }
-  
+
   .about-us-content p {
-    font-size: 18px;
-    line-height: 1.5;
+    font-size: 16px; /* Adjust font size */
   }
 
-  .contact-us{
-    transform: translateY(75px);
+  .contact-us {
+    margin-top: 10px; /* Adjusted margin */
+    margin-left: 0; /* Adjusted margin */
   }
-  
+
   .contact-us-link {
-    display: inline-block;
-    padding: 15px 40px;
-    background-color: rgb(238, 132, 3);
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    border-radius: 10px;
-    transition: all ease-in-out .4s;
-  }
-  
-  .contact-us-link i {
-    margin-left: 5px;
+    padding: 12px 30px; /* Adjusted padding */
+    font-size: 14px; /* Adjust font size */
   }
 
-  .contact-us a:hover {
-    color: rgb(255, 140, 0);
-    background-color: rgba(255, 140, 0, 0);
-    border: 1px solid rgb(255, 140, 0);
+  .contact-us i {
+    font-size: 20px; /* Adjust font size */
   }
-
-  .contact-us i{
-    background-color: white;
-    border-radius: 50%;
-    font-size: 25px;
-    color: rgb(238, 132, 3);
-    padding: 7px;
-    transform: translateY(3px);
-    width: 26px;
-  }
-  
+}

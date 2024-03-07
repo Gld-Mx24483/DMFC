@@ -45,3 +45,36 @@
     font-size: 25px;
   }
   
+  @media only screen and (max-width: 400px) {
+  .brief-info-navbar {
+    padding: 10px; /* Adjust padding as needed */
+  }
+
+  .info-left,
+  .info-right {
+    display: flex;
+    align-items: center;
+    font-size: 8px;
+    margin-left: -25px;
+    height: 20px;
+  }
+
+  .info-left {
+    flex-grow: 1; /* Allow info-left to take remaining space */
+  }
+
+  .info-left svg,
+  .info-right svg {
+    margin: 0 5px;
+    padding: 0px 5px; /* Adjust padding as needed */
+    font-size: 10px; /* Adjust font size as needed */
+  }
+
+  .info-left svg {
+    margin-right: 5px;
+  }
+
+  .info-right {
+    justify-content: flex-end; /* Align info-right to the right */
+  }
+}
