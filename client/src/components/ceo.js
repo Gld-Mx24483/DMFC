@@ -1,4 +1,4 @@
-// Footer.js
+// Ceo.js
 import React from 'react';
 import './ceo.css';
 

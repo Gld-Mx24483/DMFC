@@ -12,8 +12,9 @@ const Initiative = () => {
     <div className="about-us-main-container initiative-main-container">
         <BriefInfo />
         <Navbar />
-        <div className="centered-text">
+        <div className="centered-text sub-top">
         <h1>Dalmach Initiative</h1>
+        <p>Home / Programs / Dalmach Initiative</p>
       </div>
       </div>
       <div className='Initiatee'>

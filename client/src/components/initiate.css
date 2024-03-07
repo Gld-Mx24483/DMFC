@@ -47,3 +47,33 @@
     margin-bottom: 8px;
   }
   
+  @media only screen and (max-width: 400px) {
+    .initiate-main-container {
+      padding: 40px;
+      height: auto;
+    }
+  
+    .initiate-content h1 {
+      font-size: 30px; /* Adjusted font size for better readability on larger screens */
+      margin-bottom: 20px; /* Adjusted margin */
+    }
+  
+    .initiate-content p {
+      font-size: 16px; /* Adjusted font size for better readability on larger screens */
+      margin-bottom: 15px; /* Adjusted margin */
+    }
+  
+    .initiate-content h2 {
+      font-size: 24px; /* Adjusted font size for better readability on larger screens */
+      margin-bottom: 15px; /* Adjusted margin */
+    }
+  
+    .initiate-content li {
+      font-size: 16px; /* Adjusted font size for better readability on larger screens */
+      margin-bottom: 8px; /* Adjusted margin */
+    }
+  
+    .Impact {
+      margin-top: 70px; /* Reset margin for larger screens */
+    }
+  }

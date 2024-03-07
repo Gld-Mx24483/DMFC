@@ -82,7 +82,7 @@ body{
   }
 
   .AboutUs{
-    height: 110vh;
+    height: 120vh;
   }
 
   .Programs{
@@ -91,7 +91,7 @@ body{
   }
 
   .Footer{
-    height: 36vh;
+    height: 38vh;
   }
 
   @media only screen and (max-width: 400px) {

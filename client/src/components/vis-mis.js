@@ -1,6 +1,3 @@
-// import React from "react";
-// import './vis-mis.css';
-
 // vis-mis.js
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

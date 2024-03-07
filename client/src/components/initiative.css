@@ -18,3 +18,14 @@
     display: flex;
     flex-direction: column;
 }
+
+@media only screen and (max-width: 400px) {
+    .Initiatee{
+        height: auto;
+    }
+
+    .initiative-main-container{
+        height: 40vh;
+    }
+
+}

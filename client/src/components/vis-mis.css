@@ -24,7 +24,8 @@
   }
 
   .goal-container{
-    transform: translateY(400px);
+    transform: translateY(550px);
+    height: 20rem;
   }
   
   .icon {
@@ -49,3 +50,39 @@
     padding-right: 10px;
   }
   
+  @media only screen and (max-width: 400px) {
+    .vis-mis-container {
+      padding: 20px; /* Adjusted padding for better spacing on smaller screens */
+      flex-direction: column; /* Stack elements vertically on smaller screens */
+      align-items: center;
+    }
+  
+    .vision-container,
+    .goal-container {
+      width: 100%;
+      margin-bottom: 20px; /* Adjusted margin for better spacing */
+    }
+
+    .vision-container{
+      margin-top: 30px;
+    }
+  
+    .vision-container h2,
+    .goal-container h2 {
+      font-size: 20px; /* Adjusted font size for better readability */
+    }
+  
+    .vision-container p,
+    .goal-container p {
+      font-size: 14px; /* Adjusted font size for better readability */
+    }
+
+    .goal-container {
+      transform: translateY(20px);
+       margin-bottom: 50px;
+    }
+  
+    .icon {
+      font-size: 50px; /* Adjusted icon size for better proportion */
+    }
+  }

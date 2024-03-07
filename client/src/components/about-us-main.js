@@ -14,8 +14,9 @@ const AboutUsMain = () => {
     <div className="about-us-main-container">
         <BriefInfo />
         <Navbar />
-        <div className="centered-text">
+        <div className="centered-text sub-top">
         <h1>About Us</h1>
+        <p>Home / About Us</p>
       </div>
       </div>
       <div className='about-uss'>

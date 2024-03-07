@@ -43,6 +43,7 @@
     font-size: 1.2rem;
     border-top: 1px solid rgba(255, 255, 255, 0.221);
     padding: 10px 30px;
+    margin-bottom: -80px;
   }
 
   .footer-bottom p{
@@ -90,7 +91,7 @@
     }
   
     .footer-column img {
-      max-width: 80px; /* Adjust max-width */
+      max-width: 80px;
     }
   
     .footer-bottom {
@@ -99,6 +100,6 @@
     }
   
     .footer-bottom p {
-      font-size: 1rem; /* Adjust font size */
+      font-size: .5rem;
     }
   }

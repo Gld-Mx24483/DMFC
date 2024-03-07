@@ -12,8 +12,9 @@ const ProgramsMain = () => {
     <div className="about-us-main-container">
         <BriefInfo />
         <Navbar />
-        <div className="centered-text">
+        <div className="centered-text sub-top">
         <h1>Programs</h1>
+        <p>Home / Programs</p>
       </div>
       </div>
       <div className='Programs'>

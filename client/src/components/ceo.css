@@ -36,3 +36,40 @@
   height: auto;
   border-radius: 30px;
 }
+
+@media screen and (max-width: 400px) {
+  .ceo-sub-container {
+    width: 100%;
+    transform: none;
+    border-radius: 0;
+    margin-left: 0;
+    height: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .ceo-text {
+    border-right: none;
+    padding-right: 0;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .ceo p {
+    font-size: 16px; /* Adjusted font size for mobile */
+    transform: translateY(0);
+  }
+
+  .ceo-profile {
+    max-width: 70%;
+    margin-left: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .ceo-profile img {
+    max-width: 100%;
+    border-radius: 0;
+  }
+}
