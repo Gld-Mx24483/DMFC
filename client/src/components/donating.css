@@ -1,8 +1,8 @@
 /* donate.css */
-.donate-container {
+.donating-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    /* justify-content: center; */
+    /* align-items: center; */
     height: 100vh;
     background-image: linear-gradient(rgba(0, 29, 35, .8), rgba(0, 29, 35, 0.8)),
     url(../Media/Pictures/Hands-solidarity.jpg);
@@ -13,15 +13,22 @@
     overflow: hidden;
     width: 100%;
   }
+
+  .donating-sub-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+  }
   
-  .left-half {
+  .donating-left-half {
     width: 40%;
     text-align: left;
     padding: 20px;
     
   }
 
-  .left-half h3{
+  .donating-left-half h3{
     font-size: 28px;
     margin-bottom: 20px;
     /* margin-top: 0; */
@@ -33,19 +40,19 @@
     font-weight: lighter;
   }
 
-  .left-half p{
+  .donating-left-half p{
     color: rgba(255, 255, 255, 0.571);
     padding: 30px;
     padding-left: 15px;
     width: 450px;
   }
 
-  .left-half h2{
+  .donating-left-half h2{
     font-size: 60px;
     color: white;
   }
   
-  .right-half {
+  .donating-right-half {
     width: 35%;
     padding: 20px;
     background-color: rgb(255, 255, 255);
@@ -53,14 +60,14 @@
     border-radius: 10px;
   }
   
-  form {
+  .donating form {
     display: flex;
     flex-direction: column;
     transform: translateY(-20px);
     padding: 50px;
   }
   
-  input {
+  .donating input {
     margin-bottom: 40px;
     padding: 32px 40px;
     outline: none;
@@ -71,7 +78,7 @@
     border-radius: 10px;
   }
 
-  input:focus::placeholder {
+  .donating input:focus::placeholder {
     transform: translateY(-25px);
     font-size: 15px;
     transition: all 0.3s ease-in-out;
@@ -114,46 +121,52 @@
   }
   
   @media only screen and (max-width: 400px) {
-    .donate-container {
+    .donating-container {
       height: auto; /* Adjust height */
       display: flex;
       flex-direction: column;
     }
+
+    .donating-sub-container{
+        display: flex;
+        flex-direction: column;
+        margin-top: 55px;
+    }
   
-    .left-half {
+    .donating-left-half {
       width: 100%;
       text-align: center;
       padding: 20px;
     }
   
-    .left-half h3 {
+    .donating-left-half h3 {
       font-size: 20px; /* Adjust font size */
       margin-bottom: 10px; /* Adjust margin */
       width: 40%; /* Adjust width */
       margin-left: 10px;
     }
   
-    .left-half p {
+    .donating-left-half p {
       padding: 15px; /* Adjust padding */
       width: 90%; /* Adjust width */
     }
   
-    .left-half h2 {
+    .donating-left-half h2 {
       font-size: 40px; /* Adjust font size */
     }
   
-    .right-half {
+    .donating-right-half {
       width: 100%;
       padding: 20px;
       height: auto; /* Adjust height */
       border-radius: 0; /* Remove border-radius */
     }
   
-    form {
+    .donating form {
       padding: 20px; /* Adjust padding */
     }
   
-    input {
+    .donating input {
       padding: 30px 15px;
       font-size: 16px; /* Adjust font size */
       margin-bottom: 20px; /* Adjust margin */

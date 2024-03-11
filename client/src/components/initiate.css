@@ -54,23 +54,23 @@
     }
   
     .initiate-content h1 {
-      font-size: 30px; /* Adjusted font size for better readability on larger screens */
-      margin-bottom: 20px; /* Adjusted margin */
+      font-size: 30px;
+      margin-bottom: 20px;
     }
   
     .initiate-content p {
-      font-size: 16px; /* Adjusted font size for better readability on larger screens */
-      margin-bottom: 15px; /* Adjusted margin */
+      font-size: 16px;
+      margin-bottom: 15px;
     }
   
     .initiate-content h2 {
-      font-size: 24px; /* Adjusted font size for better readability on larger screens */
-      margin-bottom: 15px; /* Adjusted margin */
+      font-size: 24px; 
+      margin-bottom: 15px;
     }
   
     .initiate-content li {
-      font-size: 16px; /* Adjusted font size for better readability on larger screens */
-      margin-bottom: 8px; /* Adjusted margin */
+      font-size: 16px;
+      margin-bottom: 8px; 
     }
   
     .Impact {

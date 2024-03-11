@@ -41,4 +41,32 @@
     color: #555;
     margin-bottom: 8px;
   }
+
+  @media only screen and (max-width: 400px) {
+    .fem-main-container {
+      padding: 40px;
+      height: auto;
+      margin-top: 0px;
+    }
+  
+    .fem-content h1 {
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+  
+    .fem-content p {
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+  
+    .fem-content h2 {
+      font-size: 24px; 
+      margin-bottom: 15px;
+    }
+  
+    .fem-content li {
+      font-size: 16px;
+      margin-bottom: 8px; 
+    }
+  }
   

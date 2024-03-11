@@ -1,5 +1,12 @@
     .contactt{
         /* border: 2px solid black; */
         margin-top: 150px;
-        height: 100vh;
+        height: 115vh;
+    }
+
+    @media screen and (max-width: 400px) {
+        .contactt{
+            height: 150vh;
+        }
+
     }

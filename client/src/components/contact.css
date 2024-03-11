@@ -87,15 +87,90 @@
     font-size: 20px;
   }
 
-  /* Responsive styles */
-  @media (max-width: 768px) {
+  @media screen and (max-width: 400px) {
     .contact-container {
+      margin-top: -60px;
+      margin-left: 20px;
+      width: 90%;
       flex-direction: column;
     }
   
-    .left-half,
-    .right-half {
+    .left-halff,
+    .right-halff {
       width: 100%;
+      background-color: white;
+      color: black;
+    }
+  
+    .left-halff h1 {
+      font-size: 30px;
+      margin-left: 20px;
+      margin-top: 20px;
+    }
+  
+    .right-halff h2 {
+      font-size: 30px;
+      padding: 10px;
+      color: black;
+    }
+  
+    .right-halff p {
+      font-size: 16px;
+      padding: 10px;
+      color: black;
+    }
+
+    .right-halff svg{
+      color: rgb(255, 149, 0);
+    }
+  
+    .contact-icons {
+      border: 2px solid #e7e7e7c3;
+      padding: 10px;
+      font-size: 18px;
+      border-radius: 50%;
+      transform: translateY(10px);
+    }
+  
+    .contact-form {
+      margin-top: -10px;
+      width: 80%;
+      height: 70vh;
+    }
+  
+    .form-group {
+      flex-direction: column;
+      margin-bottom: 10px;
+    }
+  
+    .form-group input,
+    textarea {
+      width: 100%;
+      padding: 10px;
+    }
+  
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="tel"],
+    textarea {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      height: 40px;
+      margin: 10px;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      background-color: white;
+      outline: none;
+    }
+  
+    textarea {
+      height: 150px;
+      font-size: 16px;
     }
   }
   
+  /* Adjust the styles as needed */
+  .form-group input[type='tel'] {
+    width: 100%;
+  }

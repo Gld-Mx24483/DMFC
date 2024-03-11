@@ -7,6 +7,7 @@ import Navbar from './components/navbar';
 import BriefInfo from './components/brief-info';
 import AboutUs from './components/about-us';
 import Donate from './components/donate';
+import Donating from './components/donating';
 import Footer from './components/footer';
 import Ceo from './components/ceo';
 import ProgramsMain from './components/programs-main';
@@ -36,6 +37,7 @@ root.render(
       <Route exact path="/outreach" element={<Outreach />} />
       <Route exact path="/initiative" element={<Initiative />} />
       <Route exact path="/feminine" element={<Feminine />} />
+      <Route exact path="/donating" element={<Donating />} />
       </Routes>
     </Router>
   </React.StrictMode>
