@@ -120,6 +120,10 @@ nav {
     color: orange;
   }
 
+  .menu-icon{
+    visibility: hidden;
+  }
+
   @media only screen and (max-width: 400px) {
     nav{
       margin-top: 0;
@@ -142,6 +146,7 @@ nav {
       color: white;
       margin-right: 30px;
       margin-top: 5px;
+      visibility: visible;
     }
   
     .nav-links {

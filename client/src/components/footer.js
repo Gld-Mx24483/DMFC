@@ -25,7 +25,7 @@ const Footer = () => {
         <p><a href="./about-us-main">About Us</a></p>
         <p><a href="./contact-us">Contact Us</a></p>
         <p><a href="./programs-main">Programs</a></p>
-        <p><a href="#">Support</a></p>
+        <p><a href="./donating">Support</a></p>
       </div>
       <div className="footer-column">
         <h4>Be a member</h4>
@@ -34,7 +34,7 @@ const Footer = () => {
       </div>
       <div className="footer-bottom">
         <p>&copy; DalmachFoundation.org, All Right Reserved</p>
-        <p><a href="#">Admin</a></p>
+        <p><a href="/admin">Admin</a></p>
       </div>
     </div>
   );

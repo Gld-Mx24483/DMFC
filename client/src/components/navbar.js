@@ -51,7 +51,7 @@ const Navbar = () => {
           <Link to="/contact-us">Contact Us</Link>
         </li>
         <li className='donate-link'>
-          <Link to="./donating" className='donate-now-link'>
+          <Link to="/donating" className='donate-now-link'>
             <p>Donate Now</p> <FontAwesomeIcon icon={faArrowRight} />
           </Link>
         </li>

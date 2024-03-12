@@ -16,6 +16,8 @@ import ContactUs from './components/contact-us';
 import Outreach from './components/outreach';
 import Initiative from './components/initiative';
 import Feminine from './components/feminine';
+import Admin from './components/admin';
+import AdminDashboard from './components/admin-dashboard';
 import reportWebVitals from './reportWebVitals';
 import '@fortawesome/fontawesome-free/css/all.min.css'
 
@@ -38,6 +40,8 @@ root.render(
       <Route exact path="/initiative" element={<Initiative />} />
       <Route exact path="/feminine" element={<Feminine />} />
       <Route exact path="/donating" element={<Donating />} />
+      <Route exact path="/admin" element={<Admin />} />
+      <Route exact path="/admin-dashboard" element={<AdminDashboard />} />
       </Routes>
     </Router>
   </React.StrictMode>
