@@ -1,0 +1,22 @@
+.label{
+    margin-left: 155px;
+}
+
+.staff-login-form{
+    transform: tr;
+}
+
+@media only screen and (max-width: 500px) {
+    .staff-login-form{
+        width: 70%;
+        height: 70vh;
+    }
+
+    .staff-container{
+        height: 110vh;
+    }
+
+    .label{
+        margin-left: 85px;
+    }
+}

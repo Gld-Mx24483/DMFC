@@ -25,13 +25,14 @@ const Footer = () => {
         <p><a href="./about-us-main">About Us</a></p>
         <p><a href="./contact-us">Contact Us</a></p>
         <p><a href="./programs-main">Programs</a></p>
+        <p><a href="./events-main">Events</a></p>
         <p><a href="./donating">Support</a></p>
       </div>
       <div className="footer-column">
         <h4>Be a member</h4>
         <p>Become a member of Dalmach Foundation and join us in making a difference in the community.</p>
         <p><a href="/involve-main">Get Involved</a></p>
-        <p><a href="#">Login</a></p>
+        <p><a href="/staff-login">Login</a></p>
       </div>
       <div className="footer-bottom">
         <p>&copy; DalmachFoundation.org, All Right Reserved</p>

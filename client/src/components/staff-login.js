@@ -4,17 +4,19 @@ import BriefInfo from './brief-info';
 import Navbar from './navbar';
 import Footer from './footer';
 import './admin.css';
+import './staff-login.css';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 
 const Admin = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [uniquekey, setUniqueKey] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); // Get navigation function
 
   const handleLogin = (e) => {
     e.preventDefault(); // Prevent default form submission
 
-    if (username === 'Admin123' && password === '12345678') {
+    if (uniquekey === 'DMF123') {
       navigate('/admin-dashboard'); // Navigate to admin-dashboard on success
     } else {
       alert('Wrong username or password!');
@@ -23,17 +25,17 @@ const Admin = () => {
 
   return (
     <div>
-      <div className="admin-container">
+      <div className="admin-container staff-container">
         <BriefInfo />
         <Navbar />
-        <form onSubmit={handleLogin} className="login-form">
-          <h2>Admin Login</h2>
-          <label className='label' htmlFor="username">Username:</label>
+        <form onSubmit={handleLogin} className="login-form staff-login-form">
+          <h2>Login</h2>
+          <label className='label' htmlFor="email">Email:</label>
           <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
           <label className='label' htmlFor="password">Password:</label>
@@ -42,6 +44,14 @@ const Admin = () => {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <label className='label' htmlFor="uniquekey">Unique Key:</label>
+          <input
+            type="password"
+            id="password"
+            value={uniquekey}
+            onChange={(e) => setUniqueKey(e.target.value)}
             required
           />
           <div className="form-bottom">

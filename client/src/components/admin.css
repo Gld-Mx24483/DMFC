@@ -22,7 +22,7 @@
     width: 400px;
     max-width: 100%;
     text-align: center;
-    height: 50vh;
+    height: 55vh;
     margin-top: 250px;
     align-items: center;
   }
@@ -35,6 +35,8 @@
   
   .login-form label {
     display: block;
+    /* text-align: left; */
+    align-self:self-start;
     margin-bottom: 5px;
     font-weight: bold;
     transform: translateX(-150px);
@@ -51,6 +53,7 @@
     border-top: none;
     border-right: none;
     color: white;
+    background-color: transparent;
   }
   
   .login-form button {
