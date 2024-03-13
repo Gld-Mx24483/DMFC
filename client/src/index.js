@@ -13,10 +13,13 @@ import Ceo from './components/ceo';
 import ProgramsMain from './components/programs-main';
 import AboutUsMain from './components/about-us-main';
 import ContactUs from './components/contact-us';
+import EventsMain from './components/events-main';
 import Outreach from './components/outreach';
 import Initiative from './components/initiative';
 import Feminine from './components/feminine';
 import Admin from './components/admin';
+import Involve from './components/involve';
+import InvolveMain from './components/involve-main';
 import AdminDashboard from './components/admin-dashboard';
 import reportWebVitals from './reportWebVitals';
 import '@fortawesome/fontawesome-free/css/all.min.css'
@@ -36,11 +39,14 @@ root.render(
       <Route exact path="/ceo" element={<Ceo />} />
       <Route exact path="/programs-main" element={<ProgramsMain />} />
       <Route exact path="/contact-us" element={<ContactUs />} />
+      <Route exact path="/events-main" element={<EventsMain />} />
       <Route exact path="/outreach" element={<Outreach />} />
       <Route exact path="/initiative" element={<Initiative />} />
       <Route exact path="/feminine" element={<Feminine />} />
       <Route exact path="/donating" element={<Donating />} />
       <Route exact path="/admin" element={<Admin />} />
+      <Route exact path="/involve" element={<Involve />} />
+      <Route exact path="/involve-main" element={<InvolveMain />} />
       <Route exact path="/admin-dashboard" element={<AdminDashboard />} />
       </Routes>
     </Router>
