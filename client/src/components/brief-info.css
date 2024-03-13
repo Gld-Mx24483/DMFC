@@ -45,9 +45,10 @@
     font-size: 25px;
   }
   
-  @media only screen and (max-width: 400px) {
+  @media only screen and (max-width: 500px) {
   .brief-info-navbar {
     padding: 10px; /* Adjust padding as needed */
+    visibility: hidden;
   }
 
   .info-left,

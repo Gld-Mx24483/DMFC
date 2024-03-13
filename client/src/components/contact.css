@@ -87,7 +87,7 @@
     font-size: 20px;
   }
 
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 500px) {
     .contact-container {
       margin-top: -60px;
       margin-left: 20px;

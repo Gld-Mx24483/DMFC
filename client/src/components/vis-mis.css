@@ -50,7 +50,7 @@
     padding-right: 10px;
   }
   
-  @media only screen and (max-width: 400px) {
+  @media only screen and (max-width: 500px) {
     .vis-mis-container {
       padding: 20px; /* Adjusted padding for better spacing on smaller screens */
       flex-direction: column; /* Stack elements vertically on smaller screens */
