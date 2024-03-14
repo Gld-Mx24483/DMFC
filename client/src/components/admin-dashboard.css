@@ -6,10 +6,14 @@
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: scroll;
-    height: 65vh;
+    height: 40vh;
     overflow: hidden;
     width: 100%;
     display: flex;
     flex-direction: column;
+  }
+
+  .sub{
+    margin-top: -125px;
   }
   
