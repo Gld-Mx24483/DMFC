@@ -48,3 +48,60 @@
 .admin-dash-content h1 {
   color: #333;
 }
+
+@media screen and (max-width: 500px) {
+  .admin-dash-sidebar {
+    position: absolute;
+    /* top: 0; */
+    left: -200px;
+    z-index: 1;
+    height: 105%;
+    transform: translateX(0);
+  }
+
+  .admin-dash-sidebar.open {
+    transform: translateX(200px);
+  }
+
+  .admin-dash-sidebar.open .admin-dash-option{
+    transform: translateX(0);
+  }
+
+  .admin-dash-option{
+    transform: translateX(-30px);
+  }
+
+ /*  .admin-dash-options.open {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    background-color: #582323;
+    width: 200px;
+    height: 86.4%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 20px;
+    z-index: 2;
+    transform: translateX(60px);
+    transition: transform 0.3s ease-in-out;
+  } */
+
+  .menu-icons {
+    display: block;
+    position: absolute;
+    left: 10px;
+    font-size: 25px;
+    cursor: pointer;
+    z-index: 3;
+    color: white;
+  }
+
+  .admin-dash-content h1{
+    margin-left: 30px;
+  }
+
+  .admin-dash-sidebar h2{
+    margin-left: -10px;
+  }
+}

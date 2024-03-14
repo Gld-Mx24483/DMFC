@@ -1,59 +1,22 @@
-// // AdminDash.js
-
-// import React from 'react';
-// import './admin-dash.css';
-
-// const AdminDash = () => {
-//   return (
-//     <div className='admin-dash-main-container'>
-//       <div className="admin-dash-content">
-//         <h1>Welcome</h1>
-//         <div className="admin-dash-options">
-//           <div className="admin-dash-option">
-//             <button className="admin-dash-button">User Management</button>
-//           </div>
-//           <div className="admin-dash-option">
-//             <button className="admin-dash-button">Content Management</button>
-//           </div>
-//           <div className="admin-dash-option">
-//             <button className="admin-dash-button">Program Management</button>
-//           </div>
-//           <div className="admin-dash-option">
-//             <button className="admin-dash-button">Donation Management</button>
-//           </div>
-//           <div className="admin-dash-option">
-//             <button className="admin-dash-button">Event Management</button>
-//           </div>
-//           <div className="admin-dash-option">
-//             <button className="admin-dash-button">Communication</button>
-//           </div>
-//           <div className="admin-dash-option">
-//             <button className="admin-dash-button">System Settings</button>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default AdminDash;
-
-
-// AdminDash.js
-
+// admin-dash.js
 import React, { useState } from 'react';
 import './admin-dash.css';
 
 const AdminDash = () => {
   const [selectedOption, setSelectedOption] = useState(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
   };
 
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   return (
     <div className='admin-dash-main-container'>
-      <div className="admin-dash-sidebar">
+      <div className={`admin-dash-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <h2>Admin Dashboard</h2>
         <div className="admin-dash-options">
           <button
@@ -102,6 +65,9 @@ const AdminDash = () => {
       </div>
       <div className="admin-dash-content">
         <h1>{selectedOption || 'Welcome'}</h1>
+      </div>
+      <div className="menu-icons" onClick={toggleSidebar}>
+        ☰
       </div>
     </div>
   );

@@ -17,3 +17,6 @@
     margin-top: -125px;
   }
   
+ .Footer-a{
+  z-index: 9999;
+ }
