@@ -2,10 +2,6 @@
     width: 100%;
     border-collapse: collapse;
   }
-
-  .filter-section {
-    /* margin-bottom: 20px; */
-  }
   
   .filter-section input {
     margin-right: 10px;

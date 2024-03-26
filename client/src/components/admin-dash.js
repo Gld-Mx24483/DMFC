@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import './admin-dash.css';
 import UserMann from './user-management';
+import EventMann from './event-management';
 
 const AdminDash = () => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -67,6 +68,7 @@ const AdminDash = () => {
       <div className="admin-dash-content">
         <h1>{selectedOption || 'Welcome'}</h1>
         {selectedOption === 'User Management' && <UserMann />}
+        {selectedOption === 'Event Management' && <EventMann />}
       </div>
       <div className="menu-icons" onClick={toggleSidebar}>
         ☰
