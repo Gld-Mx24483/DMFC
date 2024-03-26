@@ -49,6 +49,10 @@
   color: #333;
 }
 
+.menu-icons{
+  visibility: hidden;
+}
+
 @media screen and (max-width: 500px) {
   .admin-dash-sidebar {
     position: absolute;
@@ -95,6 +99,7 @@
     cursor: pointer;
     z-index: 3;
     color: white;
+    visibility: visible;
   }
 
   .admin-dash-content h1{
