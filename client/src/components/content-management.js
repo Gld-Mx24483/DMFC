@@ -187,31 +187,6 @@ const ContentMan = () => {
     }));
   };
 
-// const handleFormatText = (tag) => {
-//     const selectedText = window.getSelection().toString();
-//     if (selectedText) {
-//       const contentEditable = contentEditableRef.current;
-//       const alreadyFormatted = contentEditable.innerHTML.includes(`<${tag}>`);
-  
-//       let formattedText = `<${tag}`;
-  
-//       if (tag === 'b' || tag === 'i' || tag === 'u') {
-//         formattedText += alreadyFormatted ? '>' : ` style="font-weight: bold;">`; 
-//       } else if (tag === 'span') {
-//         formattedText += ` style="font-size:${fontSize}px;">`;
-//       }
-  
-//       formattedText += `${selectedText}</${tag}>`;
-  
-//       document.execCommand('insertHTML', false, formattedText);
-  
-//       if (alreadyFormatted) {
-//         const formatRemovalRegex = new RegExp(`<(${tag})[^>]*>`, 'g');
-//         contentEditable.innerHTML = contentEditable.innerHTML.replace(formatRemovalRegex, '');
-//       }
-//     }
-//   };  
-
 const handleFormatText = (tag) => {
     const selectedText = window.getSelection();
     if (selectedText.toString()) {
