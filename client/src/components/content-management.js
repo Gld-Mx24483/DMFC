@@ -334,7 +334,7 @@ const ContentMan = () => {
     body: ''
   });
   const [showContentForm, setShowContentForm] = useState(false);
-  const contentEditableRef = useRef(null); // Ref for contenteditable div
+  const contentEditableRef = useRef(null); 
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -349,7 +349,7 @@ const ContentMan = () => {
     const imageUrl = URL.createObjectURL(imageFile);
     setContentDetails(prevState => ({
       ...prevState,
-      body: prevState.body + `![Image](${imageUrl})` // Markdown syntax for images
+      body: prevState.body + `![Image](${imageUrl})` 
     }));
   };
 
@@ -358,7 +358,7 @@ const ContentMan = () => {
     const videoUrl = URL.createObjectURL(videoFile);
     setContentDetails(prevState => ({
       ...prevState,
-      body: prevState.body + `[![Video](${videoUrl})]` // Markdown syntax for videos
+      body: prevState.body + `[![Video](${videoUrl})]` 
     }));
   };
 
@@ -368,7 +368,6 @@ const ContentMan = () => {
       const contentEditable = contentEditableRef.current;
       let formattedText = `<${tag}`;
 
-      // Handle toggle formatting for bold, italic, and underline
       let alreadyFormatted = false;
       if (tag === 'b' || tag === 'i' || tag === 'u') {
         alreadyFormatted = contentEditable.innerHTML.includes(`<${tag}>`);
@@ -379,7 +378,6 @@ const ContentMan = () => {
 
       formattedText += `>${selectedText}</${tag}>`;
 
-      // Insert formatted text and remove previous formatting (if toggled)
       document.execCommand('insertHTML', false, formattedText);
       if (alreadyFormatted) {
         const formatRemovalRegex = new RegExp(`<(${tag})[^>]*>`, 'g');
@@ -405,7 +403,7 @@ const ContentMan = () => {
       body: ''
     });
     setEditIndex(null);
-    setShowContentForm(false); // Hide content form after saving
+    setShowContentForm(false); 
     alert("Content successfully saved!");
   };
 
@@ -413,7 +411,7 @@ const ContentMan = () => {
     setEditIndex(index);
     const contentToEdit = content[index];
     setContentDetails(contentToEdit);
-    setShowContentForm(true); // Show content form when editing
+    setShowContentForm(true); 
   };
 
   const handleDeleteContent = (index) => {
@@ -441,10 +439,10 @@ const ContentMan = () => {
               <button onClick={() => handleFormatText('b')}><FontAwesomeIcon icon={faBold} /></button>
               <button onClick={() => handleFormatText('i')}><FontAwesomeIcon icon={faItalic} /></button>
               <button onClick={() => handleFormatText('u')}><FontAwesomeIcon icon={faUnderline} /></button>
-              <button onClick={() => handleFormatText('span', 14)}>A+</button> {/* Fixed font size */}
-              <button onClick={() => handleFormatText('span', 10)}>A-</button> {/* Fixed font size */}
-              <button onClick={handleImageUpload}><FontAwesomeIcon icon={faImage} /></button> {/* Removed unnecessary function call */}
-              <button onClick={handleVideoUpload}><FontAwesomeIcon icon={faVideo} /></button> {/* Removed unnecessary function call */}
+              <button onClick={() => handleFormatText('span', 14)}>A+</button> 
+              <button onClick={() => handleFormatText('span', 10)}>A-</button> 
+              <button onClick={handleImageUpload}><FontAwesomeIcon icon={faImage} /></button> 
+              <button onClick={handleVideoUpload}><FontAwesomeIcon icon={faVideo} /></button> 
             </div>
             <div
               className="content-body"
