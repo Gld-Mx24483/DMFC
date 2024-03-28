@@ -6,10 +6,9 @@ import { faEllipsisH, faAngleDown, faTrash, faPen } from '@fortawesome/free-soli
 
 const UserMan = () => {
   const initialUsers = [
-    { name: 'John Doe', email: 'john@example.com', role: 'Editor', dateAdded: 'Feb 22, 2022', lastActive: 'Feb 24, 2022', showDropdown: false },
-    { name: 'Jane Doe', email: 'jane@example.com', role: 'Creator', dateAdded: 'Feb 25, 2022', lastActive: 'Feb 26, 2022', showDropdown: false },
-    { name: 'James Doe', email: 'jane@example.com', role: 'Creator', dateAdded: 'Feb 27, 2022', lastActive: 'Feb 28, 2022', showDropdown: false },
-    // Add more users here as needed
+    { name: 'John Cena', email: 'john@example.com', role: 'Editor', dateAdded: 'Feb 22, 2022', lastActive: 'Feb 24, 2022', showDropdown: false },
+    { name: 'Jane Dave', email: 'jane@example.com', role: 'Creator', dateAdded: 'Feb 25, 2022', lastActive: 'Feb 26, 2022', showDropdown: false },
+    { name: 'James Rodri', email: 'jane@example.com', role: 'Creator', dateAdded: 'Feb 27, 2022', lastActive: 'Feb 28, 2022', showDropdown: false },
   ];
 
   const [users, setUsers] = useState(initialUsers);
