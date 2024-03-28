@@ -187,28 +187,53 @@ const ContentMan = () => {
     }));
   };
 
-const handleFormatText = (tag) => {
-    const selectedText = window.getSelection().toString();
-    if (selectedText) {
-      const contentEditable = contentEditableRef.current;
-      const alreadyFormatted = contentEditable.innerHTML.includes(`<${tag}>`);
+// const handleFormatText = (tag) => {
+//     const selectedText = window.getSelection().toString();
+//     if (selectedText) {
+//       const contentEditable = contentEditableRef.current;
+//       const alreadyFormatted = contentEditable.innerHTML.includes(`<${tag}>`);
   
-      let formattedText = `<${tag}`;
+//       let formattedText = `<${tag}`;
+  
+//       if (tag === 'b' || tag === 'i' || tag === 'u') {
+//         formattedText += alreadyFormatted ? '>' : ` style="font-weight: bold;">`; 
+//       } else if (tag === 'span') {
+//         formattedText += ` style="font-size:${fontSize}px;">`;
+//       }
+  
+//       formattedText += `${selectedText}</${tag}>`;
+  
+//       document.execCommand('insertHTML', false, formattedText);
+  
+//       if (alreadyFormatted) {
+//         const formatRemovalRegex = new RegExp(`<(${tag})[^>]*>`, 'g');
+//         contentEditable.innerHTML = contentEditable.innerHTML.replace(formatRemovalRegex, '');
+//       }
+//     }
+//   };  
+
+const handleFormatText = (tag) => {
+    const selectedText = window.getSelection();
+    if (selectedText.toString()) {
+      const range = selectedText.getRangeAt(0);
+      const contentEditable = contentEditableRef.current;
+      const alreadyFormatted = range.commonAncestorContainer.parentElement.nodeName === tag.toUpperCase();
+  
+      let formattedText = document.createElement(tag);
   
       if (tag === 'b' || tag === 'i' || tag === 'u') {
-        formattedText += alreadyFormatted ? '>' : ` style="font-weight: bold;">`; 
+        if (alreadyFormatted) {
+          document.execCommand('removeFormat', false, tag);
+        } else {
+          document.execCommand(tag);
+        }
       } else if (tag === 'span') {
-        formattedText += ` style="font-size:${fontSize}px;">`;
+        formattedText.style.fontSize = `${fontSize}px`;
       }
   
-      formattedText += `${selectedText}</${tag}>`;
+      range.surroundContents(formattedText);
   
-      document.execCommand('insertHTML', false, formattedText);
-  
-      if (alreadyFormatted) {
-        const formatRemovalRegex = new RegExp(`<(${tag})[^>]*>`, 'g');
-        contentEditable.innerHTML = contentEditable.innerHTML.replace(formatRemovalRegex, '');
-      }
+      setContentDetails({ ...contentDetails, body: contentEditable.innerHTML });
     }
   };  
 
@@ -284,7 +309,7 @@ const handleFormatText = (tag) => {
               ref={contentEditableRef}
               placeholder="Body"
               onBlur={(e) => setContentDetails({ ...contentDetails, body: e.target.innerHTML })}
-              style={{ fontSize: `${fontSize}px` }} // Set font size dynamically
+              style={{ fontSize: `${fontSize}px` }}
             />
             <button onClick={handleSaveContent}>{editIndex !== null ? 'Update Content' : 'Save Content'}</button>
           </div>
