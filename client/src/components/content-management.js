@@ -316,7 +316,6 @@
 
 // export default ContentMan;
 
-
 import React, { useState, useRef } from 'react';
 import './content-management.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -334,7 +333,8 @@ const ContentMan = () => {
     body: ''
   });
   const [showContentForm, setShowContentForm] = useState(false);
-  const contentEditableRef = useRef(null); 
+  const contentEditableRef = useRef(null);
+  const [fontSize, setFontSize] = useState(14);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -349,7 +349,7 @@ const ContentMan = () => {
     const imageUrl = URL.createObjectURL(imageFile);
     setContentDetails(prevState => ({
       ...prevState,
-      body: prevState.body + `![Image](${imageUrl})` 
+      body: prevState.body + `![Image](${imageUrl})`
     }));
   };
 
@@ -358,32 +358,34 @@ const ContentMan = () => {
     const videoUrl = URL.createObjectURL(videoFile);
     setContentDetails(prevState => ({
       ...prevState,
-      body: prevState.body + `[![Video](${videoUrl})]` 
+      body: prevState.body + `[![Video](${videoUrl})]`
     }));
   };
 
-  const handleFormatText = (tag, fontSize) => {
+  const handleFormatText = (tag) => {
     const selectedText = window.getSelection().toString();
     if (selectedText) {
       const contentEditable = contentEditableRef.current;
       let formattedText = `<${tag}`;
 
-      let alreadyFormatted = false;
       if (tag === 'b' || tag === 'i' || tag === 'u') {
-        alreadyFormatted = contentEditable.innerHTML.includes(`<${tag}>`);
-        formattedText += alreadyFormatted ? '>' : ` style="font-weight: bold;">`; // Toggle bold styling
-      } else if (fontSize) {
-        formattedText += ` style="font-size:${fontSize}px;"`;
+        formattedText += ` style="font-weight: bold;">`;
+      } else if (tag === 'span') {
+        formattedText += ` style="font-size:${fontSize}px;">`;
       }
 
-      formattedText += `>${selectedText}</${tag}>`;
+      formattedText += `${selectedText}</${tag}>`;
 
       document.execCommand('insertHTML', false, formattedText);
-      if (alreadyFormatted) {
-        const formatRemovalRegex = new RegExp(`<(${tag})[^>]*>`, 'g');
-        contentEditable.innerHTML = contentEditable.innerHTML.replace(formatRemovalRegex, '');
-      }
     }
+  };
+
+  const handleFontSizeIncrement = () => {
+    setFontSize(prevSize => prevSize + 1);
+  };
+
+  const handleFontSizeDecrement = () => {
+    setFontSize(prevSize => prevSize - 1);
   };
 
   const handleSaveContent = () => {
@@ -403,7 +405,7 @@ const ContentMan = () => {
       body: ''
     });
     setEditIndex(null);
-    setShowContentForm(false); 
+    setShowContentForm(false);
     alert("Content successfully saved!");
   };
 
@@ -411,7 +413,7 @@ const ContentMan = () => {
     setEditIndex(index);
     const contentToEdit = content[index];
     setContentDetails(contentToEdit);
-    setShowContentForm(true); 
+    setShowContentForm(true);
   };
 
   const handleDeleteContent = (index) => {
@@ -439,10 +441,10 @@ const ContentMan = () => {
               <button onClick={() => handleFormatText('b')}><FontAwesomeIcon icon={faBold} /></button>
               <button onClick={() => handleFormatText('i')}><FontAwesomeIcon icon={faItalic} /></button>
               <button onClick={() => handleFormatText('u')}><FontAwesomeIcon icon={faUnderline} /></button>
-              <button onClick={() => handleFormatText('span', 14)}>A+</button> 
-              <button onClick={() => handleFormatText('span', 10)}>A-</button> 
-              <button onClick={handleImageUpload}><FontAwesomeIcon icon={faImage} /></button> 
-              <button onClick={handleVideoUpload}><FontAwesomeIcon icon={faVideo} /></button> 
+              <button onClick={handleFontSizeIncrement}>A+</button>
+              <button onClick={handleFontSizeDecrement}>A-</button>
+              <button onClick={handleImageUpload}><FontAwesomeIcon icon={faImage} /></button>
+              <button onClick={handleVideoUpload}><FontAwesomeIcon icon={faVideo} /></button>
             </div>
             <div
               className="content-body"
@@ -450,6 +452,7 @@ const ContentMan = () => {
               ref={contentEditableRef}
               placeholder="Body"
               onBlur={(e) => setContentDetails({ ...contentDetails, body: e.target.innerHTML })}
+              style={{ fontSize: `${fontSize}px` }} // Set font size dynamically
             />
             <button onClick={handleSaveContent}>{editIndex !== null ? 'Update Content' : 'Save Content'}</button>
           </div>
