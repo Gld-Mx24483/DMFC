@@ -15,7 +15,7 @@ const EventMan = () => {
     brief: ''
   });
   const [events, setEvents] = useState([]);
-  const [editIndex, setEditIndex] = useState(null); // New state for tracking the index of the event being edited
+  const [editIndex, setEditIndex] = useState(null);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;

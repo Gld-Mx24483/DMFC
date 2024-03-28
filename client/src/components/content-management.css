@@ -1,0 +1,93 @@
+.content-management-main-container {
+    padding: 20px;
+    border: none;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+  }
+  
+  .content-form input,
+  .content-form textarea {
+    margin-bottom: 10px;
+    width: 93%;
+    height: 8px;
+  }
+
+  .content-form textarea{
+    height: 40vh;
+  }
+  
+  .content-form input[type="file"],
+  .content-form input[type="datetime-local"] {
+    margin-bottom: 20px;
+  }
+
+  .content-form img{
+    width: 20%;
+    margin-left: 40px;
+    margin-bottom: 10px;
+  }
+
+  .content-form video{
+    width: 30%;
+    margin-left: 40px;
+    margin-bottom: 10px;
+  }
+  
+  .content-list {
+    margin-top: 20px;
+  }
+  
+  .content-item {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  
+  .content-item h3 {
+    margin-bottom: 5px;
+  }
+  
+  .content-item p {
+    margin: 5px 0;
+  }
+  
+  .content-item svg {
+    margin-right: 10px;
+    cursor: pointer;
+    right: 10px;
+    top: 10px;
+    position: absolute;
+  }
+
+  .content-item .Pen{
+    margin-right: 50px;
+  }
+
+  .content-item svg:last-child {
+    right: unset;
+    left: 50px;
+    border: 2px solid blue;
+  }
+
+.create-content-button,
+.content-form button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-bottom: 20px; /* Add margin between buttons */
+}
+
+.create-content-button:hover,
+.content-form button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+.create-content-button svg {
+  margin-right: 5px; /* Add margin to the icon */
+}
