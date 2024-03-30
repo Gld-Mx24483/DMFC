@@ -96,6 +96,44 @@
 }
 
 .create-content-button svg {
-  margin-right: 5px; /* Add margin to the icon */
+  margin-right: 5px;
 }
 
+.custom-froala-editor {
+  height: 46vh;
+  margin-bottom: 20px;
+  overflow-y: auto; 
+  position: relative;
+}
+
+.custom-froala-editor .fr-dropdown-wrapper ul {
+  max-height: 200px;
+  overflow-y: auto; 
+  display: block;
+}
+
+.custom-froala-editor .fr-dropdown-wrapper ul li {
+  transform: translateY(0px);
+  color: #333;
+
+}
+
+.custom-froala-editor .fr-toolbar {
+  background-color: #f0f0f0;
+  position: sticky;
+  /* top: 0; */
+  z-index: 999;
+}
+
+.custom-froala-editor .fr-command {
+  font-size: 16px;
+}
+
+.custom-froala-editor .fr-dropdown-menu {
+  background-color: #fff;
+}
+
+/* Example: Change dropdown menu item hover color */
+.custom-froala-editor .fr-dropdown-wrapper ul li:hover {
+  background-color: #f0f0f0;
+}
