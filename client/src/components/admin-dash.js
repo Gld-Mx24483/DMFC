@@ -4,6 +4,7 @@ import './admin-dash.css';
 import UserMann from './user-management';
 import EventMann from './event-management';
 import ContentMann from './content-management';
+import Gallery from './gallery';
 
 const AdminDash = () => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -59,10 +60,10 @@ const AdminDash = () => {
             Communication
           </button>
           <button
-            className={`admin-dash-option ${selectedOption === 'System Settings' ? 'selected' : ''}`}
-            onClick={() => handleOptionClick('System Settings')}
+            className={`admin-dash-option ${selectedOption === 'Gallery' ? 'selected' : ''}`}
+            onClick={() => handleOptionClick('Gallery')}
           >
-            System Settings
+            Gallery
           </button>
         </div>
       </div>
@@ -71,6 +72,7 @@ const AdminDash = () => {
         {selectedOption === 'User Management' && <UserMann />}
         {selectedOption === 'Event Management' && <EventMann />}
         {selectedOption === 'Content Management' && <ContentMann />}
+        {selectedOption === 'Gallery' && <Gallery />}
       </div>
       <div className="menu-icons" onClick={toggleSidebar}>
         ☰

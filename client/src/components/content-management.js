@@ -36,6 +36,7 @@ const ContentMan = () => {
     const imageUrl = URL.createObjectURL(imageFile);
     setContentDetails(prevState => ({
       ...prevState,
+      imageSrc: imageUrl,
       body: prevState.body + `![Image](${imageUrl})`
     }));
   };
@@ -45,6 +46,7 @@ const ContentMan = () => {
     const videoUrl = URL.createObjectURL(videoFile);
     setContentDetails(prevState => ({
       ...prevState,
+      videoSrc: videoUrl,
       body: prevState.body + `[![Video](${videoUrl})]`
     }));
   };
@@ -94,7 +96,9 @@ const ContentMan = () => {
           <h2>{editIndex !== null ? 'Edit Content' : 'Create Content'}</h2>
           <div className="content-form">
             <input type="file" accept="image/*" onChange={handleImageUpload} />
+            {contentDetails.imageSrc && <img src={contentDetails.imageSrc} alt="Preview" />}
             <input type="file" accept="video/*" onChange={handleVideoUpload} />
+            {contentDetails.videoSrc && <video controls src={contentDetails.videoSrc}></video>}
             <input type="text" name="fullName" placeholder="Full Name" value={contentDetails.fullName} onChange={handleInputChange} />
             <input type="text" name="title" placeholder="Title" value={contentDetails.title} onChange={handleInputChange} />
             <input type="datetime-local" name="dateTime" value={contentDetails.dateTime} onChange={handleInputChange} />
@@ -104,7 +108,8 @@ const ContentMan = () => {
                 config={{
                   toolbarInline: false,
                   heightMin:230,
-                  placeholderText: 'Write Content',
+                  width:1310,
+                  placeholderText: ' ',
                   fontFamily: {
                     "Arial,Helvetica,sans-serif": "Arial",
                     "Georgia,serif": "Georgia",
@@ -126,8 +131,8 @@ const ContentMan = () => {
           <div className="content-item" key={index}>
             <FontAwesomeIcon className='Pen' icon={faPen} onClick={() => handleEditContent(index)} />
             <FontAwesomeIcon className='Trash' icon={faTrash} onClick={() => handleDeleteContent(index)} />
-            <h3>{item.imageSrc}</h3>
-            <h3>{item.videoSrc}</h3>
+            {item.imageSrc && <img className='media image' src={item.imageSrc} alt="Preview" />}
+            {item.videoSrc && <video className='media video' controls src={item.videoSrc}></video>}
             <h3>{item.title}</h3>
             <p>{item.dateTime}</p>
             <p>{item.fullName}</p>

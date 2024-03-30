@@ -87,12 +87,12 @@
   border: none;
   padding: 10px 20px;
   cursor: pointer;
-  margin-bottom: 20px; /* Add margin between buttons */
+  margin-bottom: 20px; 
 }
 
 .create-content-button:hover,
 .content-form button:hover {
-  background-color: #0056b3; /* Darker shade on hover */
+  background-color: #0056b3; 
 }
 
 .create-content-button svg {
@@ -121,7 +121,6 @@
 .custom-froala-editor .fr-toolbar {
   background-color: #f0f0f0;
   position: sticky;
-  /* top: 0; */
   z-index: 999;
 }
 
@@ -133,7 +132,21 @@
   background-color: #fff;
 }
 
-/* Example: Change dropdown menu item hover color */
 .custom-froala-editor .fr-dropdown-wrapper ul li:hover {
   background-color: #f0f0f0;
+}
+.media {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 50px;
+}
+
+
+.content-list .image{
+  width: 50%;
+}
+
+.content-list .video{
+  /* width: 50%; */
+  height: 60vh;
 }
