@@ -4,7 +4,7 @@ import BriefInfo from './brief-info';
 import Navbar from './navbar';
 import Footer from './footer';
 import './admin.css';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { useNavigate } from 'react-router-dom'; 
 
 const Admin = () => {
   const [username, setUsername] = useState('');
@@ -12,10 +12,10 @@ const Admin = () => {
   const navigate = useNavigate(); // Get navigation function
 
   const handleLogin = (e) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault(); 
 
     if (username === 'Admin123' && password === '12345678') {
-      navigate('/admin-dashboard'); // Navigate to admin-dashboard on success
+      navigate('/admin-dashboard'); 
     } else {
       alert('Wrong username or password!');
     }

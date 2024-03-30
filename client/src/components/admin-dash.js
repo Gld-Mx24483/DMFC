@@ -5,6 +5,7 @@ import UserMann from './user-management';
 import EventMann from './event-management';
 import ContentMann from './content-management';
 import Gallery from './gallery';
+import DonationMann from './donation-management';
 
 const AdminDash = () => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -34,12 +35,6 @@ const AdminDash = () => {
             onClick={() => handleOptionClick('Content Management')}
           >
             Content Management
-          </button>
-          <button
-            className={`admin-dash-option ${selectedOption === 'Program Management' ? 'selected' : ''}`}
-            onClick={() => handleOptionClick('Program Management')}
-          >
-            Program Management
           </button>
           <button
             className={`admin-dash-option ${selectedOption === 'Donation Management' ? 'selected' : ''}`}
@@ -73,6 +68,7 @@ const AdminDash = () => {
         {selectedOption === 'Event Management' && <EventMann />}
         {selectedOption === 'Content Management' && <ContentMann />}
         {selectedOption === 'Gallery' && <Gallery />}
+        {selectedOption === 'Donation Management' && <DonationMann />}
       </div>
       <div className="menu-icons" onClick={toggleSidebar}>
         ☰

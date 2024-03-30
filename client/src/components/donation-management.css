@@ -1,0 +1,58 @@
+/* donation-management.css */
+.donation-management-main-container {
+    padding: 20px;
+  }
+  
+  .search-input,
+  .filter-select,
+  .sort-button {
+    margin-bottom: 30px;
+  }
+  
+  .donation-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .donation-table th,
+  .donation-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    height: 5vh;
+  }
+  
+  .donation-table th {
+    background-color: #f2f2f2;
+  }
+
+  .filter-select {
+    margin-bottom: 10px; 
+    padding: 8px; 
+    font-size: 16px; 
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 10px;
+  }
+
+  .sort-button {
+    margin-left: 20px; 
+    margin-bottom: 10px; 
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 16px; 
+    border-radius: 5px; 
+    height: 6vh;
+  }
+  
+  .sort-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .sort-button:active {
+    background-color: #004080;
+  }
+  
