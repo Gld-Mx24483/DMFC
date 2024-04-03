@@ -97,10 +97,23 @@
 
 .admin-message-web {
   text-align: right;
+  background-color: rgba(144, 238, 144, 0.745);
+  border-radius: 10px;
 }
 
 .admin-message-staff{
   text-align: right;
+  background-color: rgba(144, 238, 144, 0.745);
+}
+
+.message-reference {
+  font-style: italic;
+  color: #666;
+  margin-bottom: 5px;
+  padding: 10px;
+  background-color: #66666632;
+  border-radius: 10px;
+  border-left: 4px solid rgba(0, 128, 0, 0.675);
 }
 
 
