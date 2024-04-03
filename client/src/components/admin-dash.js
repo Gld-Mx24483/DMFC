@@ -6,6 +6,7 @@ import EventMann from './event-management';
 import ContentMann from './content-management';
 import Gallery from './gallery';
 import DonationMann from './donation-management';
+import Communication from './communication';
 
 const AdminDash = () => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -69,6 +70,7 @@ const AdminDash = () => {
         {selectedOption === 'Content Management' && <ContentMann />}
         {selectedOption === 'Gallery' && <Gallery />}
         {selectedOption === 'Donation Management' && <DonationMann />}
+        {selectedOption === 'Communication' && <Communication />}
       </div>
       <div className="menu-icons" onClick={toggleSidebar}>
         ☰
