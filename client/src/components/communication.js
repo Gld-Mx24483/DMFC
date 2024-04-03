@@ -19,15 +19,17 @@ const Comm = () => {
   const [selectedUserMessage, setSelectedUserMessage] = useState(null);
   const [selectedStaffMessage, setSelectedStaffMessage] = useState(null);
   const [taggedMessageId, setTaggedMessageId] = useState(null);
+  const [selectedChatType, setSelectedChatType] = useState('web'); // Default to web chat
 
   const handleSendResponseToUser = () => {
-    if (selectedUserMessage !== null) {
+    const message = adminResponseToUser.trim();
+    if (message !== '') {
       const newMessage = {
         id: userMessages.length + 1,
         sender: 'Admin',
-        message: adminResponseToUser,
+        message,
         date: new Date().toISOString(),
-        inResponseTo: selectedUserMessage.id // Reference to the selected user message
+        inResponseTo: selectedUserMessage ? selectedUserMessage.id : null // Reference to the selected user message if any
       };
       setUserMessages([...userMessages, newMessage]);
       setAdminResponseToUser('');
@@ -36,13 +38,14 @@ const Comm = () => {
   };
   
   const handleSendResponseToStaff = () => {
-    if (selectedStaffMessage !== null) {
+    const message = adminResponseToStaff.trim();
+    if (message !== '') {
       const newMessage = {
         id: staffMessages.length + 1,
         sender: 'Admin',
-        message: adminResponseToStaff,
+        message,
         date: new Date().toISOString(),
-        inResponseTo: selectedStaffMessage.id // Reference to the selected staff message
+        inResponseTo: selectedStaffMessage ? selectedStaffMessage.id : null // Reference to the selected staff message if any
       };
       setStaffMessages([...staffMessages, newMessage]);
       setAdminResponseToStaff('');
@@ -58,10 +61,14 @@ const Comm = () => {
     }
   };
 
+  const handleChatTypeChange = (chatType) => {
+    setSelectedChatType(chatType);
+  };
+
   return (
     <div className='communication-main-container'>
       <div className='chat-window'>
-        <h2>Web Users Chat</h2>
+        <h2>Web Users</h2>
         <div className='chat-box'>
           <GroupChatAppInterface
             messages={userMessages}
@@ -73,11 +80,13 @@ const Comm = () => {
             onMessageTag={handleTagMessage}
             taggedMessageId={taggedMessageId}
             chatType="web"
+            onChatTypeChange={handleChatTypeChange}
+            selectedChatType={selectedChatType}
           />
         </div>
       </div>
       <div className='chat-window'>
-        <h2>Staff Chat</h2>
+        <h2>Staff</h2>
         <div className='chat-box'>
           <GroupChatAppInterface
             messages={staffMessages}
@@ -89,6 +98,8 @@ const Comm = () => {
             onMessageTag={handleTagMessage}
             taggedMessageId={taggedMessageId}
             chatType="staff"
+            onChatTypeChange={handleChatTypeChange}
+            selectedChatType={selectedChatType}
           />
         </div>
       </div>
@@ -105,10 +116,14 @@ const GroupChatAppInterface = ({
   onAdminResponseChange,
   onMessageTag,
   taggedMessageId,
-  chatType
+  chatType,
 }) => {
   const isAdminMessage = (message) => {
     return message.sender === 'Admin';
+  };
+
+  const isUserMessage = (message) => {
+    return message.sender !== 'Admin';
   };
 
   const getMessageReference = (message) => {
@@ -138,6 +153,9 @@ const GroupChatAppInterface = ({
     if (isAdminMessage(message)) {
       className += ' admin-message';
     }
+    if (isUserMessage(message)) {
+      className += ' sent-by-user';
+    }
     if (isAdminMessage(message) && chatType === 'web') {
       className += ' admin-message-web'; 
     }
@@ -165,23 +183,23 @@ const GroupChatAppInterface = ({
             )}
             <div className='message-sender'>{message.sender}</div>
             <div className='message-content'>{message.message}</div>
-              <div className='message-date'>{message.date}</div>
-                {message.adminResponse && <div className='admin-response'>{message.adminResponse}</div>}
-              </div>
-            ))}
+            <div className='message-date'>{message.date}</div>
+            {message.adminResponse && <div className='admin-response'>{message.adminResponse}</div>}
+          </div>
+        ))}
       </div>
-        <div className='response-form'>
-            <textarea
-              className='response-textarea'
-              placeholder='Type your response here...'
-              value={adminResponse}
-              onChange={(e) => onAdminResponseChange(e.target.value)}
-            />
-          <button className='send-button' onClick={onMessageSend}>
-            <FontAwesomeIcon icon={faPaperPlane} />
-          </button>
-        </div>
-      </>
+      <div className='response-form'>
+        <textarea
+          className='response-textarea'
+          placeholder='Type your response here...'
+          value={adminResponse}
+          onChange={(e) => onAdminResponseChange(e.target.value)}
+        />
+        <button className='send-button' onClick={onMessageSend}>
+          <FontAwesomeIcon icon={faPaperPlane} />
+        </button>
+      </div>
+    </>
   );
 };
 
