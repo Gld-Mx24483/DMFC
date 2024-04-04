@@ -5,7 +5,6 @@
   
   .filter-section input {
     margin-right: 10px;
-    /* padding: 5px; */
     border: 1px solid #ccc;
     border-radius: 5px;
   }
@@ -119,3 +118,150 @@
   .dropdown.blogger {
     border-color: orange;
   }
+
+  @media screen and (max-width: 500px) {
+    .user-table tbody,
+    .user-table tr,
+    .user-table td{
+      display: block;
+    }
+
+    .filter-section input {
+      display: block;
+      margin: 10px 40px;
+      width: calc(100% - 100px);
+      height: 1vh;
+    }
+
+    .user-table {
+      width: 90%;
+      overflow-x: auto;
+      margin-left: 40px; 
+    }
+
+    .user-table thead tr{
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+
+    .user-table td{
+      position: relative;
+      padding-left: 50%;
+      border-bottom: 1px solid #eeeeee64;
+      font-weight: lighter;
+      height: 80px;
+    }
+
+    .user-table td::before{
+      content: attr(data-title);
+      position: absolute;
+      left: 6px;
+      font-weight: bold;
+    }
+
+    .user-table tr{
+      border-bottom: 2px solid #ccc;
+      margin: 70px 0;
+      margin-right: 10px;
+      
+    }
+
+    .dropdown{
+      width: 80%;
+      margin-left: 0px;
+    }
+
+    /* .user-table {
+      width: 100%;
+      overflow-x: auto;
+      margin-left: 300px; 
+    }
+  
+    .user-table thead,
+    .user-table tbody,
+    .user-table th,
+    .user-table td,
+    .user-table tr {
+      display: block;
+    }
+  
+    .user-table tbody tr {
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+    }
+  
+    .user-table th,
+    .user-table td {
+      display: flex;
+      flex-direction: column;
+      padding: 8px;
+      position: relative;
+      border-bottom: 1px solid #ddd;
+    }
+  
+    .user-table td:before {
+      content: attr(data-label);
+      font-weight: bold;
+      width: 50%;
+      padding-right: 10px;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0;
+    }
+  
+    .user-table td:last-child:before {
+      content: none;
+    }
+  
+    .filter-section input {
+      display: block;
+      margin: 10px 40px;
+      width: calc(100% - 100px);
+      height: 1vh;
+    }
+  
+    .more-options {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  
+    .email {
+      font-size: 12px;
+      color: #777;
+    }
+  
+    .elipse {
+      display: block;
+      margin-top: 10px;
+      min-width: auto;
+      font-size: 13px;
+      text-align: center;
+    }
+  
+    .dropdown-content {
+      position: static;
+      background-color: transparent;
+      min-width: auto;
+      margin-top: 0;
+      display: flex;
+      justify-content: space-around;
+      padding: 5px 0;
+      border-top: 1px solid #ddd;
+    }
+  
+    .dropdown-content a {
+      color: black;
+      padding: 8px 0;
+      text-decoration: none;
+    }
+  
+    .dropdown-content a:hover {
+      background-color: #a8a5a5;
+    } */
+  }
+  
+  
+  

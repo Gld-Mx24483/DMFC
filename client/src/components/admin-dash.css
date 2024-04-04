@@ -65,8 +65,9 @@
     /* top: 0; */
     left: -200px;
     z-index: 1;
-    height: 105%;
+    height: 102.3%;
     transform: translateX(0);
+    transition: all ease-in-out .3s;
   }
 
   .admin-dash-sidebar.open {
@@ -80,22 +81,6 @@
   .admin-dash-option{
     transform: translateX(-30px);
   }
-
- /*  .admin-dash-options.open {
-    position: fixed;
-    top: 60px;
-    left: 0;
-    background-color: #582323;
-    width: 200px;
-    height: 86.4%;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    padding: 20px;
-    z-index: 2;
-    transform: translateX(60px);
-    transition: transform 0.3s ease-in-out;
-  } */
 
   .menu-icons {
     display: block;

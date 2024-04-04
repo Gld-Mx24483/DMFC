@@ -73,11 +73,11 @@ const UserMan = () => {
         <tbody>
           {filteredUsers.map((user, index) => (
             <tr key={index}>
-              <td>
+              <td data-title="Name">
                 <div>{user.name}</div>
                 <div className="email">{user.email}</div>
               </td>
-              <td>
+              <td data-title="Role">
                 <div className={`dropdown ${user.role.toLowerCase()}`}>
                   <div className="role-wrapper">
                     {user.role}
@@ -92,9 +92,9 @@ const UserMan = () => {
                   )}
                 </div>
               </td>
-              <td>{user.dateAdded}</td>
-              <td>{user.lastActive}</td>
-              <td>
+              <td data-title="Date Added">{user.dateAdded}</td>
+              <td data-title="Last Active">{user.lastActive}</td>
+              <td data-title="More Options">
                  <div className="more-options">
                   <FontAwesomeIcon icon={faEllipsisH} onClick={() => toggleMoreOptionsDropdown(index)} />
                   {showMoreOptionsDropdown[index] && (
