@@ -1,6 +1,5 @@
-// content-management.js
-import React, { useState, useRef } from 'react';
-import './content-management.css';
+import React, { useState, useEffect } from 'react';
+import './content-management.css'; // Assuming your CSS file is properly imported
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faPlus, faTrash, faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
@@ -8,6 +7,8 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/js/plugins.pkgd.min.js'; 
 import 'froala-editor/js/languages/es.js'; 
 import 'froala-editor/js/third_party/font_awesome.min'; 
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 const ContentMan = () => {
   const [content, setContent] = useState([]);
@@ -17,11 +18,11 @@ const ContentMan = () => {
     videoSrc: '',
     fullName: '',
     title: '',
-    dateTime: '',
-    body: ''
+    dateTime: new Date(),
+    body: '',
+    uploadTime: '' 
   });
   const [showContentForm, setShowContentForm] = useState(false);
-  const contentEditableRef = useRef(null);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -64,8 +65,9 @@ const ContentMan = () => {
       videoSrc: '',
       fullName: '',
       title: '',
-      dateTime: '',
-      body: ''
+      dateTime: new Date(),
+      body: '',
+      uploadTime: '' 
     });
     setEditIndex(null);
     setShowContentForm(false);
@@ -101,7 +103,13 @@ const ContentMan = () => {
             {contentDetails.videoSrc && <video controls src={contentDetails.videoSrc}></video>}
             <input type="text" name="fullName" placeholder="Full Name" value={contentDetails.fullName} onChange={handleInputChange} />
             <input type="text" name="title" placeholder="Title" value={contentDetails.title} onChange={handleInputChange} />
-            <input type="datetime-local" name="dateTime" value={contentDetails.dateTime} onChange={handleInputChange} />
+            <div className="date-time-picker">
+              <Calendar
+                onChange={(date) => setContentDetails({ ...contentDetails, dateTime: date })}
+                value={contentDetails.dateTime}
+              />
+            <input type="time" name="uploadTime" value={contentDetails.uploadTime} onChange={handleInputChange} />
+            </div>
             <div className="custom-froala-editor">
               <FroalaEditorComponent
                 tag='textarea'
@@ -122,7 +130,7 @@ const ContentMan = () => {
                 onModelChange={(newModel) => setContentDetails({ ...contentDetails, body: newModel })}
               />
             </div>
-            <button onClick={handleSaveContent}>{editIndex !== null ? 'Update Content' : 'Save Content'}</button>
+            <button className="but" onClick={handleSaveContent}>{editIndex !== null ? 'Update Content' : 'Save Content'}</button>
           </div>
         </>
       )}
@@ -134,14 +142,14 @@ const ContentMan = () => {
             {item.imageSrc && <img className='media image' src={item.imageSrc} alt="Preview" />}
             {item.videoSrc && <video className='media video' controls src={item.videoSrc}></video>}
             <h3>{item.title}</h3>
-            <p>{item.dateTime}</p>
+            <p>{item.dateTime.toLocaleDateString()} - {item.uploadTime}</p> 
             <p>{item.fullName}</p>
-            <div dangerouslySetInnerHTML={{ __html: item.body }}></div>
+            <div className='wysiwyg' dangerouslySetInnerHTML={{ __html: item.body }}></div>
           </div>
         ))}
       </div>
     </div>
   );
-}
+};
 
 export default ContentMan;
