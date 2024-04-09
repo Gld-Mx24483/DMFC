@@ -1,14 +1,17 @@
+// event-management.js
 import React, { useState } from 'react';
 import './event-management.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faPlus, faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 const EventMan = () => {
   const [isAddingEvent, setIsAddingEvent] = useState(false);
   const [eventDetails, setEventDetails] = useState({
     picture: null,
     title: '',
-    dateTime: '',
+    dateTime: new Date(),
     location: '',
     description: '',
     brief: ''
@@ -18,11 +21,24 @@ const EventMan = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setEventDetails(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+    if (name === 'time') {
+      const selectedTime = value;
+      const selectedDateTime = new Date(eventDetails.dateTime);
+      const [hours, minutes] = selectedTime.split(':');
+      selectedDateTime.setHours(hours);
+      selectedDateTime.setMinutes(minutes);
+      setEventDetails(prevState => ({
+        ...prevState,
+        dateTime: selectedDateTime
+      }));
+    } else {
+      setEventDetails(prevState => ({
+        ...prevState,
+        [name]: value
+      }));
+    }
   };
+  
 
   const handleImageChange = (event) => {
     const imageFile = event.target.files[0];
@@ -35,15 +51,15 @@ const EventMan = () => {
   const handleSaveEvent = () => {
     if (editIndex !== null) {
       const updatedEvents = [...events];
-      updatedEvents.splice(editIndex, 1);
+      updatedEvents.splice(editIndex, 1, eventDetails);
       setEvents(updatedEvents);
+    } else {
+      setEvents(prevEvents => [...prevEvents, eventDetails]);
     }
-    
-    setEvents(prevEvents => [...prevEvents, eventDetails]);
     setEventDetails({
       picture: null,
       title: '',
-      dateTime: '',
+      dateTime: new Date(),
       location: '',
       description: '',
       brief: ''
@@ -56,14 +72,7 @@ const EventMan = () => {
   const handleEditEvent = (index) => {
     setEditIndex(index);
     const eventToEdit = events[index];
-    setEventDetails({
-      picture: eventToEdit.picture,
-      title: eventToEdit.title,
-      dateTime: eventToEdit.dateTime,
-      location: eventToEdit.location,
-      description: eventToEdit.description,
-      brief: eventToEdit.brief
-    });
+    setEventDetails(eventToEdit);
     setIsAddingEvent(true);
   };
 
@@ -87,7 +96,13 @@ const EventMan = () => {
             <input type="file" accept="image/*" name="picture" onChange={handleImageChange} />
             {eventDetails.picture && <img src={eventDetails.picture} alt="Event" className="event-picture" />}
             <input type="text" name="title" placeholder="Event Title" value={eventDetails.title} onChange={handleInputChange} />
-            <input type="text" name="dateTime" placeholder="Date and Time" value={eventDetails.dateTime} onChange={handleInputChange} />
+            <div className="date-time-picker event-dt">
+              <Calendar
+                onChange={(date) => setEventDetails({ ...eventDetails, dateTime: date })}
+                value={eventDetails.dateTime}
+              />
+            <input className='timees' type="time" name="time" value={eventDetails.dateTime .toTimeString().substring(0, 5)} onChange={handleInputChange} />
+            </div>
             <input type="text" name="location" placeholder="Location" value={eventDetails.location} onChange={handleInputChange} />
             <textarea name="description" placeholder="Full Description" value={eventDetails.description} onChange={handleInputChange} />
             <textarea name="brief" placeholder="Short Brief" value={eventDetails.brief} onChange={handleInputChange} />
@@ -107,10 +122,10 @@ const EventMan = () => {
               <FontAwesomeIcon icon={faPen} className="edit-icon" onClick={() => handleEditEvent(index)} />
               <img src={event.picture} alt="Event" className="event-picture" />
               <div className="event-details">
-                <p><strong>Title:</strong> {event.title}</p>
-                <p><strong>Date and Time:</strong> {event.dateTime}</p>
-                <p><strong>Location:</strong> {event.location}</p>
-                <p><strong>Brief:</strong> {event.brief}</p>
+                <p>{event.title}</p>
+                <p>{event.dateTime.toLocaleString()}</p>
+                <p>{event.location}</p>
+                <p>{event.brief}</p>
               </div>
             </div>
           ))

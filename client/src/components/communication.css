@@ -137,4 +137,59 @@
   border-left: 4px solid rgba(0, 128, 0, 0.675);
 }
 
+@media screen and (max-width: 500px) {
+  .communication-main-container {
+    flex-direction: column; 
+    margin-left: 30px;
+  }
+
+  .chat-window {
+    width: 94%; /* Take full width on smaller screens */
+    margin-bottom: 50px;
+  }
+
+  .chat-box {
+    height: 60vh;
+  }
+
+  .chat-messages {
+    height: 50vh;
+  }
+
+  .response-form {
+    position: static;
+    margin-top: 10px; 
+    width: 94%;
+    margin-left: -2px;
+  }
+
+  .response-textarea {
+    width: calc(100% - 50px);
+    margin-right: 0; 
+    font-size: 10px;
+  }
+
+  .send-button {
+    width: 40px; 
+    height: 40px; 
+    margin-left: 10px;
+  }
+
+  .message.sent-by-user {
+    margin-right: 40px; 
+    font-size: 10px;
+  }
+
+  .admin-message-web,
+  .admin-message-staff,
+  .message.sent-by-user {
+    margin-left: 0; 
+    font-size: 10px;
+  }
+
+  .admin-message-web,
+  .admin-message-staff{
+    margin-left: 40px;
+  }
+}
 

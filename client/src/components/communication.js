@@ -183,7 +183,7 @@ const GroupChatAppInterface = ({
             )}
             <div className='message-sender'>{message.sender}</div>
             <div className='message-content'>{message.message}</div>
-            <div className='message-date'>{message.date}</div>
+            <div className='message-date'>{new Date(message.date).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</div>
             {message.adminResponse && <div className='admin-response'>{message.adminResponse}</div>}
           </div>
         ))}
