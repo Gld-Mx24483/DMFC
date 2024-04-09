@@ -73,10 +73,10 @@ const Donatee = () => {
         <tbody>
           {filteredDonations.map((donation, index) => (
             <tr key={index}>
-              <td>{donation.date}</td>
-              <td>{donation.name}</td>
-              <td>{donation.email}</td>
-              <td>{donation.amount}</td>
+              <td data-title="Date">{donation.date}</td>
+              <td data-title="Name">{donation.name}</td>
+              <td data-title="Email">{donation.email}</td>
+              <td data-title="Amount">{donation.amount}</td>
             </tr>
           ))}
         </tbody>

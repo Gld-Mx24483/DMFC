@@ -1,4 +1,3 @@
-// event-management.js
 import React, { useState } from 'react';
 import './event-management.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -76,6 +75,12 @@ const EventMan = () => {
           Add Event
         </button>
       ) : (
+        <button className="add-event-button can" onClick={() => setIsAddingEvent(false)}>
+          <FontAwesomeIcon icon={faCalendarTimes} />
+          Cancel
+        </button>
+      )}
+      {isAddingEvent && (
         <div className="event-section">
           <h2>{editIndex !== null ? 'Edit Event' : 'Add New Event'}</h2>
           <div className="event-form">
@@ -113,6 +118,6 @@ const EventMan = () => {
       </div>
     </div>
   );
-}
+};
 
 export default EventMan;
