@@ -14,10 +14,10 @@ const Admin = () => {
   const navigate = useNavigate(); // Get navigation function
 
   const handleLogin = (e) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
 
     if (uniquekey === 'DMF123') {
-      navigate('/admin-dashboard'); // Navigate to admin-dashboard on success
+      navigate('/staff-dashboard'); 
     } else {
       alert('Wrong username or password!');
     }

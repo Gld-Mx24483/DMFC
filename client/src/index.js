@@ -22,6 +22,7 @@ import Involve from './components/involve';
 import InvolveMain from './components/involve-main';
 import StaffLogin from './components/staff-login';
 import AdminDashboard from './components/admin-dashboard';
+import StaffDashboard from './components/staff-dashboard';
 import reportWebVitals from './reportWebVitals';
 import '@fortawesome/fontawesome-free/css/all.min.css'
 
@@ -50,13 +51,13 @@ root.render(
       <Route exact path="/staff-login" element={<StaffLogin />} />
       <Route exact path="/involve-main" element={<InvolveMain />} />
       <Route exact path="/admin-dashboard" element={<AdminDashboard />} />
+      <Route exact path="/staff-dashboard" element={<StaffDashboard />} />
       </Routes>
     </Router>
   </React.StrictMode>
 );
 
 reportWebVitals();
-
 
 
 //------------------------REACT-NODE CONNECTION----------------------------//

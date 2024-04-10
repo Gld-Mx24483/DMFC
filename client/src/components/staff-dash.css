@@ -1,0 +1,101 @@
+.staff-dash-main-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .staff-dash-sidebar {
+    width: 200px;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+  }
+  
+  .staff-dash-sidebar h2{
+    color: white;
+    font-size: 22px;
+    margin-left: -25px;
+  }
+  
+  .staff-dash-options {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-left: -25px;
+  }
+  
+  .staff-dash-option {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+    margin: 10px;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .staff-dash-option.selected {
+    background-color: #555;
+  }
+  
+  .staff-dash-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+  }
+  
+  .staff-dash-content h1 {
+    color: #333;
+  }
+  
+  .menu-icons{
+    visibility: hidden;
+  }
+  
+  @media screen and (max-width: 500px) {
+    .staff-dash-sidebar {
+      position: absolute;
+      left: -200px;
+      z-index: 1;
+      height: 102.3%;
+      transform: translateX(0);
+      transition: all ease-in-out .3s;
+    }
+  
+    .staff-dash-sidebar.open {
+      transform: translateX(200px);
+    }
+  
+    .staff-dash-sidebar.open .staff-dash-option{
+      transform: translateX(0);
+    }
+  
+    .staff-dash-option{
+      transform: translateX(-30px);
+    }
+  
+    .menu-icons {
+      display: block;
+      position: absolute;
+      left: 10px;
+      font-size: 25px;
+      cursor: pointer;
+      z-index: 3;
+      color: white;
+      visibility: visible;
+    }
+  
+    .staff-dash-content h1{
+      margin-left: 30px;
+    }
+  
+    .staff-dash-sidebar h2{
+      margin-left: -10px;
+    }
+  }
+  
