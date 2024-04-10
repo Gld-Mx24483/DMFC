@@ -1,28 +1,26 @@
-// gallery.js
 import React, { useState } from 'react';
 import './gallery.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import Calendar from 'react-calendar'; // Import Calendar component
-import 'react-calendar/dist/Calendar.css'; // Import Calendar CSS
+import { faTrash, faTimes, faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
+import Calendar from 'react-calendar'; 
+import 'react-calendar/dist/Calendar.css';
 
 const Gall = () => {
   const [mediaList, setMediaList] = useState([]);
   const [mediaTitle, setMediaTitle] = useState('');
-  const [uploadDate, setUploadDate] = useState(new Date()); // Initialize with current date
-  const [uploadedFile, setUploadedFile] = useState(null); // For preview of uploaded file
+  const [uploadDate, setUploadDate] = useState(new Date());
+  const [uploadedFile, setUploadedFile] = useState(null);
   const [showUploadSection, setShowUploadSection] = useState(false);
 
   const handleUploadMedia = () => {
-    // Handle media upload
     const newMedia = {
       title: mediaTitle,
-      date: uploadDate.toLocaleDateString(), // Convert date to string
-      file: uploadedFile // Store uploaded file in media object
+      date: uploadDate.toLocaleDateString(),
+      file: uploadedFile 
     };
     setMediaList([...mediaList, newMedia]);
     setMediaTitle('');
-    setUploadDate(new Date()); // Reset to current date
+    setUploadDate(new Date());
     setUploadedFile(null); 
     setShowUploadSection(false);
     alert('Media successfully uploaded!');
@@ -36,13 +34,13 @@ const Gall = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    setUploadedFile(file); // Set uploaded file for preview
+    setUploadedFile(file);
   };
 
   return (
     <div className='gallery-main-container'>
-      <button className="upload-button" onClick={() => setShowUploadSection(true)}>
-        Upload Media
+      <button className="upload-button" onClick={() => setShowUploadSection(!showUploadSection)}>
+        {showUploadSection ? 'Cancel Upload' : 'Upload Media'}
       </button>
       {showUploadSection && (
         <div className="upload-section">
@@ -69,35 +67,41 @@ const Gall = () => {
             className="title-input"
           />
           <Calendar
-            onChange={setUploadDate} // Set selected date to uploadDate state
+            onChange={setUploadDate}
             value={uploadDate}
-            className="date-input" // Apply the same styling as before
+            className="date-input"
           />
           <button className="submit-button" onClick={handleUploadMedia}>
             Submit
           </button>
         </div>
-        
       )}
       <div className="media-list">
-        {mediaList.map((media, index) => (
-          <div className="media-item" key={index}>
-            <FontAwesomeIcon
-              icon={faTrash}
-              className="delete-icon"
-              onClick={() => handleDeleteMedia(index)}
-            />
-            {media.file.type.startsWith('image/') ? (
-              <img src={URL.createObjectURL(media.file)} alt="Media" />
-            ) : (
-              <video src={URL.createObjectURL(media.file)} controls />
-            )}
-            <div className='media-list-txt'>
-            <h3>{media.title}</h3>
-            <p>{media.date}</p>
-            </div>
+        {mediaList.length === 0 ? (
+          <div className="no-events-message">
+            <p>No media at the moment</p>
+            <FontAwesomeIcon icon={faCalendarTimes} className="no-events-icon" />
           </div>
-        ))}
+        ) : (
+          mediaList.map((media, index) => (
+            <div className="media-item" key={index}>
+              <FontAwesomeIcon
+                icon={faTrash}
+                className="delete-icon"
+                onClick={() => handleDeleteMedia(index)}
+              />
+              {media.file.type.startsWith('image/') ? (
+                <img src={URL.createObjectURL(media.file)} alt="Media" />
+              ) : (
+                <video src={URL.createObjectURL(media.file)} controls />
+              )}
+              <div className='media-list-txt'>
+                <h3>{media.title}</h3>
+                <p>{media.date}</p>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

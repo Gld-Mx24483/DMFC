@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './content-management.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faPlus, faTrash, faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
@@ -20,7 +20,7 @@ const ContentMan = () => {
     title: '',
     dateTime: new Date(),
     body: '',
-    uploadTime: '' 
+    uploadTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   });
   const [showContentForm, setShowContentForm] = useState(false);
 
@@ -67,7 +67,7 @@ const ContentMan = () => {
       title: '',
       dateTime: new Date(),
       body: '',
-      uploadTime: '' 
+      uploadTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
     });
     setEditIndex(null);
     setShowContentForm(false);
@@ -108,7 +108,7 @@ const ContentMan = () => {
                 onChange={(date) => setContentDetails({ ...contentDetails, dateTime: date })}
                 value={contentDetails.dateTime}
               />
-            <input type="time" name="uploadTime" value={contentDetails.uploadTime} onChange={handleInputChange} />
+              <input type="time" name="uploadTime" value={contentDetails.uploadTime} onChange={handleInputChange} />
             </div>
             <div className="custom-froala-editor">
               <FroalaEditorComponent
