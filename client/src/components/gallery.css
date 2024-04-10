@@ -31,12 +31,15 @@
     margin: 20px;
   }
   
-  .title-input,
-  .date-input {
+  .title-input{
     width: 95%;
     margin: 20px;
     padding: 5px;
     height: 80px;
+  }
+
+  .upload-section .date-input{
+    margin: 20px;
   }
   
   .submit-button {
@@ -45,6 +48,7 @@
     border: none;
     padding: 10px 20px;
     cursor: pointer;
+    margin: 20px;
   }
   
   .media-list {
@@ -93,5 +97,30 @@
     margin-right: -10px;
     margin-top: 10px;
     transform: translateY(1px);
+  }
+
+  @media (max-width: 500px) {
+    .media-item {
+      flex: 0 0 calc(100% - 10px); 
+      margin-left: 5px;
+      padding: 20px;
+    }
+  
+    .media-item img {
+      height: auto;
+    }
+  
+    .media-item video {
+      width: 100%;
+      height: auto;
+    }
+
+    .upload-button{
+      margin-left: 20px;
+    }
+
+    .submit-button{
+      margin-left: 20px;
+    }
   }
   

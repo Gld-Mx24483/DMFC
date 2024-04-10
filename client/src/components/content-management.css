@@ -322,4 +322,9 @@
       word-wrap: break-word;
       overflow-wrap: break-word;
     }
+
+    .no-content{
+      width: 260px;
+      margin-left: -60px;
+    }
 }

@@ -3,11 +3,13 @@ import React, { useState } from 'react';
 import './gallery.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import Calendar from 'react-calendar'; // Import Calendar component
+import 'react-calendar/dist/Calendar.css'; // Import Calendar CSS
 
 const Gall = () => {
   const [mediaList, setMediaList] = useState([]);
   const [mediaTitle, setMediaTitle] = useState('');
-  const [uploadDate, setUploadDate] = useState('');
+  const [uploadDate, setUploadDate] = useState(new Date()); // Initialize with current date
   const [uploadedFile, setUploadedFile] = useState(null); // For preview of uploaded file
   const [showUploadSection, setShowUploadSection] = useState(false);
 
@@ -15,13 +17,13 @@ const Gall = () => {
     // Handle media upload
     const newMedia = {
       title: mediaTitle,
-      date: uploadDate,
+      date: uploadDate.toLocaleDateString(), // Convert date to string
       file: uploadedFile // Store uploaded file in media object
     };
     setMediaList([...mediaList, newMedia]);
     setMediaTitle('');
-    setUploadDate('');
-    setUploadedFile(null); // Reset uploaded file
+    setUploadDate(new Date()); // Reset to current date
+    setUploadedFile(null); 
     setShowUploadSection(false);
     alert('Media successfully uploaded!');
   };
@@ -66,16 +68,16 @@ const Gall = () => {
             onChange={(e) => setMediaTitle(e.target.value)}
             className="title-input"
           />
-          <input
-            type="date"
+          <Calendar
+            onChange={setUploadDate} // Set selected date to uploadDate state
             value={uploadDate}
-            onChange={(e) => setUploadDate(e.target.value)}
-            className="date-input"
+            className="date-input" // Apply the same styling as before
           />
           <button className="submit-button" onClick={handleUploadMedia}>
             Submit
           </button>
         </div>
+        
       )}
       <div className="media-list">
         {mediaList.map((media, index) => (

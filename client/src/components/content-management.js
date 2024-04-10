@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './content-management.css'; // Assuming your CSS file is properly imported
+import './content-management.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faPlus, faTrash, faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
@@ -135,18 +135,25 @@ const ContentMan = () => {
         </>
       )}
       <div className="content-list">
-        {content.map((item, index) => (
-          <div className="content-item" key={index}>
-            <FontAwesomeIcon className='Pen' icon={faPen} onClick={() => handleEditContent(index)} />
-            <FontAwesomeIcon className='Trash' icon={faTrash} onClick={() => handleDeleteContent(index)} />
-            {item.imageSrc && <img className='media image' src={item.imageSrc} alt="Preview" />}
-            {item.videoSrc && <video className='media video' controls src={item.videoSrc}></video>}
-            <h3>{item.title}</h3>
-            <p>{item.dateTime.toLocaleDateString()} - {item.uploadTime}</p> 
-            <p>{item.fullName}</p>
-            <div className='wysiwyg' dangerouslySetInnerHTML={{ __html: item.body }}></div>
+        {content.length === 0 ? (
+          <div className="no-events-message no-content">
+            <p>No content at the moment</p>
+            <FontAwesomeIcon icon={faCalendarTimes} className="no-events-icon" />
           </div>
-        ))}
+        ) : (
+          content.map((item, index) => (
+            <div className="content-item" key={index}>
+              <FontAwesomeIcon className='Pen' icon={faPen} onClick={() => handleEditContent(index)} />
+              <FontAwesomeIcon className='Trash' icon={faTrash} onClick={() => handleDeleteContent(index)} />
+              {item.imageSrc && <img className='media image' src={item.imageSrc} alt="Preview" />}
+              {item.videoSrc && <video className='media video' controls src={item.videoSrc}></video>}
+              <h3>{item.title}</h3>
+              <p>{item.dateTime.toLocaleDateString()} - {item.uploadTime}</p> 
+              <p>{item.fullName}</p>
+              <div className='wysiwyg' dangerouslySetInnerHTML={{ __html: item.body }}></div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
