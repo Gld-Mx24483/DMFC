@@ -1,3 +1,4 @@
+// content-management.js
 import React, { useState } from 'react';
 import './content-management.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -53,27 +54,87 @@ const ContentMan = () => {
   };
 
   const handleSaveContent = () => {
-    if (editIndex !== null) {
-      const updatedContent = [...content];
-      updatedContent.splice(editIndex, 1, contentDetails);
-      setContent(updatedContent);
-    } else {
-      setContent(prevContent => [...prevContent, contentDetails]);
-    }
-    setContentDetails({
-      imageSrc: '',
-      videoSrc: '',
-      fullName: '',
-      title: '',
-      dateTime: new Date(),
-      body: '',
-      uploadTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
-    });
-    setEditIndex(null);
-    setShowContentForm(false);
-    alert("Content successfully saved!");
-  };
+    const formData = new FormData();
+    formData.append('imageSrc', contentDetails.imageSrc);
+    formData.append('videoSrc', contentDetails.videoSrc);
+    formData.append('fullName', contentDetails.fullName);
+    formData.append('title', contentDetails.title);
 
+    const formattedDateTime = contentDetails.dateTime.toISOString().split('T')[0];
+    formData.append('dateTime', formattedDateTime);
+
+    formData.append('body', contentDetails.body);
+    formData.append('uploadTime', contentDetails.uploadTime);
+  
+    fetch('http://localhost:9000/save-content', {
+      method: 'PUT',
+      body: JSON.stringify(Object.fromEntries(formData)), // Convert FormData to JSON
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Content saved successfully:', data);
+        setContentDetails({
+          imageSrc: '',
+          videoSrc: '',
+          fullName: '',
+          title: '',
+          dateTime: new Date(),
+          body: '',
+          uploadTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        });
+        setEditIndex(null);
+        setShowContentForm(false);
+        alert('Content successfully saved!');
+      })
+      .catch((error) => {
+        console.error('Error saving content:', error);
+        alert('Error saving content!');
+      });
+  };
+  
+
+  // const handleSaveContent = () => {
+  //   const formData = new FormData();
+  //   formData.append('imageSrc', contentDetails.imageSrc);
+  //   formData.append('videoSrc', contentDetails.videoSrc);
+  //   formData.append('fullName', contentDetails.fullName);
+  //   formData.append('title', contentDetails.title);
+  //   formData.append('dateTime', contentDetails.dateTime.toISOString()); // Convert to ISO string
+  //   formData.append('body', contentDetails.body);
+  //   formData.append('uploadTime', contentDetails.uploadTime);
+  
+  //   fetch('http://localhost:9000/save-content', {
+  //     method: 'PUT',
+  //     body: JSON.stringify(Object.fromEntries(formData)), // Convert FormData to JSON
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     }
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       console.log('Content saved successfully:', data);
+  //       setContentDetails({
+  //         imageSrc: '',
+  //         videoSrc: '',
+  //         fullName: '',
+  //         title: '',
+  //         dateTime: new Date(),
+  //         body: '',
+  //         uploadTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  //       });
+  //       setEditIndex(null);
+  //       setShowContentForm(false);
+  //       alert("Content successfully saved!");
+  //     })
+  //     .catch(error => {
+  //       console.error('Error saving content:', error);
+  //       alert("Error saving content!");
+  //     });
+  // };  
+  
   const handleEditContent = (index) => {
     setEditIndex(index);
     const contentToEdit = content[index];
