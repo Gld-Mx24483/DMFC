@@ -44,7 +44,34 @@ app.put('/save-content', (req, res) => {
     });
   });
 
+
+//   app.get('/get-content', (req, res) => {
+//     const selectQuery = 'SELECT * FROM content';
   
+//     connection.query(selectQuery, (error, results) => {
+//       if (error) {
+//         console.error('Error fetching content:', error);
+//         res.status(500).json({ message: 'Error fetching content', error: error.message });
+//         return;
+//       }
+//       console.log('Content fetched successfully:', results);
+//       res.status(200).json(results);
+//     });
+//   });  
+
+app.get('/get-content', (req, res) => {
+    const selectQuery = 'SELECT imageSrc, videoSrc, fullName, title, DATE_FORMAT(dateTime, "%Y-%m-%d") as dateTime, body, uploadTime FROM content';
+  
+    connection.query(selectQuery, (error, results) => {
+      if (error) {
+        console.error('Error fetching content:', error);
+        res.status(500).json({ message: 'Error fetching content', error: error.message });
+        return;
+      }
+      console.log('Content fetched successfully:', results);
+      res.status(200).json(results);
+    });
+  });  
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

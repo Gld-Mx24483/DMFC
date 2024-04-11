@@ -1,5 +1,5 @@
 // content-management.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './content-management.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faPlus, faTrash, faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
@@ -23,6 +23,18 @@ const ContentMan = () => {
     body: '',
     uploadTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   });
+
+ // Fetch content from API on component mount
+ useEffect(() => {
+  fetch('http://localhost:9000/get-content')
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Content fetched:', data);
+      setContent(data);
+    })
+    .catch((error) => console.error('Error fetching content:', error));
+}, []);
+
   const [showContentForm, setShowContentForm] = useState(false);
 
   const handleInputChange = (event) => {
@@ -68,7 +80,7 @@ const ContentMan = () => {
   
     fetch('http://localhost:9000/save-content', {
       method: 'PUT',
-      body: JSON.stringify(Object.fromEntries(formData)), // Convert FormData to JSON
+      body: JSON.stringify(Object.fromEntries(formData)),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -94,46 +106,6 @@ const ContentMan = () => {
         alert('Error saving content!');
       });
   };
-  
-
-  // const handleSaveContent = () => {
-  //   const formData = new FormData();
-  //   formData.append('imageSrc', contentDetails.imageSrc);
-  //   formData.append('videoSrc', contentDetails.videoSrc);
-  //   formData.append('fullName', contentDetails.fullName);
-  //   formData.append('title', contentDetails.title);
-  //   formData.append('dateTime', contentDetails.dateTime.toISOString()); // Convert to ISO string
-  //   formData.append('body', contentDetails.body);
-  //   formData.append('uploadTime', contentDetails.uploadTime);
-  
-  //   fetch('http://localhost:9000/save-content', {
-  //     method: 'PUT',
-  //     body: JSON.stringify(Object.fromEntries(formData)), // Convert FormData to JSON
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     }
-  //   })
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       console.log('Content saved successfully:', data);
-  //       setContentDetails({
-  //         imageSrc: '',
-  //         videoSrc: '',
-  //         fullName: '',
-  //         title: '',
-  //         dateTime: new Date(),
-  //         body: '',
-  //         uploadTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  //       });
-  //       setEditIndex(null);
-  //       setShowContentForm(false);
-  //       alert("Content successfully saved!");
-  //     })
-  //     .catch(error => {
-  //       console.error('Error saving content:', error);
-  //       alert("Error saving content!");
-  //     });
-  // };  
   
   const handleEditContent = (index) => {
     setEditIndex(index);
@@ -209,7 +181,7 @@ const ContentMan = () => {
               {item.imageSrc && <img className='media image' src={item.imageSrc} alt="Preview" />}
               {item.videoSrc && <video className='media video' controls src={item.videoSrc}></video>}
               <h3>{item.title}</h3>
-              <p>{item.dateTime.toLocaleDateString()} - {item.uploadTime}</p> 
+              <p>{item.dateTime} - {item.uploadTime}</p> 
               <p>{item.fullName}</p>
               <div className='wysiwyg' dangerouslySetInnerHTML={{ __html: item.body }}></div>
             </div>
