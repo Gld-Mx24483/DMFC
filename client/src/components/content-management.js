@@ -1,3 +1,4 @@
+// Claud
 // content-management.js
 import React, { useState, useEffect } from 'react';
 import './content-management.css';
@@ -10,8 +11,11 @@ import 'froala-editor/js/languages/es.js';
 import 'froala-editor/js/third_party/font_awesome.min'; 
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import FileUpload from './fileupload';
 
 const ContentMan = () => {
+  const [imageFile, setImageFile] = useState(null);
+  const [videoFile, setVideoFile] = useState(null);
   const [content, setContent] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [contentDetails, setContentDetails] = useState({
@@ -45,58 +49,58 @@ const ContentMan = () => {
     }));
   };
 
-  const handleImageUpload = (event) => {
-    const imageFile = event.target.files[0];
-    const imageUrl = URL.createObjectURL(imageFile);
-    setContentDetails(prevState => ({
+  const handleImageUpload = (file) => {
+    setImageFile(file);
+    setContentDetails((prevState) => ({
       ...prevState,
-      imageSrc: imageUrl,
-      body: prevState.body + `![Image](${imageUrl})`
+      imageSrc: URL.createObjectURL(file),
+      body: prevState.body,
     }));
   };
 
-  const handleVideoUpload = (event) => {
-    const videoFile = event.target.files[0];
-    const videoUrl = URL.createObjectURL(videoFile);
-    setContentDetails(prevState => ({
+  const handleVideoUpload = (file) => {
+    setVideoFile(file);
+    setContentDetails((prevState) => ({
       ...prevState,
-      videoSrc: videoUrl,
-      body: prevState.body + `[![Video](${videoUrl})]`
+      videoSrc: URL.createObjectURL(file),
+      body: prevState.body + `[![Video](${URL.createObjectURL(file)})]`,
     }));
   };
 
   const handleSaveContent = () => {
     const formData = new FormData();
-    formData.append('imageSrc', contentDetails.imageSrc);
-    formData.append('videoSrc', contentDetails.videoSrc);
     formData.append('fullName', contentDetails.fullName);
     formData.append('title', contentDetails.title);
-
-    const formattedDateTime = contentDetails.dateTime.toISOString().split('T')[0];
-    formData.append('dateTime', formattedDateTime);
-
+    formData.append('dateTime', contentDetails.dateTime.toISOString().split('T')[0]);
     formData.append('body', contentDetails.body);
     formData.append('uploadTime', contentDetails.uploadTime);
   
+    if (imageFile) {
+      formData.append('image', imageFile);
+    }
+  
+    if (videoFile) {
+      formData.append('video', videoFile);
+    }
+  
     fetch('http://localhost:9000/save-content', {
       method: 'PUT',
-      body: JSON.stringify(Object.fromEntries(formData)),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
         console.log('Content saved successfully:', data);
         setContentDetails({
-          imageSrc: '',
-          videoSrc: '',
+          imageSrc: data.imagePath ? `http://localhost:9000/uploads/${data.imagePath}` : '',
+          videoSrc: data.videoPath ? `http://localhost:9000/uploads/${data.videoPath}` : '',
           fullName: '',
           title: '',
           dateTime: new Date(),
           body: '',
           uploadTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         });
+        setImageFile(null);
+        setVideoFile(null);
         setEditIndex(null);
         setShowContentForm(false);
         alert('Content successfully saved!');
@@ -130,9 +134,9 @@ const ContentMan = () => {
         <>
           <h2>{editIndex !== null ? 'Edit Content' : 'Create Content'}</h2>
           <div className="content-form">
-            <input type="file" accept="image/*" onChange={handleImageUpload} />
-            {contentDetails.imageSrc && <img src={contentDetails.imageSrc} alt="Preview" />}
-            <input type="file" accept="video/*" onChange={handleVideoUpload} />
+          <FileUpload onFileUpload={handleImageUpload} />
+            {contentDetails.imageSrc && <img src={contentDetails.imageSrc} alt="Uploaded Image" />}
+           <FileUpload onFileUpload={handleVideoUpload} />
             {contentDetails.videoSrc && <video controls src={contentDetails.videoSrc}></video>}
             <input type="text" name="fullName" placeholder="Full Name" value={contentDetails.fullName} onChange={handleInputChange} />
             <input type="text" name="title" placeholder="Title" value={contentDetails.title} onChange={handleInputChange} />
@@ -178,8 +182,11 @@ const ContentMan = () => {
             <div className="content-item" key={index}>
               <FontAwesomeIcon className='Pen' icon={faPen} onClick={() => handleEditContent(index)} />
               <FontAwesomeIcon className='Trash' icon={faTrash} onClick={() => handleDeleteContent(index)} />
-              {item.imageSrc && <img className='media image' src={item.imageSrc} alt="Preview" />}
-              {item.videoSrc && <video className='media video' controls src={item.videoSrc}></video>}
+  {/* {item.imagePath && (
+  <img className="media image" src={`http://localhost:9000/${item.imagePath}`} alt="Preview" />)}
+{item.videoPath && ( <video className="media video" controls src={`http://localhost:9000/${item.videoPath}`} ></video> )} */}
+{item.imagePath && <img className="media image" src={item.imagePath} alt="Preview" />}
+  {item.videoPath && <video className="media video" controls src={item.videoPath}></video>}
               <h3>{item.title}</h3>
               <p>{item.dateTime} - {item.uploadTime}</p> 
               <p>{item.fullName}</p>
