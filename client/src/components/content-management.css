@@ -18,6 +18,43 @@
     height: 40vh;
   }
 
+.fileupload {
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  width: 95.7%;
+}
+
+.fileupload:hover {
+  border-color: #007bff;
+}
+
+.fileupload p {
+  font-size: 16px;
+  color: #6c757d;
+  margin-top: 10px;
+}
+
+.fileupload input[type="file"] {
+  display: none;
+}
+
+.fileupload img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
+}
+
+.fileupload video {
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
+}
+
   .content-body{
     height: 40vh;
     border: 2px solid black;
@@ -44,14 +81,24 @@
   
   .content-list {
     margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
   }
   
   .content-item {
     border: 1px solid #ccc;
     border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
     position: relative;
+    flex-direction: column;
+    display: flex;
+    width: 60%;
+    justify-content: center;
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
   
   .content-item h3 {
@@ -140,7 +187,6 @@
   margin: 0 auto;
   margin-bottom: 50px;
 }
-
 
 .content-list .image{
   width: 50%;

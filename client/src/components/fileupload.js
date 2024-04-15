@@ -1,7 +1,8 @@
+// fileupload.js
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 
-const FileUpload = ({ onFileUpload }) => {
+const FileUpload = ({ onFileUpload, text }) => {
   const onDrop = useCallback(
     (acceptedFiles) => {
       onFileUpload(acceptedFiles[0]);
@@ -9,15 +10,15 @@ const FileUpload = ({ onFileUpload }) => {
     [onFileUpload]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: 'image/*' });
 
   return (
-    <div {...getRootProps()}>
+    <div {...getRootProps()} className="fileupload">
       <input {...getInputProps()} />
       {isDragActive ? (
-        <p>Drop the file here ...</p>
+        <p>{text}</p>
       ) : (
-        <p>Drag and drop a file or click to select a file</p>
+        <p>{text}</p>
       )}
     </div>
   );

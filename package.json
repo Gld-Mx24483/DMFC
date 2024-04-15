@@ -2,6 +2,7 @@
   "dependencies": {
     "@lexical/react": "^0.14.2",
     "@tinymce/tinymce-react": "^5.0.0",
-    "lexical": "^0.14.2"
+    "lexical": "^0.14.2",
+    "react-dropzone": "^14.2.3"
   }
 }
