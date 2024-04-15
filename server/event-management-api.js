@@ -46,7 +46,7 @@ connection.connect((err) => {
 });
 
 router.put('/save-event', upload.single('image'), (req, res) => {
-    const { title, dateTime, location, description, brief } = req.body;
+    const { title, dateTime, location, description, brief, time } = req.body;
     let imagePath = null;
   
     if (req.file) {
@@ -54,8 +54,8 @@ router.put('/save-event', upload.single('image'), (req, res) => {
     }
   
     const insertQuery =
-      'INSERT INTO events (title, dateTime, location, description, brief, imagePath) VALUES (?, ?, ?, ?, ?, ?)';
-    const values = [title, dateTime, location, description, brief, imagePath];
+      'INSERT INTO events (title, dateTime, time, location, description, brief, imagePath) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const values = [title, dateTime, time, location, description, brief, imagePath];
   
     connection.query(insertQuery, values, (error, results) => {
       if (error) {
@@ -69,7 +69,7 @@ router.put('/save-event', upload.single('image'), (req, res) => {
   });
   
   router.post('/update-event', upload.single('image'), (req, res) => {
-    const { id, title, dateTime, location, description, brief } = req.body;
+    const { id, title, dateTime, time, location, description, brief } = req.body;
     let imagePath = null;
   
     if (req.file) {
@@ -79,12 +79,13 @@ router.put('/save-event', upload.single('image'), (req, res) => {
     const updateQuery = `UPDATE events 
                          SET title = ?, 
                              dateTime = ?, 
+                             time = ?, 
                              location = ?, 
                              description = ?, 
                              brief = ?, 
                              imagePath = COALESCE(?, imagePath)
                          WHERE id = ?`;
-    const values = [title, dateTime, location, description, brief, imagePath, id];
+    const values = [title, dateTime, time, location, description, brief, imagePath, id];
   
     connection.query(updateQuery, values, (error, results) => {
       if (error) {
@@ -127,7 +128,7 @@ router.delete('/delete-event/:id', (req, res) => {
 
 router.get('/get-events', (req, res) => {
   const selectQuery =
-    'SELECT id, title, dateTime, location, description, brief, imagePath FROM events';
+    'SELECT id, title, dateTime, time, location, description, brief, imagePath FROM events';
   connection.query(selectQuery, (error, results) => {
     if (error) {
       console.error('Error fetching events:', error);

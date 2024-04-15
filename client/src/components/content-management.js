@@ -74,58 +74,6 @@ const ContentMan = () => {
     }
   };
   
-  // const handleSaveContent = () => {
-  //   const formData = new FormData();
-  //   formData.append('id', editIndex !== null ? content[editIndex].id : null);
-  //   formData.append('fullName', contentDetails.fullName);
-  //   formData.append('title', contentDetails.title);
-  //   formData.append('dateTime', contentDetails.dateTime.toISOString().split('T')[0]);
-  //   formData.append('body', contentDetails.body);
-  //   formData.append('uploadTime', contentDetails.uploadTime);
-  //   if (deletedFiles.length > 0) {
-  //     formData.append('deletedFiles', JSON.stringify(deletedFiles));
-  //   }
-  
-  //   if (imageFile) {
-  //     formData.append('image', imageFile);
-  //   }
-  
-  //   if (videoFile) {
-  //     formData.append('video', videoFile);
-  //   }
-  
-  //   const url = editIndex !== null ? 'http://localhost:9000/update-content' : 'http://localhost:9000/save-content';
-  //   const method = editIndex !== null ? 'POST' : 'PUT';
-  
-  //   fetch(url, {
-  //     method: method,
-  //     body: formData,
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log('Content saved successfully:', data);
-  //       setContentDetails({
-  //         imageSrc: data.imagePath ? `http://localhost:9000/uploads/${data.imagePath}` : '',
-  //         videoSrc: data.videoPath ? `http://localhost:9000/uploads/${data.videoPath}` : '',
-  //         fullName: '',
-  //         title: '',
-  //         dateTime: new Date(),
-  //         body: '',
-  //         uploadTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-  //       });
-  //       setImageFile(null);
-  //       setVideoFile(null);
-  //       setEditIndex(null);
-  //       setShowContentForm(false);
-  //       alert('Content successfully saved!');
-  //       fetchContent(); // Fetch updated content data
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error saving content:', error);
-  //       alert('Error saving content!');
-  //     });
-  // };
-  
   const handleSaveContent = () => {
     const formData = new FormData();
     formData.append('id', editIndex !== null ? content[editIndex].id : null);

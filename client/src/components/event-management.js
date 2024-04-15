@@ -15,7 +15,8 @@ const EventMan = () => {
     dateTime: new Date(),
     location: '',
     description: '',
-    brief: ''
+    brief: '',
+    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   });
   const [events, setEvents] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
@@ -23,22 +24,10 @@ const EventMan = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    if (name === 'time') {
-      const selectedTime = value;
-      const selectedDateTime = new Date(eventDetails.dateTime);
-      const [hours, minutes] = selectedTime.split(':');
-      selectedDateTime.setHours(hours);
-      selectedDateTime.setMinutes(minutes);
-      setEventDetails(prevState => ({
-        ...prevState,
-        dateTime: selectedDateTime
-      }));
-    } else {
-      setEventDetails(prevState => ({
-        ...prevState,
-        [name]: value
-      }));
-    }
+    setEventDetails(prevState => ({
+     ...prevState,
+      [name]: value
+    }));
   };
 
   const handleImageUpload = (file) => {
@@ -62,6 +51,7 @@ const EventMan = () => {
     formData.append('id', editIndex !== null ? events[editIndex].id : null);
     formData.append('title', eventDetails.title);
     formData.append('dateTime', eventDetails.dateTime.toISOString().split('T')[0]);
+    formData.append('time', eventDetails.time);
     formData.append('location', eventDetails.location);
     formData.append('description', eventDetails.description);
     formData.append('brief', eventDetails.brief);
@@ -84,6 +74,7 @@ const EventMan = () => {
           picture: data.imagePath ? `http://localhost:9000/uploads/${data.imagePath}` : '',
           title: '',
           dateTime: new Date(),
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           location: '',
           description: '',
           brief: ''
@@ -146,7 +137,7 @@ const EventMan = () => {
                 onChange={(date) => setEventDetails({ ...eventDetails, dateTime: date })}
                 value={eventDetails.dateTime}
               />
-              <input className='timees' type="time" name="time" value={eventDetails.dateTime.toTimeString().substring(0, 5)} onChange={handleInputChange} />
+              <input className='timees' type="time" name="time" value={eventDetails.time} onChange={handleInputChange} />
             </div>
             <input type="text" name="location" placeholder="Location" value={eventDetails.location} onChange={handleInputChange} />
             <textarea name="description" placeholder="Full Description" value={eventDetails.description} onChange={handleInputChange} />
@@ -169,7 +160,8 @@ const EventMan = () => {
               {event.imagePath && <img className="event-picture" src={event.imagePath} alt="Event" />}
               <div className="event-details">
                 <p>{event.title}</p>
-                <p>{event.dateTime.toLocaleString()}</p>
+                <p>{event.dateTime.split('T')[0]}</p> 
+                <p>{event.time}</p>
                 <p>{event.location}</p>
                 <p>{event.brief}</p>
               </div>
