@@ -229,7 +229,6 @@ const ContentMan = () => {
     }
   };  
 
-// Fetch content from API on component mount
 useEffect(() => {
   fetch('http://localhost:9000/get-content')
    .then((response) => response.json())
@@ -240,7 +239,6 @@ useEffect(() => {
    .catch((error) => console.error('Error fetching content:', error));
 }, []);
 
-// Fetch updated content from API on component mount
   const fetchContent = () => {
     fetch('http://localhost:9000/get-content')
       .then((response) => response.json())
@@ -288,7 +286,6 @@ useEffect(() => {
 
   const handleDeleteFile = (type, contentId) => {
     if (type === 'image') {
-      // Handle image deletion in the database
       const formData = new FormData();
       formData.append('id', contentId);
       formData.append('deletedFiles', 'image');
@@ -300,14 +297,17 @@ useEffect(() => {
         .then((response) => response.json())
         .then((data) => {
           console.log('Image deleted successfully:', data);
-          // Update content state or perform any necessary actions
+
+          setContentDetails((prevState) => ({
+            ...prevState,
+            imageSrc: '',
+          }));
         })
         .catch((error) => {
           console.error('Error deleting image:', error);
           alert('Error deleting image!');
         });
     } else if (type === 'video') {
-      // Handle video deletion in the database
       const formData = new FormData();
       formData.append('id', contentId);
       formData.append('deletedFiles', 'video');
@@ -319,7 +319,11 @@ useEffect(() => {
         .then((response) => response.json())
         .then((data) => {
           console.log('Video deleted successfully:', data);
-          // Update content state or perform any necessary actions
+
+          setContentDetails((prevState) => ({
+            ...prevState,
+            videoSrc: '',
+          }));
         })
         .catch((error) => {
           console.error('Error deleting video:', error);
@@ -328,7 +332,6 @@ useEffect(() => {
     }
   };
   
-
   return (
     <div className="content-management-main-container">
       <button className="create-content-button" onClick={() => setShowContentForm(!showContentForm)}>

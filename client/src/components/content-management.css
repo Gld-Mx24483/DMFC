@@ -2,6 +2,10 @@
     padding: 20px;
     border: none;
   }
+
+  .no-content{
+    margin-left: -120px;
+  }
   
   h2 {
     margin-bottom: 20px;
@@ -142,7 +146,7 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    /* transform: translate(20px, -327px); */
+    transform: translate(20px, -20px);
   }
   
   .delete-imgvid:hover {
