@@ -1,10 +1,11 @@
 // event-management.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './event-management.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faPlus, faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import FileUpload from './fileupload';
 
 const EventMan = () => {
   const [isAddingEvent, setIsAddingEvent] = useState(false);
@@ -18,6 +19,7 @@ const EventMan = () => {
   });
   const [events, setEvents] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -38,35 +40,64 @@ const EventMan = () => {
       }));
     }
   };
-  
 
-  const handleImageChange = (event) => {
-    const imageFile = event.target.files[0];
-    setEventDetails(prevState => ({
-      ...prevState,
-      picture: URL.createObjectURL(imageFile)
-    }));
+  const handleImageUpload = (file) => {
+    if (file) {
+      setImageFile(file);
+      setEventDetails(prevState => ({
+        ...prevState,
+        picture: URL.createObjectURL(file)
+      }));
+    } else {
+      setImageFile(null);
+      setEventDetails(prevState => ({
+        ...prevState,
+        picture: null
+      }));
+    }
   };
 
   const handleSaveEvent = () => {
-    if (editIndex !== null) {
-      const updatedEvents = [...events];
-      updatedEvents.splice(editIndex, 1, eventDetails);
-      setEvents(updatedEvents);
-    } else {
-      setEvents(prevEvents => [...prevEvents, eventDetails]);
+    const formData = new FormData();
+    formData.append('id', editIndex !== null ? events[editIndex].id : null);
+    formData.append('title', eventDetails.title);
+    formData.append('dateTime', eventDetails.dateTime.toISOString().split('T')[0]);
+    formData.append('location', eventDetails.location);
+    formData.append('description', eventDetails.description);
+    formData.append('brief', eventDetails.brief);
+
+    if (imageFile) {
+      formData.append('image', imageFile);
     }
-    setEventDetails({
-      picture: null,
-      title: '',
-      dateTime: new Date(),
-      location: '',
-      description: '',
-      brief: ''
-    });
-    setIsAddingEvent(false);
-    setEditIndex(null);
-    alert("Event successfully added!");
+
+    const url = editIndex !== null ? 'http://localhost:9000/update-event' : 'http://localhost:9000/save-event';
+    const method = editIndex !== null ? 'POST' : 'PUT';
+
+    fetch(url, {
+      method: method,
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Event saved successfully:', data);
+        setEventDetails({
+          picture: data.imagePath ? `http://localhost:9000/uploads/${data.imagePath}` : '',
+          title: '',
+          dateTime: new Date(),
+          location: '',
+          description: '',
+          brief: ''
+        });
+        setIsAddingEvent(false);
+        setEditIndex(null);
+        setImageFile(null);
+        alert("Event successfully added!");
+        fetchEvents(); // Fetch updated events data
+      })
+      .catch((error) => {
+        console.error('Error saving event:', error);
+        alert('Error saving event!');
+      });
   };
 
   const handleEditEvent = (index) => {
@@ -75,6 +106,20 @@ const EventMan = () => {
     setEventDetails(eventToEdit);
     setIsAddingEvent(true);
   };
+
+  const fetchEvents = () => {
+    fetch('http://localhost:9000/get-events')
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Events fetched:', data);
+        setEvents(data);
+      })
+      .catch((error) => console.error('Error fetching events:', error));
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
 
   return (
     <div className="event-management-main-container">
@@ -93,7 +138,7 @@ const EventMan = () => {
         <div className="event-section">
           <h2>{editIndex !== null ? 'Edit Event' : 'Add New Event'}</h2>
           <div className="event-form">
-            <input type="file" accept="image/*" name="picture" onChange={handleImageChange} />
+            <FileUpload onFileUpload={handleImageUpload} className="fileupload" text="Drag and drop an image or click to select an image" />
             {eventDetails.picture && <img src={eventDetails.picture} alt="Event" className="event-picture" />}
             <input type="text" name="title" placeholder="Event Title" value={eventDetails.title} onChange={handleInputChange} />
             <div className="date-time-picker event-dt">
@@ -101,7 +146,7 @@ const EventMan = () => {
                 onChange={(date) => setEventDetails({ ...eventDetails, dateTime: date })}
                 value={eventDetails.dateTime}
               />
-            <input className='timees' type="time" name="time" value={eventDetails.dateTime .toTimeString().substring(0, 5)} onChange={handleInputChange} />
+              <input className='timees' type="time" name="time" value={eventDetails.dateTime.toTimeString().substring(0, 5)} onChange={handleInputChange} />
             </div>
             <input type="text" name="location" placeholder="Location" value={eventDetails.location} onChange={handleInputChange} />
             <textarea name="description" placeholder="Full Description" value={eventDetails.description} onChange={handleInputChange} />
@@ -120,7 +165,8 @@ const EventMan = () => {
           events.map((event, index) => (
             <div className="event-item" key={index}>
               <FontAwesomeIcon icon={faPen} className="edit-icon" onClick={() => handleEditEvent(index)} />
-              <img src={event.picture} alt="Event" className="event-picture" />
+              {/* <img src={event.picture} alt="Event" className="event-picture" /> */}
+              {event.imagePath && <img className="event-picture" src={event.imagePath} alt="Event" />}
               <div className="event-details">
                 <p>{event.title}</p>
                 <p>{event.dateTime.toLocaleString()}</p>
