@@ -142,6 +142,54 @@ router.delete('/delete-content/:id', (req, res) => {
   });
 });
 
+// Route for deleting image files
+router.post('/delete-image/:id', (req, res) => {
+    const contentId = req.params.id;
+    
+    const updateQuery = `UPDATE content SET imagePath = NULL WHERE id = ?`;
+    
+    connection.query(updateQuery, [contentId], (error, results) => {
+      if (error) {
+        console.error('Error deleting image file:', error);
+        res.status(500).json({ message: 'Error deleting image file', error: error.message });
+        return;
+      }
+    
+      if (results.affectedRows === 0) {
+        res.status(404).json({ message: 'Content not found' });
+        return;
+      }
+    
+      console.log(`Image file deleted successfully for content with ID ${contentId}`);
+      res.status(200).json({ message: 'Image file deleted successfully' });
+    });
+  });
+  
+  // Route for deleting video files
+  router.post('/delete-video/:id', (req, res) => {
+    const contentId = req.params.id;
+    
+    const updateQuery = `UPDATE content SET videoPath = NULL WHERE id = ?`;
+    
+    connection.query(updateQuery, [contentId], (error, results) => {
+      if (error) {
+        console.error('Error deleting video file:', error);
+        res.status(500).json({ message: 'Error deleting video file', error: error.message });
+        return;
+      }
+    
+      if (results.affectedRows === 0) {
+        res.status(404).json({ message: 'Content not found' });
+        return;
+      }
+    
+      console.log(`Video file deleted successfully for content with ID ${contentId}`);
+      res.status(200).json({ message: 'Video file deleted successfully' });
+    });
+  });
+  
+  
+
 router.get('/get-content', (req, res) => {
   const selectQuery =
     'SELECT id, imagePath, videoPath, fullName, title, DATE_FORMAT(dateTime, "%Y-%m-%d") as dateTime, body, uploadTime FROM content';

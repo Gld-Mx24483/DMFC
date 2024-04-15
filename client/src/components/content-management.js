@@ -17,6 +17,7 @@ const ContentMan = () => {
   const [videoFile, setVideoFile] = useState(null);
   const [content, setContent] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
+  const [deletedFiles, setDeletedFiles] = useState([]);
   const [contentDetails, setContentDetails] = useState({
     imageSrc: '',
     videoSrc: '',
@@ -73,6 +74,58 @@ const ContentMan = () => {
     }
   };
   
+  // const handleSaveContent = () => {
+  //   const formData = new FormData();
+  //   formData.append('id', editIndex !== null ? content[editIndex].id : null);
+  //   formData.append('fullName', contentDetails.fullName);
+  //   formData.append('title', contentDetails.title);
+  //   formData.append('dateTime', contentDetails.dateTime.toISOString().split('T')[0]);
+  //   formData.append('body', contentDetails.body);
+  //   formData.append('uploadTime', contentDetails.uploadTime);
+  //   if (deletedFiles.length > 0) {
+  //     formData.append('deletedFiles', JSON.stringify(deletedFiles));
+  //   }
+  
+  //   if (imageFile) {
+  //     formData.append('image', imageFile);
+  //   }
+  
+  //   if (videoFile) {
+  //     formData.append('video', videoFile);
+  //   }
+  
+  //   const url = editIndex !== null ? 'http://localhost:9000/update-content' : 'http://localhost:9000/save-content';
+  //   const method = editIndex !== null ? 'POST' : 'PUT';
+  
+  //   fetch(url, {
+  //     method: method,
+  //     body: formData,
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log('Content saved successfully:', data);
+  //       setContentDetails({
+  //         imageSrc: data.imagePath ? `http://localhost:9000/uploads/${data.imagePath}` : '',
+  //         videoSrc: data.videoPath ? `http://localhost:9000/uploads/${data.videoPath}` : '',
+  //         fullName: '',
+  //         title: '',
+  //         dateTime: new Date(),
+  //         body: '',
+  //         uploadTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+  //       });
+  //       setImageFile(null);
+  //       setVideoFile(null);
+  //       setEditIndex(null);
+  //       setShowContentForm(false);
+  //       alert('Content successfully saved!');
+  //       fetchContent(); // Fetch updated content data
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error saving content:', error);
+  //       alert('Error saving content!');
+  //     });
+  // };
+  
   const handleSaveContent = () => {
     const formData = new FormData();
     formData.append('id', editIndex !== null ? content[editIndex].id : null);
@@ -81,6 +134,9 @@ const ContentMan = () => {
     formData.append('dateTime', contentDetails.dateTime.toISOString().split('T')[0]);
     formData.append('body', contentDetails.body);
     formData.append('uploadTime', contentDetails.uploadTime);
+    if (deletedFiles.length > 0) {
+      formData.append('deletedFiles', JSON.stringify(deletedFiles));
+    }
   
     if (imageFile) {
       formData.append('image', imageFile);
@@ -120,8 +176,59 @@ const ContentMan = () => {
         console.error('Error saving content:', error);
         alert('Error saving content!');
       });
-  };
   
+    // Handle separately deleting image and video files if they were deleted
+    if (deletedFiles.includes('image') && editIndex !== null) {
+      const contentToDelete = content[editIndex];
+      const formData = new FormData();
+      formData.append('id', contentToDelete.id);
+  
+      fetch(`http://localhost:9000/delete-image/${contentToDelete.id}`, {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Image deleted successfully:', data);
+          const updatedContent = [...content];
+          updatedContent[editIndex] = {
+            ...updatedContent[editIndex],
+            imagePath: null,
+          };
+          setContent(updatedContent);
+        })
+        .catch((error) => {
+          console.error('Error deleting image:', error);
+          alert('Error deleting image!');
+        });
+    }
+  
+    if (deletedFiles.includes('video') && editIndex !== null) {
+      const contentToDelete = content[editIndex];
+      const formData = new FormData();
+      formData.append('id', contentToDelete.id);
+  
+      fetch(`http://localhost:9000/delete-video/${contentToDelete.id}`, {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Video deleted successfully:', data);
+          const updatedContent = [...content];
+          updatedContent[editIndex] = {
+            ...updatedContent[editIndex],
+            videoPath: null,
+          };
+          setContent(updatedContent);
+        })
+        .catch((error) => {
+          console.error('Error deleting video:', error);
+          alert('Error deleting video!');
+        });
+    }
+  };  
+
 // Fetch content from API on component mount
 useEffect(() => {
   fetch('http://localhost:9000/get-content')
@@ -147,7 +254,11 @@ useEffect(() => {
   const handleEditContent = (index) => {
     setEditIndex(index);
     const contentToEdit = content[index];
-    setContentDetails(contentToEdit);
+    setContentDetails({
+     ...contentToEdit,
+      imageSrc: contentToEdit.imagePath || '',
+      videoSrc: contentToEdit.videoPath || '',
+    });
     setShowContentForm(true);
   };
 
@@ -175,6 +286,49 @@ useEffect(() => {
     }
   };
 
+  const handleDeleteFile = (type, contentId) => {
+    if (type === 'image') {
+      // Handle image deletion in the database
+      const formData = new FormData();
+      formData.append('id', contentId);
+      formData.append('deletedFiles', 'image');
+  
+      fetch(`http://localhost:9000/delete-image/${contentId}`, {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Image deleted successfully:', data);
+          // Update content state or perform any necessary actions
+        })
+        .catch((error) => {
+          console.error('Error deleting image:', error);
+          alert('Error deleting image!');
+        });
+    } else if (type === 'video') {
+      // Handle video deletion in the database
+      const formData = new FormData();
+      formData.append('id', contentId);
+      formData.append('deletedFiles', 'video');
+  
+      fetch(`http://localhost:9000/delete-video/${contentId}`, {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Video deleted successfully:', data);
+          // Update content state or perform any necessary actions
+        })
+        .catch((error) => {
+          console.error('Error deleting video:', error);
+          alert('Error deleting video!');
+        });
+    }
+  };
+  
+
   return (
     <div className="content-management-main-container">
       <button className="create-content-button" onClick={() => setShowContentForm(!showContentForm)}>
@@ -185,10 +339,22 @@ useEffect(() => {
         <>
           <h2>{editIndex !== null ? 'Edit Content' : 'Create Content'}</h2>
           <div className="content-form">
-            <FileUpload onFileUpload={handleImageUpload} className="fileupload" text="Drag and drop an image or click to select an image" />
-            {contentDetails.imageSrc && <img src={contentDetails.imageSrc} alt="Uploaded Image" />}
-            <FileUpload onFileUpload={handleVideoUpload} className="fileupload" text="Drag and drop a video or click to select a file" />
-            {contentDetails.videoSrc && <video controls src={contentDetails.videoSrc}></video>}
+             <div>
+    <FileUpload onFileUpload={handleImageUpload} className="fileupload" text="Drag and drop an image or click to select an image" />   
+    {contentDetails.imageSrc && (
+  <>
+    <img src={contentDetails.imageSrc} alt="Uploaded Image" />
+    <button className='delete-imgvid' onClick={() => handleDeleteFile('image', content[editIndex]?.id)}>Delete Image</button>
+  </>
+)}
+ <FileUpload onFileUpload={handleVideoUpload} className="fileupload" text="Drag and drop a video or click to select a file" />
+{contentDetails.videoSrc && (
+  <>
+    <video controls src={contentDetails.videoSrc}></video>
+    <button className='delete-imgvid' onClick={() => handleDeleteFile('video', content[editIndex]?.id)}>Delete Video</button>
+  </>
+)}
+  </div>
             <input type="text" name="fullName" placeholder="Full Name" value={contentDetails.fullName} onChange={handleInputChange} />
             <input type="text" name="title" placeholder="Title" value={contentDetails.title} onChange={handleInputChange} />
             <div className="date-time-picker">

@@ -135,6 +135,20 @@
     border: 2px solid blue;
   }
 
+  .delete-imgvid {
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    /* transform: translate(20px, -327px); */
+  }
+  
+  .delete-imgvid:hover {
+    background-color: #bd2130;
+  }
+
 .create-content-button,
 .content-form .but{
   background-color: #007bff;
