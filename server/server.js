@@ -77,6 +77,49 @@ app.put('/save-content',upload.fields([
   }
 );
 
+app.post('/update-content', upload.fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'video', maxCount: 1 },
+]), (req, res) => {
+  const { id, fullName, title, dateTime, body, uploadTime } = req.body;
+  let imagePath = null;
+  let videoPath = null;
+
+  if (req.files && req.files.image && req.files.image.length > 0) {
+    imagePath = req.files.image[0].originalname;
+  }
+  if (req.files && req.files.video && req.files.video.length > 0) {
+    videoPath = req.files.video[0].originalname;
+  }
+
+  const updateQuery = `UPDATE content 
+                       SET imagePath = COALESCE(?, imagePath), 
+                           videoPath = COALESCE(?, videoPath),
+                           fullName = ?, 
+                           title = ?, 
+                           dateTime = ?, 
+                           body = ?, 
+                           uploadTime = ?
+                       WHERE id = ?`;
+  const values = [imagePath, videoPath, fullName, title, dateTime, body, uploadTime, id];
+
+  connection.query(updateQuery, values, (error, results) => {
+    if (error) {
+      console.error('Error updating content:', error);
+      res.status(500).json({ message: 'Error updating content', error: error.message });
+      return;
+    }
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ message: 'Content not found' });
+      return;
+    }
+
+    console.log(`Content with ID ${id} updated successfully`);
+    res.status(200).json({ message: 'Content updated successfully!', imagePath, videoPath });
+  });
+});
+
 app.delete('/delete-content/:id', (req, res) => {
   const contentId = req.params.id;
 
