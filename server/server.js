@@ -45,9 +45,7 @@ connection.connect((err) => {
   console.log('Connected to MySQL database');
 });
 
-app.put(
-  '/save-content',
-  upload.fields([
+app.put('/save-content',upload.fields([
     { name: 'image', maxCount: 1 },
     { name: 'video', maxCount: 1 },
   ]),
@@ -79,9 +77,31 @@ app.put(
   }
 );
 
+app.delete('/delete-content/:id', (req, res) => {
+  const contentId = req.params.id;
+
+  const deleteQuery = 'DELETE FROM content WHERE id = ?';
+
+  connection.query(deleteQuery, [contentId], (error, results) => {
+    if (error) {
+      console.error('Error deleting content:', error);
+      res.status(500).json({ message: 'Error deleting content', error: error.message });
+      return;
+    }
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ message: 'Content not found' });
+      return;
+    }
+
+    console.log(`Content with ID ${contentId} deleted successfully`);
+    res.status(200).json({ message: 'Content deleted successfully' });
+  });
+});
+
 app.get('/get-content', (req, res) => {
   const selectQuery =
-    'SELECT imagePath, videoPath, fullName, title, DATE_FORMAT(dateTime, "%Y-%m-%d") as dateTime, body, uploadTime FROM content';
+    'SELECT id, imagePath, videoPath, fullName, title, DATE_FORMAT(dateTime, "%Y-%m-%d") as dateTime, body, uploadTime FROM content';
   connection.query(selectQuery, (error, results) => {
     if (error) {
       console.error('Error fetching content:', error);

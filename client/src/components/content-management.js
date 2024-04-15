@@ -135,10 +135,28 @@ const ContentMan = () => {
     setShowContentForm(true);
   };
 
-  const handleDeleteContent = (index) => {
-    const updatedContent = [...content];
-   updatedContent.splice(index, 1);
-    setContent(updatedContent);
+  const handleDeleteContent = (index, id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this content?");
+  
+    if (confirmDelete) {
+      fetch(`http://localhost:9000/delete-content/${id}`, {
+        method: 'DELETE',
+      })
+        .then((response) => {
+          if (response.ok) {
+            const updatedContent = [...content];
+            updatedContent.splice(index, 1);
+            setContent(updatedContent);
+            alert('Content deleted successfully!');
+          } else {
+            alert('Failed to delete content!');
+          }
+        })
+        .catch((error) => {
+          console.error('Error deleting content:', error);
+          alert('Error deleting content!');
+        });
+    }
   };
 
   return (
@@ -196,9 +214,9 @@ const ContentMan = () => {
           </div>
         ) : (
           content.map((item, index) => (
-            <div className="content-item" key={index}>
+            <div className="content-item" key={index.id}>
               <FontAwesomeIcon className='Pen' icon={faPen} onClick={() => handleEditContent(index)} />
-              <FontAwesomeIcon className='Trash' icon={faTrash} onClick={() => handleDeleteContent(index)} />
+              <FontAwesomeIcon className='Trash' icon={faTrash} onClick={() => handleDeleteContent(index, item.id)} />
               {item.imagePath && <img className="media image" src={item.imagePath} alt="Preview" />}
               {item.videoPath && <video className="media video" controls src={item.videoPath}></video>}
               <h3>{item.title}</h3>
