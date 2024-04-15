@@ -49,21 +49,39 @@ const ContentMan = () => {
   };
 
   const handleImageUpload = (file) => {
-    setImageFile(file);
-    setContentDetails((prevState) => ({
-     ...prevState,
-      imageSrc: URL.createObjectURL(file),
-      body: prevState.body,
-    }));
+    if (file) {
+      setImageFile(file);
+      setContentDetails((prevState) => ({
+        ...prevState,
+        imageSrc: URL.createObjectURL(file),
+        body: prevState.body,
+      }));
+    } else {
+      setImageFile(null);
+      setContentDetails((prevState) => ({
+        ...prevState,
+        imageSrc: '',
+        body: prevState.body,
+      }));
+    }
   };
-
+  
   const handleVideoUpload = (file) => {
-    setVideoFile(file);
-    setContentDetails((prevState) => ({
-     ...prevState,
-      videoSrc: URL.createObjectURL(file),
-      body: prevState.body + `[![Video](${URL.createObjectURL(file)})]`,
-    }));
+    if (file) {
+      setVideoFile(file);
+      setContentDetails((prevState) => ({
+        ...prevState,
+        videoSrc: URL.createObjectURL(file),
+        body: prevState.body,
+      }));
+    } else {
+      setVideoFile(null);
+      setContentDetails((prevState) => ({
+        ...prevState,
+        videoSrc: '',
+        body: prevState.body,
+      }));
+    }
   };
 
   const handleSaveContent = () => {
