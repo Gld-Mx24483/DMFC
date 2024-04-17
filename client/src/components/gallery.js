@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faTimes, faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
 import Calendar from 'react-calendar'; 
 import 'react-calendar/dist/Calendar.css';
+import FileUpload from './fileupload';
 
 const Gall = () => {
   const [mediaList, setMediaList] = useState([]);
@@ -32,8 +33,7 @@ const Gall = () => {
     setMediaList(updatedMediaList);
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
+  const handleFileUpload = (file) => {
     setUploadedFile(file);
   };
 
@@ -44,12 +44,7 @@ const Gall = () => {
       </button>
       {showUploadSection && (
         <div className="upload-section">
-          <input
-            type="file"
-            accept="image/*, video/*"
-            className="media-input"
-            onChange={handleFileChange}
-          />
+          <FileUpload onFileUpload={handleFileUpload} className="fileupload" text="Drag and drop a media file or click to select a file" />
           {uploadedFile && (
             <div className="file-preview">
               {uploadedFile.type.startsWith('image/') ? (
