@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import './event-management.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faPlus, faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faPlus, faCalendarTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import FileUpload from './fileupload';
@@ -94,7 +94,10 @@ const EventMan = () => {
   const handleEditEvent = (index) => {
     setEditIndex(index);
     const eventToEdit = events[index];
-    setEventDetails(eventToEdit);
+    setEventDetails({
+      ...eventToEdit,
+      picture: eventToEdit.imagePath || ''
+    })
     setIsAddingEvent(true);
   };
 
@@ -111,6 +114,33 @@ const EventMan = () => {
   useEffect(() => {
     fetchEvents();
   }, []);
+
+  const handleDeleteEvent = (index) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this event?");
+  
+    if (confirmDelete) {
+      const eventId = events[index].id;
+  
+      fetch(`http://localhost:9000/delete-event/${eventId}`, {
+        method: 'DELETE',
+      })
+       .then((response) => {
+          if (response.ok) {
+            const updatedEvents = [...events];
+            updatedEvents.splice(index, 1);
+            setEvents(updatedEvents);
+            alert('Event deleted successfully!');
+          } else {
+            alert('Failed to delete event!');
+          }
+        })
+       .catch((error) => {
+          console.error('Error deleting event:', error);
+          alert('Error deleting event!');
+        });
+    }
+  };
+
 
   return (
     <div className="event-management-main-container">
@@ -156,8 +186,10 @@ const EventMan = () => {
           events.map((event, index) => (
             <div className="event-item" key={index}>
               <FontAwesomeIcon icon={faPen} className="edit-icon" onClick={() => handleEditEvent(index)} />
-              {/* <img src={event.picture} alt="Event" className="event-picture" /> */}
-              {event.imagePath && <img className="event-picture" src={event.imagePath} alt="Event" />}
+              <FontAwesomeIcon icon={faTrash} className="trash-icon" onClick={() => handleDeleteEvent(index)} />
+              <div className='event-image-container'>
+              {event.imagePath && <img src={event.imagePath} alt="Event" />}
+              </div>
               <div className="event-details">
                 <p>{event.title}</p>
                 <p>{event.dateTime.split('T')[0]}</p> 
