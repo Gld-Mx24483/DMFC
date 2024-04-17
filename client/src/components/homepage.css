@@ -90,6 +90,10 @@ body{
     background-color:rgba(0, 0, 0, 0.061);
   }
 
+  .Galls{
+    height: 100vh;
+  }
+
   .Footer{
     height: 38vh;
   }

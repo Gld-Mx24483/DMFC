@@ -76,8 +76,10 @@
   }
 
   .media-item video{
-    width: 415px;
-    height: 214px;
+    width: 85%;
+    height: 44vh;
+    padding: 30px;
+    object-fit: contain;
   }
   
   .delete-icon {

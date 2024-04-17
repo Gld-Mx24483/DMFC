@@ -6,6 +6,7 @@ import BriefInfo from './brief-info';
 import Programs from './programs';
 import Donate from './donate';
 import Footer from './footer';
+import Gallery from './gallery-user';
 import './homepage.css';
 
 const Homepage = () => {
@@ -25,10 +26,13 @@ const Homepage = () => {
       </div>
     </div>
     <div className='AboutUs'>
-      <AboutUs />
+    <AboutUs />
     </div>
     <div className='Programs'>
     <Programs />
+    </div>
+    <div className='Galls'>
+    <Gallery />
     </div>
     <div className='Donate'>
     <Donate />
