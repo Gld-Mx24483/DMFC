@@ -11,8 +11,7 @@ const Gall = () => {
   const [mediaList, setMediaList] = useState([]);
   const [mediaTitle, setMediaTitle] = useState('');
   const [uploadDate, setUploadDate] = useState(new Date());
-  const [imageFile, setImageFile] = useState(null);
-  const [videoFile, setVideoFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [showUploadSection, setShowUploadSection] = useState(false);
 
   useEffect(() => {
@@ -34,12 +33,8 @@ const Gall = () => {
     formData.append('title', mediaTitle);
     formData.append('date', uploadDate.toISOString().split('T')[0]);
 
-    if (imageFile) {
-      formData.append('image', imageFile);
-    }
-
-    if (videoFile) {
-      formData.append('video', videoFile);
+    if (selectedFile) {
+      formData.append('media', selectedFile);
     }
 
     fetch('http://localhost:9000/upload-media', {
@@ -51,8 +46,7 @@ const Gall = () => {
         console.log('Media uploaded successfully:', data);
         setMediaTitle('');
         setUploadDate(new Date());
-        setImageFile(null);
-        setVideoFile(null);
+        setSelectedFile(null);
         setShowUploadSection(false);
         fetchMedia(); // Fetch updated media data
         alert('Media successfully uploaded!');
@@ -63,20 +57,8 @@ const Gall = () => {
       });
   };
 
-  const handleImageUpload = (file) => {
-    if (file) {
-      setImageFile(file);
-    } else {
-      setImageFile(null);
-    }
-  };
-
-  const handleVideoUpload = (file) => {
-    if (file) {
-      setVideoFile(file);
-    } else {
-      setVideoFile(null);
-    }
+  const handleFileUpload = (file) => {
+    setSelectedFile(file);
   };
 
   const handleDeleteMedia = (index) => {
@@ -112,16 +94,16 @@ const Gall = () => {
       </button>
       {showUploadSection && (
         <div className="upload-section">
-          <FileUpload onFileUpload={handleImageUpload} className="fileupload" text="Drag and drop an image or click to select an image" />
-          {imageFile && (
+          <FileUpload onFileUpload={handleFileUpload} className="fileupload" text="Drag and drop a file or click to select a file (Image or Video)" />
+          {selectedFile && (
             <div className="file-preview">
-              <img src={URL.createObjectURL(imageFile)} alt="Preview" />
-            </div>
-          )}
-          <FileUpload onFileUpload={handleVideoUpload} className="fileupload" text="Drag and drop a video or click to select a video" />
-          {videoFile && (
-            <div className="file-preview">
-              <video src={URL.createObjectURL(videoFile)} controls />
+              {selectedFile.type.startsWith('image/') ? (
+                <img src={URL.createObjectURL(selectedFile)} alt="Preview" />
+              ) : selectedFile.type.startsWith('video/') ? (
+                <video src={URL.createObjectURL(selectedFile)} controls />
+              ) : (
+                <p>Unsupported file type</p>
+              )}
             </div>
           )}
           <input
@@ -151,8 +133,8 @@ const Gall = () => {
           mediaList.map((media, index) => (
             <div className="media-item" key={index}>
               <FontAwesomeIcon icon={faTrash} className="delete-icon" onClick={() => handleDeleteMedia(index)}/>
-              {media.imagePath && <img src={media.imagePath} alt="Media" />}
-              {media.videoPath && <video controls src={media.videoPath}></video>}
+              {media.imagePath && <img className='images'  src={media.imagePath} alt="Media" />}
+              {media.videoPath && <video className='videos' controls src={media.videoPath}></video>}
               <div className='media-list-txt'>
                 <h3>{media.title}</h3>
                 <p>{new Date(media.upload_date).toLocaleDateString()}</p>

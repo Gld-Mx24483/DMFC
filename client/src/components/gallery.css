@@ -69,8 +69,10 @@
   }
 
   .media-item img{
-    width: 100%;
-    height: 26.5vh;
+    width: 85%;
+    height: 44vh;
+    padding: 30px;
+    object-fit: contain;
   }
 
   .media-item video{

@@ -45,76 +45,74 @@ const connection = mysql.createConnection({
     console.log('Gallery Connected to MySQL database');
   });
   
-  router.post('/upload-media', upload.fields([
-    { name: 'image', maxCount: 1 },
-    { name: 'video', maxCount: 1 },
-  ]), (req, res) => {
+  router.post('/upload-media', upload.single('media'), (req, res) => {
     const { title, date } = req.body;
     let imagePath = null;
     let videoPath = null;
   
-    if (req.files && req.files.image && req.files.image.length > 0) {
-      imagePath = req.files.image[0].originalname;
-    }
-    if (req.files && req.files.video && req.files.video.length > 0) {
-      videoPath = req.files.video[0].originalname;
+    if (req.file) {
+      if (req.file.mimetype.startsWith('image/')) {
+        imagePath = req.file.originalname;
+      } else if (req.file.mimetype.startsWith('video/')) {
+        videoPath = req.file.originalname;
+      }
     }
   
     const insertQuery = 'INSERT INTO gallery (title, imagePath, videoPath, upload_date) VALUES (?, ?, ?, ?)';
     const values = [title, imagePath, videoPath, date];
   
     connection.query(insertQuery, values, (error, results) => {
-      if (error) {
-        console.error('Error uploading media:', error);
-        res.status(500).json({ message: 'Error uploading media', error: error.message });
-        return;
-      }
-      console.log('Media uploaded successfully:', results);
-      res.status(200).json({ message: 'Media uploaded successfully!', imagePath, videoPath });
+        if (error) {
+          console.error('Error uploading media:', error);
+          res.status(500).json({ message: 'Error uploading media', error: error.message });
+          return;
+        }
+        console.log('Media uploaded successfully:', results);
+        res.status(200).json({ message: 'Media uploaded successfully!', imagePath, videoPath });
+      });
     });
-  });
-  
-  router.get('/get-media', (req, res) => {
-    const selectQuery = 'SELECT id, title, imagePath, videoPath, upload_date FROM gallery';
-    connection.query(selectQuery, (error, results) => {
-      if (error) {
-        console.error('Error fetching media:', error);
-        res.status(500).json({ message: 'Error fetching media', error: error.message });
-        return;
-      }
-  
-      const fullUrl = `${req.protocol}://${req.get('host')}`;
-      const mediaWithFullUrls = results.map(item => ({
-        ...item,
-        imagePath: item.imagePath ? `${fullUrl}/uploads/${item.imagePath}` : null,
-        videoPath: item.videoPath ? `${fullUrl}/uploads/${item.videoPath}` : null,
-      }));
-  
-      console.log('Media fetched successfully:', mediaWithFullUrls);
-      res.status(200).json(mediaWithFullUrls);
+    
+    router.get('/get-media', (req, res) => {
+      const selectQuery = 'SELECT id, title, imagePath, videoPath, upload_date FROM gallery';
+      connection.query(selectQuery, (error, results) => {
+        if (error) {
+          console.error('Error fetching media:', error);
+          res.status(500).json({ message: 'Error fetching media', error: error.message });
+          return;
+        }
+    
+        const fullUrl = `${req.protocol}://${req.get('host')}`;
+        const mediaWithFullUrls = results.map(item => ({
+          ...item,
+          imagePath: item.imagePath ? `${fullUrl}/uploads/${item.imagePath}` : null,
+          videoPath: item.videoPath ? `${fullUrl}/uploads/${item.videoPath}` : null,
+        }));
+    
+        console.log('Media fetched successfully:', mediaWithFullUrls);
+        res.status(200).json(mediaWithFullUrls);
+      });
     });
-  });
-  
-  router.delete('/delete-media/:id', (req, res) => {
-    const mediaId = req.params.id;
-  
-    const deleteQuery = 'DELETE FROM gallery WHERE id = ?';
-  
-    connection.query(deleteQuery, [mediaId], (error, results) => {
-      if (error) {
-        console.error('Error deleting media:', error);
-        res.status(500).json({ message: 'Error deleting media', error: error.message });
-        return;
-      }
-  
-      if (results.affectedRows === 0) {
-        res.status(404).json({ message: 'Media not found' });
-        return;
-      }
-  
-      console.log(`Media with ID ${mediaId} deleted successfully`);
-      res.status(200).json({ message: 'Media deleted successfully' });
+    
+    router.delete('/delete-media/:id', (req, res) => {
+      const mediaId = req.params.id;
+    
+      const deleteQuery = 'DELETE FROM gallery WHERE id = ?';
+    
+      connection.query(deleteQuery, [mediaId], (error, results) => {
+        if (error) {
+          console.error('Error deleting media:', error);
+          res.status(500).json({ message: 'Error deleting media', error: error.message });
+          return;
+        }
+    
+        if (results.affectedRows === 0) {
+          res.status(404).json({ message: 'Media not found' });
+          return;
+        }
+    
+        console.log(`Media with ID ${mediaId} deleted successfully`);
+        res.status(200).json({ message: 'Media deleted successfully' });
+      });
     });
-  });
-  
-  module.exports = router;
+    
+    module.exports = router;
