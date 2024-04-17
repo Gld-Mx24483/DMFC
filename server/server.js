@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const contentManagementAPI = require('./content-management-api');
 const eventManagementAPI = require('./event-management-api');
+const galleryAPI = require('./gallery-api');
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/', contentManagementAPI);
 app.use('/', eventManagementAPI);
+app.use('/', galleryAPI);
 
 // set port, listen for requests
 
