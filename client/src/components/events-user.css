@@ -1,0 +1,153 @@
+.events-user-main-container {
+    padding: 20px;
+  }
+  
+  .events-heading-container {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+  
+  .events-heading {
+    font-size: 40px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .events-subheading {
+    font-size: 20px;
+    color: #666;
+  }
+  
+  .spanns {
+    color: rgb(255, 123, 0);
+  }
+  
+  .event-cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    padding: 70px;
+  }
+  
+  .event-card {
+    background-color: #e5e4e4;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    padding: 20px;
+    position: relative;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .event-card:hover {
+    background-color: rgba(229, 228, 228, 0.7);
+  }
+  
+  .event-card-image {
+    width: 100%;
+    height: 500px;
+    object-fit: contain;
+  }
+  
+  .event-card-content {
+    padding: 16px;
+    position: relative;
+  }
+  
+  .event-card h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 22px;
+    font-weight: bold;
+  }
+  
+  .event-date,
+  .event-time,
+  .event-location,
+  .event-brief {
+    margin-bottom: 4px;
+    font-size: 20px;
+  }
+  
+  .chevron-icon-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .event-card:hover .chevron-icon-container {
+    opacity: 1;
+  }
+  
+  .chevron-icon {
+    font-size: 50px;
+    color: white;
+  }
+  
+  .selected-event-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 70px - 100px);
+  }
+  
+  .selected-event-image {
+    flex: 1;
+    max-width: 50%;
+    padding: 20px;
+  }
+  
+  .selected-event-image img {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: contain;
+  }
+  
+  .selected-event-content {
+    flex: 1;
+    padding: 20px;
+    margin-top: 250px;
+  }
+  
+  .selected-event-content h3 {
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  
+  .event-date,
+  .event-time,
+  .event-location,
+  .event-description {
+    margin-bottom: 10px;
+    font-size: 18px;
+    width: 85%;
+  }
+
+  .event-description {
+    text-align: justify;
+    line-height: 2;
+    font-size: 18px;
+  }
+  
+  .close-button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
