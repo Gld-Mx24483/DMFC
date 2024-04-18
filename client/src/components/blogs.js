@@ -38,22 +38,26 @@ const Blog = () => {
         </p>
       </div>
       {selectedContent ? (
-        <div className="selected-event-container">
-            <div className="selected-event-image">
-            <img src={selectedContent.imagePath} />
-            <video className="event-card-image" controls src={selectedContent.videoPath}></video>
-          </div>
-          <div className='selected-event-content contentss'>
-          <h2>{selectedContent.title}</h2>
-          <p>{selectedContent.dateTime} - {selectedContent.uploadTime}</p>
-          <p>{selectedContent.fullName}</p>
-          <div dangerouslySetInnerHTML={{ __html: selectedContent.body }}></div>
-          <button className="close-button" onClick={handleCloseSelectedContent}>
-            Close
-          </button>
-          </div>
-        </div>
-      ) : (
+  <div className="selected-event-container">
+    <div className="selected-event-image">
+      {selectedContent.imagePath && (
+        <img src={selectedContent.imagePath} alt={selectedContent.title} />
+      )}
+      {selectedContent.videoPath && (
+        <video className="event-card-image" controls src={selectedContent.videoPath}></video>
+      )}
+    </div>
+    <div className="selected-event-content contentss">
+      <h2>{selectedContent.title}</h2>
+      <p>{selectedContent.dateTime} - {selectedContent.uploadTime}</p>
+      <p>{selectedContent.fullName}</p>
+      <div dangerouslySetInnerHTML={{ __html: selectedContent.body }}></div>
+      <button className="close-button" onClick={handleCloseSelectedContent}>
+        Close
+      </button>
+    </div>
+  </div>
+): (
         <div className="event-cards-container">
           {content.map((item, index) => (
             <div key={index} className="event-card" onClick={() => handleContentClick(item)}>
