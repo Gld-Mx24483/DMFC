@@ -1,0 +1,5 @@
+.Blogg{
+    overflow-y: scroll;
+    height: 110vh;
+    margin: 20px;
+}
