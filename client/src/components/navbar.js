@@ -47,6 +47,9 @@ const Navbar = () => {
         <li className={pathname === "/events-main" ? "active" : ""}>
           <Link to="/events-main">Events</Link>
         </li>
+        <li className={pathname === "/blogs-main" ? "active" : ""}>
+          <Link to="/blogs-main">Blogs</Link>
+        </li>
         <li className={pathname === "/get-involved" ? "active" : ""}>
           <Link to="/involve-main">Get Involved</Link>
         </li>
