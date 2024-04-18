@@ -15,6 +15,10 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/', contentManagementAPI);
 app.use('/', eventManagementAPI);
 app.use('/', galleryAPI);
+app.use(cors({
+  origin: 'http://localhost:3000' // Add this line
+}));
+
 
 // set port, listen for requests
 

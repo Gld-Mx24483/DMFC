@@ -1,7 +1,8 @@
 // Gal.js
 import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight, faCompress, faExpand } from '@fortawesome/free-solid-svg-icons';
+import screenfull from 'screenfull';
 import './gallery-user.css';
 
 const Gal = () => {
@@ -11,6 +12,7 @@ const Gal = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const videoRef = useRef(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     fetchMedia();
@@ -62,8 +64,28 @@ const Gal = () => {
     setIsVideoPlaying(playing);
   };
 
+  const handleFullscreen = () => {
+    if (screenfull.isEnabled) {
+      const slideElement = document.querySelector('.slide');
+  
+      if (isFullscreen) {
+        screenfull.exit();
+        slideElement.classList.remove('full-screen');
+        setIsFullscreen(false);
+      } else {
+        screenfull.request(slideElement);
+        slideElement.classList.add('full-screen');
+        setIsFullscreen(true);
+      }
+    }
+  };
+
   return (
     <div className="gal-main-container">
+      <div className="gallery-header">
+        <h1>GALLERY</h1>
+        <p className="gallery-caption">Explore the captivating world of visual wonder</p>
+      </div>
       {isLoading ? (
         <div>Loading...</div>
       ) : (
@@ -91,8 +113,18 @@ const Gal = () => {
             </button>
             <button className="control-button next" onClick={handleNext}>
               <FontAwesomeIcon icon={faChevronRight} />
-            </button>
+            </button> 
           </div>
+          <button className="fullscreen" onClick={handleFullscreen}>
+    <FontAwesomeIcon icon={isFullscreen? faCompress : faExpand} />
+  </button>
+  <div className="slide-info">
+  {mediaList.length > 0 && (
+    <span>
+      {currentIndex + 1}/{mediaList.length}
+    </span>
+  )}
+</div>
         </div>
       )}
     </div>
