@@ -29,8 +29,8 @@ connection.connect((err) => {
 router.put('/submit-team-form', (req, res) => {
     const { fullName, address, phoneNumber, email, role } = req.body;
   
-    const query = 'INSERT INTO team (fullName, address, phoneNumber, email, role) VALUES (?, ?, ?, ?, ?)';
-    connection.query(query, [fullName, address, phoneNumber, email, role], (error, results) => {
+    const query = 'INSERT INTO team (fullName, address, phoneNumber, email, role, status) VALUES (?, ?, ?, ?, ?, ?)';
+    connection.query(query, [fullName, address, phoneNumber, email, role, 'pending'], (error, results) => {
       if (error) {
         console.error('Error executing SQL query:', error);
         res.status(500).json({ error: 'Error submitting form' });
@@ -41,9 +41,37 @@ router.put('/submit-team-form', (req, res) => {
     });
   });
 
-// Get all team members
+  // Update user status to 'accepted'
+router.post('/accept-request/:id', (req, res) => {
+    const userId = req.params.id;
+  
+    if (!userId || isNaN(userId)) {
+      res.status(400).json({ error: 'Invalid user ID' });
+      return;
+    }
+  
+    const query = 'UPDATE team SET status = "accepted" WHERE id = ?';
+    connection.query(query, [userId], (error, results) => {
+      if (error) {
+        console.error('Error executing SQL query:', error);
+        res.status(500).json({ error: 'Error accepting request' });
+      } else {
+        res.status(200).json({ message: 'Request accepted successfully' });
+      }
+    });
+  });
+
+// Get all team members based on status
 router.get('/get-team-members', (req, res) => {
-    const query = 'SELECT id, fullName, email, address, phoneNumber, role, createdAt FROM team';
+    const status = req.query.status;
+    let query = 'SELECT id, fullName, email, address, phoneNumber, role, createdAt FROM team';
+  
+    if (status === 'pending') {
+      query += ' WHERE status = "pending"';
+    } else if (status === 'accepted') {
+      query += ' WHERE status = "accepted"';
+    }
+  
     connection.query(query, (error, results) => {
       if (error) {
         console.error('Error executing SQL query:', error);

@@ -42,7 +42,7 @@ const TeamForm = () => {
         const templateParams = {
           fullName: formData.fullName,
           email: formData.email,
-          message: 'Your message content here', // Customize your email message
+          message: 'Your message content here', 
         };
       
         emailjs.send('service_97230z5', 'template_mkmdp1d', templateParams, 'ig47yihiXPhRzPqZH')
