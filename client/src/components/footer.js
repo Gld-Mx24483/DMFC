@@ -32,7 +32,7 @@ const Footer = () => {
       <div className="footer-column">
         <h4>Be a member</h4>
         <p>Become a member of Dalmach Foundation and join us in making a difference in the community.</p>
-        <p><a href="/involve-main">Get Involved</a></p>
+        <p><a href="/team-main">Be a part of the team</a></p>
         <p><a href="/staff-login">Login</a></p>
       </div>
       <div className="footer-bottom">

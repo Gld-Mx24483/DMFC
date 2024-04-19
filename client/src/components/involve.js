@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import Navbar from './navbar';
-import BriefInfo from './brief-info';
-import Footer from './footer';
+import { useNavigate } from 'react-router-dom';
 import './about-us-main.css';
 import './involve.css';
 
 const Volunteer = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: '',
     address: '',
@@ -43,6 +42,7 @@ const Volunteer = () => {
           email: '',
           volunteerFor: '',
         });
+        navigate('/');
       })
       .catch((error) => {
         console.error('Error submitting volunteer form:', error);

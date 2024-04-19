@@ -1,20 +1,29 @@
 // user-management.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './user-management.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH, faAngleDown, faTrash, faPen } from '@fortawesome/free-solid-svg-icons';
 
 const UserMan = () => {
-  const initialUsers = [
-    { name: 'John Cena', email: 'john@example.com', role: 'Editor', dateAdded: 'Feb 22, 2022', lastActive: 'Feb 24, 2022', showDropdown: false },
-    { name: 'Jane Dave', email: 'jane@example.com', role: 'Creator', dateAdded: 'Feb 25, 2022', lastActive: 'Feb 26, 2022', showDropdown: false },
-    { name: 'James Rodri', email: 'jane@example.com', role: 'Creator', dateAdded: 'Feb 27, 2022', lastActive: 'Feb 28, 2022', showDropdown: false },
-  ];
-
-  const [users, setUsers] = useState(initialUsers);
-  const [showMoreOptionsDropdown, setShowMoreOptionsDropdown] = useState(initialUsers.map(() => false));
+  const [users, setUsers] = useState([]);
+  const [showMoreOptionsDropdown, setShowMoreOptionsDropdown] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch('http://localhost:9000/get-team-members');
+      const data = await response.json();
+      setUsers(data.map(user => ({ ...user, showDropdown: false })));
+      setShowMoreOptionsDropdown(data.map(() => false));
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
 
   const handleNameFilterChange = (event) => {
     setNameFilter(event.target.value);
@@ -25,7 +34,7 @@ const UserMan = () => {
   };
 
   const filteredUsers = users.filter(user => {
-    const nameMatch = user.name.toLowerCase().includes(nameFilter.toLowerCase());
+    const nameMatch = user.fullName.toLowerCase().includes(nameFilter.toLowerCase());
     const roleMatch = user.role.toLowerCase().includes(roleFilter.toLowerCase());
     return nameMatch && roleMatch;
   });
@@ -54,6 +63,39 @@ const UserMan = () => {
     });
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+    return formattedDate.replace(',', ''); 
+  };
+
+  const deleteUser = async (userId) => {
+    try {
+      const confirmDelete = window.confirm('Delete User data?');
+      if (confirmDelete) {
+        const response = await fetch(`http://localhost:9000/delete-team-member/${userId}`, {
+          method: 'DELETE',
+        });
+  
+        if (response.ok) {
+          fetchUsers();
+          alert('User deleted successfully');
+        } else {
+          console.error('Error deleting user:', response.status);
+        }
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
+
   return (
     <div className="user-management-main-container">
       <div className="filter-section">
@@ -64,42 +106,30 @@ const UserMan = () => {
         <thead>
           <tr>
             <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Phone Number</th>
             <th>Role</th>
-            <th>Date added</th>
-            <th>Last active</th>
-            <th>More Option</th>
+            <th>Date Added</th>
+            <th>More Options</th>
           </tr>
         </thead>
         <tbody>
           {filteredUsers.map((user, index) => (
             <tr key={index}>
-              <td data-title="Name">
-                <div>{user.name}</div>
-                <div className="email">{user.email}</div>
-              </td>
-              <td data-title="Role">
-                <div className={`dropdown ${user.role.toLowerCase()}`}>
-                  <div className="role-wrapper">
-                    {user.role}
-                    <FontAwesomeIcon icon={faAngleDown} className="down-icon" onClick={() => toggleDropdown(index)} />
-                  </div>
-                  {user.showDropdown && (
-                    <div className="dropdown-content">
-                      <a href="#" onClick={() => handleRoleChange(index, 'Editor')}>Editor</a>
-                      <a href="#" onClick={() => handleRoleChange(index, 'Blogger')}>Blogger</a>
-                      <a href="#" onClick={() => handleRoleChange(index, 'Creator')}>Creator</a>
-                    </div>
-                  )}
-                </div>
-              </td>
-              <td data-title="Date Added">{user.dateAdded}</td>
-              <td data-title="Last Active">{user.lastActive}</td>
+              <td data-title="Name">{user.fullName}</td>
+              <td data-title="Email">{user.email}</td>
+              <td data-title="Address">{user.address}</td>
+              <td data-title="Phone Number">{user.phoneNumber}</td>
+              <td data-title="Role">{user.role}</td>
+              <td data-title="Date Added"> {formatDate(user.createdAt)}</td>
               <td data-title="More Options">
-                 <div className="more-options">
+                <div className="more-options">
                   <FontAwesomeIcon icon={faEllipsisH} onClick={() => toggleMoreOptionsDropdown(index)} />
                   {showMoreOptionsDropdown[index] && (
                     <div className="dropdown-content elipse">
-                      <a href="#"><FontAwesomeIcon icon={faTrash} /></a>
+                      {/* <a href="#"><FontAwesomeIcon icon={faTrash} /></a> */}
+                      <a href="#" onClick={() => deleteUser(user.id)}><FontAwesomeIcon icon={faTrash} /></a>
                       <a href="#"><FontAwesomeIcon icon={faPen} /></a>
                     </div>
                   )}

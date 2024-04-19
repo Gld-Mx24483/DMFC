@@ -1,0 +1,10 @@
+.other{
+    margin-right: 20px;
+    justify-content: center;
+    transform: translateY(20px);
+    height: 30px;
+}
+
+.other-container{
+    margin-top: -12px;
+}
