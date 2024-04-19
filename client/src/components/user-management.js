@@ -71,6 +71,7 @@ const UserMan = () => {
         <IncomingRequestTable
           requests={incomingRequests}
           onAcceptRequest={handleAcceptRequest}
+          fetchIncomingRequests={fetchIncomingRequests}
         />
       ) : (
         <MembersTable members={teamMembers} />

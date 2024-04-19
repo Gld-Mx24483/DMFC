@@ -2,8 +2,9 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import emailjs from 'emailjs-com';
 
-const IncomingRequestTable = ({ requests, onAcceptRequest }) => {
+const IncomingRequestTable = ({ requests, onAcceptRequest, fetchIncomingRequests }) => {
   const [nameFilter, setNameFilter] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
 
@@ -34,6 +35,63 @@ const IncomingRequestTable = ({ requests, onAcceptRequest }) => {
     return formattedDate.replace(',', '');
   };
 
+  const handleAcceptRequest = async (userId, email) => {
+    const acceptConfirmation = window.confirm("Accept Request?");
+  
+    if (acceptConfirmation) {
+      try {
+        const response = await fetch(`http://localhost:9000/accept-request/${userId}`, {
+          method: 'POST',
+        });
+  
+        if (response.ok) {
+          fetchIncomingRequests();
+  
+          // Send email
+          const templateParams = {
+            to_email: email,
+            message: 'Your request has been accepted. Welcome to our team!',
+          };
+  
+          emailjs.send('service_97230z5', 'template_3ytf60q', templateParams, 'ig47yihiXPhRzPqZH')
+            .then((response) => {
+              console.log('Email sent:', response);
+              alert('Request accepted and email sent successfully!');
+            })
+            .catch((error) => {
+              console.error('Error sending email:', error);
+              alert('Request accepted, but there was an error sending the email!');
+            });
+        } else {
+          console.error('Error accepting request:', response.status);
+        }
+      } catch (error) {
+        console.error('Error accepting request:', error);
+      }
+    }
+  };
+
+  const handleRejectRequest = async (userId) => {
+    const rejectConfirmation = window.confirm("Cancel Request?");
+
+    if (rejectConfirmation) {
+      try {
+        const response = await fetch(`http://localhost:9000/reject-request/${userId}`, {
+          method: 'DELETE',
+        });
+
+        if (response.ok) {
+          fetchIncomingRequests();
+          alert("Successfully deleted");
+        } else {
+          console.error('Error rejecting request:', response.status);
+        }
+      } catch (error) {
+        console.error('Error rejecting request:', error);
+      }
+    }
+  };
+
   return (
     <div>
       <div className="filter-section">
@@ -61,13 +119,9 @@ const IncomingRequestTable = ({ requests, onAcceptRequest }) => {
               <td data-title="Phone Number">{request.phoneNumber}</td>
               <td data-title="Role">{request.role}</td>
               <td data-title="Date Requested">{formatDate(request.createdAt)}</td>
-              <td data-title="Actions">
-                <FontAwesomeIcon
-                  icon={faCheck}
-                  className="accept-icon"
-                  onClick={() => onAcceptRequest(request.id)}
-                />
-                <FontAwesomeIcon icon={faTimes} className="reject-icon" />
+              <td data-title="Actions" className="actions-icons">
+                <FontAwesomeIcon icon={faCheck} className="accept-icon" onClick={() => handleAcceptRequest(request.id, request.email)} />
+                <FontAwesomeIcon icon={faTimes} className="reject-icon" onClick={() => handleRejectRequest(request.id)} />
               </td>
             </tr>
           ))}

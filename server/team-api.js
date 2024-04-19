@@ -63,24 +63,31 @@ router.post('/accept-request/:id', (req, res) => {
 
 // Get all team members based on status
 router.get('/get-team-members', (req, res) => {
-    const status = req.query.status;
-    let query = 'SELECT id, fullName, email, address, phoneNumber, role, createdAt FROM team';
-  
-    if (status === 'pending') {
-      query += ' WHERE status = "pending"';
-    } else if (status === 'accepted') {
-      query += ' WHERE status = "accepted"';
+  const status = req.query.status;
+  const email = req.query.email;
+  let query = 'SELECT id, fullName, email, address, phoneNumber, role, createdAt FROM team';
+
+  if (status === 'pending') {
+    query += ' WHERE status = "pending"';
+  } else if (status === 'accepted') {
+    query += ' WHERE status = "accepted"';
+  }
+
+  if (email) {
+    query += ` WHERE email = '${email}'`;
+  } else {
+    query += ' WHERE 1=1'; // Add a default condition to allow further AND/OR clauses
+  }
+
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error executing SQL query:', error);
+      res.status(500).json({ error: 'Error fetching team members' });
+    } else {
+      res.status(200).json(results);
     }
-  
-    connection.query(query, (error, results) => {
-      if (error) {
-        console.error('Error executing SQL query:', error);
-        res.status(500).json({ error: 'Error fetching team members' });
-      } else {
-        res.status(200).json(results);
-      }
-    });
   });
+});
 
 // Delete a team member
 router.delete('/delete-team-member/:id', (req, res) => {
@@ -101,5 +108,25 @@ router.delete('/delete-team-member/:id', (req, res) => {
       }
     });
   });
+
+  // Delete a pending team member
+router.delete('/reject-request/:id', (req, res) => {
+  const userId = req.params.id;
+
+  if (!userId || isNaN(userId)) {
+    res.status(400).json({ error: 'Invalid user ID' });
+    return;
+  }
+
+  const query = 'DELETE FROM team WHERE id = ? AND status = "pending"';
+  connection.query(query, [userId], (error, results) => {
+    if (error) {
+      console.error('Error executing SQL query:', error);
+      res.status(500).json({ error: 'Error rejecting request' });
+    } else {
+      res.status(200).json({ message: 'Request rejected successfully' });
+    }
+  });
+});
 
 module.exports = router;

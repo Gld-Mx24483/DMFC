@@ -5,21 +5,43 @@ import Navbar from './navbar';
 import Footer from './footer';
 import './admin.css';
 import './staff-login.css';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { useNavigate } from 'react-router-dom';
 
 const Admin = () => {
   const [email, setEmail] = useState('');
   const [uniquekey, setUniqueKey] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Get navigation function
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+const fetchEmail = async (email) => {
+  try {
+    const response = await fetch(`http://localhost:9000/get-team-members?email=${email}`);
+    const data = await response.json();
 
-    if (uniquekey === 'DMF123') {
-      navigate('/staff-dashboard'); 
+    if (data.length > 0) {
+      return true;
     } else {
-      alert('Wrong username or password!');
+      return false;
+    }
+  } catch (error) {
+    console.error('Error fetching email:', error);
+    return false;
+  }
+};
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+  
+    const emailExists = await fetchEmail(email);
+  
+    if (emailExists && uniquekey === 'DMF123' && password === 'DMF-TEAM') {
+      setErrorMessage('');
+      navigate('/staff-dashboard');
+    } else if (!emailExists) {
+      setErrorMessage('Email not found in the database!');
+    } else {
+      setErrorMessage('Wrong username or password!');
     }
   };
 
@@ -30,6 +52,7 @@ const Admin = () => {
         <Navbar />
         <form onSubmit={handleLogin} className="login-form staff-login-form">
           <h2>Login</h2>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
           <label className='label' htmlFor="email">Email:</label>
           <input
             type="email"

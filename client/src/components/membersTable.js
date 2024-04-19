@@ -96,9 +96,6 @@ const MembersTable = ({ members }) => {
                       <a href="#" onClick={() => deleteUser(member.id)}>
                         <FontAwesomeIcon icon={faTrash} />
                       </a>
-                      <a href="#">
-                        <FontAwesomeIcon icon={faPen} />
-                      </a>
                     </div>
                   )}
                 </div>
