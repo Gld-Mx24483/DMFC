@@ -41,4 +41,21 @@ router.put('/submit-volunteer-form', (req, res) => {
   });
 });
 
+// volunteer-api.js
+// ...
+
+router.get('/get-volunteers', (req, res) => {
+  const query = 'SELECT * FROM volunteers';
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error executing SQL query:', error);
+      res.status(500).json({ error: 'Error fetching volunteers' });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+});
+
+// ...
+
 module.exports = router;

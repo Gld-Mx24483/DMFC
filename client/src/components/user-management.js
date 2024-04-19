@@ -3,11 +3,13 @@ import React, { useState, useEffect } from 'react';
 import './user-management.css';
 import IncomingRequestTable from './incomingRequestTable';
 import MembersTable from './membersTable';
+import VolunteerTable from './volunteerTable';
 
 const UserMan = () => {
   const [showIncomingRequests, setShowIncomingRequests] = useState(true);
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
+  const [showVolunteers, setShowVolunteers] = useState(false);
 
   useEffect(() => {
     fetchIncomingRequests();
@@ -50,34 +52,51 @@ const UserMan = () => {
       console.error('Error accepting request:', error);
     }
   };
-
-  return (
-    <div className="user-management-main-container">
-      <div className="button-container">
-        <button
-          className={showIncomingRequests ? 'active' : ''}
-          onClick={() => setShowIncomingRequests(true)}
-        >
-          Incoming Member Requests
-        </button>
-        <button
-          className={!showIncomingRequests ? 'active' : ''}
-          onClick={() => setShowIncomingRequests(false)}
-        >
-          Members in the Team
-        </button>
-      </div>
-      {showIncomingRequests ? (
-        <IncomingRequestTable
-          requests={incomingRequests}
-          onAcceptRequest={handleAcceptRequest}
-          fetchIncomingRequests={fetchIncomingRequests}
-        />
-      ) : (
-        <MembersTable members={teamMembers} />
-      )}
+  
+return (
+  <div className="user-management-main-container">
+    <div className="button-container">
+      <button
+        className={showIncomingRequests ? 'active' : ''}
+        onClick={() => {
+          setShowIncomingRequests(true);
+          setShowVolunteers(false);
+        }}
+      >
+        Incoming Member Requests
+      </button>
+      <button
+        className={!showIncomingRequests && !showVolunteers ? 'active' : ''}
+        onClick={() => {
+          setShowIncomingRequests(false);
+          setShowVolunteers(false);
+        }}
+      >
+        Members in the Team
+      </button>
+      <button
+        className={showVolunteers ? 'active' : ''}
+        onClick={() => {
+          setShowIncomingRequests(false);
+          setShowVolunteers(true);
+        }}
+      >
+        Volunteers
+      </button>
     </div>
-  );
+    {showIncomingRequests ? (
+      <IncomingRequestTable
+        requests={incomingRequests}
+        onAcceptRequest={handleAcceptRequest}
+        fetchIncomingRequests={fetchIncomingRequests}
+      />
+    ) : showVolunteers ? (
+      <VolunteerTable />
+    ) : (
+      <MembersTable members={teamMembers} />
+    )}
+  </div>
+);
 };
 
 export default UserMan;
