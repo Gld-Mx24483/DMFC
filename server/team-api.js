@@ -66,18 +66,23 @@ router.get('/get-team-members', (req, res) => {
   const status = req.query.status;
   const email = req.query.email;
   let query = 'SELECT id, fullName, email, address, phoneNumber, role, createdAt FROM team';
+  let whereClause = '';
 
   if (status === 'pending') {
-    query += ' WHERE status = "pending"';
+    whereClause = ' WHERE status = "pending"';
   } else if (status === 'accepted') {
-    query += ' WHERE status = "accepted"';
+    whereClause = ' WHERE status = "accepted"';
   }
 
   if (email) {
-    query += ` WHERE email = '${email}'`;
-  } else {
-    query += ' WHERE 1=1'; // Add a default condition to allow further AND/OR clauses
+    if (whereClause) {
+      whereClause += ` AND email = '${email}'`;
+    } else {
+      whereClause = ` WHERE email = '${email}'`;
+    }
   }
+
+  query += whereClause;
 
   connection.query(query, (error, results) => {
     if (error) {
