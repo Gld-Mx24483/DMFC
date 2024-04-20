@@ -31,6 +31,28 @@ const Contact = () => {
     fetchUserMessagesWithAdminResponses();
   }, []);
 
+  useEffect(() => {
+    const fetchAdminBroadcastMessages = async () => {
+      try {
+        const response = await fetch('http://localhost:9000/get-admin-broadcast-messages');
+        const data = await response.json();
+        setUserMessages((prevMessages) => [
+          ...prevMessages,
+          ...data.map((message) => ({
+            id: message.id,
+            sender: 'Admin',
+            message: message.message,
+            date: message.created_at,
+          })),
+        ]);
+      } catch (error) {
+        console.error('Error fetching admin broadcast messages:', error);
+      }
+    };
+  
+    fetchAdminBroadcastMessages();
+  }, []);
+
   const toggleReplySection = () => {
     setShowReplySection(!showReplySection);
     setUserEmail('');

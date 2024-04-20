@@ -44,14 +44,16 @@ const Comm = () => {
       try {
         const response = await fetch('http://localhost:9000/get-user-messages-with-admin-responses');
         const data = await response.json();
-        const sortedUserMessages = data.map(message => ({
-          id: message.id,
-          sender: message.name,
-          message: message.message,
-          email: message.email,
-          date: message.created_at,
-          adminResponse: message.admin_message || ''
-        })).sort((a, b) => a.email.localeCompare(b.email));
+        const sortedUserMessages = data
+          .map((message) => ({
+            id: message.id,
+            sender: message.name,
+            message: message.message,
+            email: message.email,
+            date: new Date(message.created_at),
+            adminResponse: message.admin_message || '',
+          }))
+          .sort((a, b) => b.date - a.date); // Sort in descending order of date/time
         setUserMessages(sortedUserMessages);
       } catch (error) {
         console.error('Error fetching user messages with admin responses:', error);
@@ -60,6 +62,28 @@ const Comm = () => {
   
     fetchUserMessagesWithAdminResponses();
   }, []);
+
+  useEffect(() => {
+  const fetchAdminBroadcastMessages = async () => {
+    try {
+      const response = await fetch('http://localhost:9000/get-admin-broadcast-messages');
+      const data = await response.json();
+      setUserMessages((prevMessages) => [
+        ...prevMessages,
+        ...data.map((message) => ({
+          id: message.id,
+          sender: 'Admin',
+          message: message.message,
+          date: message.created_at,
+        })),
+      ]);
+    } catch (error) {
+      console.error('Error fetching admin broadcast messages:', error);
+    }
+  };
+
+  fetchAdminBroadcastMessages();
+}, []);
 
   const handleSendResponseToUser = () => {
     const message = adminResponseToUser.trim();
@@ -74,7 +98,6 @@ const Comm = () => {
         return selectedMessage;
       });
   
-      // Add a new message from the admin as a reply
       const newAdminMessage = {
         id: userMessages.length + 1,
         sender: 'Admin',
@@ -132,11 +155,11 @@ const Comm = () => {
 
   const handleMessageSelect = (messageId, chatType) => {
     if (chatType === 'web') {
-      setSelectedUserMessageId(messageId);
+      setSelectedUserMessageId((prevId) => (prevId === messageId ? null : messageId));
     } else {
-      setSelectedStaffMessageId(messageId);
+      setSelectedStaffMessageId((prevId) => (prevId === messageId ? null : messageId));
     }
-  };
+  };  
 
   return (
     <div className='communication-main-container'>
@@ -181,6 +204,38 @@ const GroupChatAppInterface = ({
   onAdminResponseChange,
   chatType,
 }) => {
+  const handleSendMessage = async () => {
+    const message = adminResponse.trim();
+    if (message !== '') {
+      if (selectedMessageId) {
+        // Send the message as a response to the selected message
+        onMessageSend();
+      } else {
+        // Send the message as a broadcast message
+        try {
+          const response = await fetch('http://localhost:9000/submit-admin-broadcast', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message }),
+          });
+  
+          if (response.ok) {
+            console.log('Broadcast message submitted successfully');
+            onAdminResponseChange('');
+            alert('Broadcast Sent Successfully'); // Display success prompt
+            window.location.reload(); // Reload the component
+          } else {
+            console.error('Error submitting broadcast message');
+          }
+        } catch (error) {
+          console.error('Error submitting broadcast message:', error);
+        }
+      }
+    }
+  };
+
   const isAdminMessage = (message) => {
     return message.sender === 'Admin';
   };
@@ -190,16 +245,19 @@ const GroupChatAppInterface = ({
   };
 
   const getMessageReference = (message) => {
-    const referencedMessage = messages.find(msg => msg.id === message.inResponseTo);
+    const referencedMessage = messages.find((msg) => msg.id === message.inResponseTo);
     if (referencedMessage) {
       if (isAdminMessage(message)) {
         return `${referencedMessage.sender}: ${referencedMessage.message}`;
       } else {
         return `${referencedMessage.message}`;
       }
+    } else if (message.inResponseTo) {
+      return 'Broadcast Message'; // Display for broadcast messages
     }
     return '';
   };
+  
 
   const handleMessageClassName = (message) => {
     let className = 'message';
@@ -208,6 +266,9 @@ const GroupChatAppInterface = ({
     }
     if (isAdminMessage(message)) {
       className += ' admin-message';
+      if (!message.inResponseTo) {
+        className += ' broadcast-message'; 
+      }
     }
     if (isUserMessage(message)) {
       className += ' sent-by-user';
@@ -259,16 +320,16 @@ return (
       ))}
     </div>
     <div className='response-form'>
-      <textarea
-        className='response-textarea'
-        placeholder='Type your response here...'
-        value={adminResponse}
-        onChange={(e) => onAdminResponseChange(e.target.value)}
-      />
-      <button className='send-button' onClick={onMessageSend}>
-        <FontAwesomeIcon icon={faPaperPlane} />
-      </button>
-    </div>
+        <textarea
+          className='response-textarea'
+          placeholder='Type your response here...'
+          value={adminResponse}
+          onChange={(e) => onAdminResponseChange(e.target.value)}
+        />
+        <button className='send-button' onClick={handleSendMessage}>
+          <FontAwesomeIcon icon={faPaperPlane} />
+        </button>
+      </div>
   </>
 );
 };

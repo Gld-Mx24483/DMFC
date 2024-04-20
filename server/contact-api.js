@@ -46,6 +46,20 @@ router.post('/save-admin-response', (req, res) => {
     });
   });
 
+  router.post('/submit-admin-broadcast', (req, res) => {
+    const { message } = req.body;
+  
+    const query = 'INSERT INTO admin_broadcast_messages (message) VALUES (?)';
+    connection.query(query, [message], (error, results) => {
+      if (error) {
+        console.error('Error executing SQL query:', error);
+        res.status(500).json({ error: 'Error submitting broadcast message' });
+      } else {
+        res.status(200).json({ message: 'Broadcast message submitted successfully' });
+      }
+    });
+  });
+
 router.get('/get-contact-messages', (req, res) => {
     const query = 'SELECT id, name, email, phone, message, created_at FROM contacts';
     connection.query(query, (error, results) => {
@@ -88,6 +102,18 @@ router.get('/get-contact-messages', (req, res) => {
       if (error) {
         console.error('Error executing SQL query:', error);
         res.status(500).json({ error: 'Error fetching user messages' });
+      } else {
+        res.status(200).json(results);
+      }
+    });
+  });
+
+  router.get('/get-admin-broadcast-messages', (req, res) => {
+    const query = 'SELECT id, message, created_at FROM admin_broadcast_messages ORDER BY created_at DESC';
+    connection.query(query, (error, results) => {
+      if (error) {
+        console.error('Error executing SQL query:', error);
+        res.status(500).json({ error: 'Error fetching broadcast messages' });
       } else {
         res.status(200).json(results);
       }
