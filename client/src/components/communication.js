@@ -1,42 +1,62 @@
 // communication.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './communication.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 const Comm = () => {
-  const [userMessages, setUserMessages] = useState([
-    { id: 1, sender: 'John', message: 'Hi Admin, I have a question about the new feature on the website.', date: '2024-02-20' },
-    { id: 2, sender: 'Jane', message: 'Hello, can you please provide an update on my support ticket?', date: '2024-02-19' },
-    { id: 3, sender: 'Bob', message: 'Good morning, I found a bug on the checkout page.', date: '2024-02-18' },
-  ]);
+  const [contactMessages, setContactMessages] = useState([]);
+  const [userMessages, setUserMessages] = useState([]);
   const [staffMessages, setStaffMessages] = useState([
     { id: 1, sender: 'Sarah', message: 'Admin, we have a meeting scheduled for tomorrow at 10 AM.', date: '2024-02-21' },
     { id: 2, sender: 'Mike', message: 'Hey Admin, the server seems to be down. Can you look into it?', date: '2024-02-20' },
   ]);
   const [adminResponseToUser, setAdminResponseToUser] = useState('');
   const [adminResponseToStaff, setAdminResponseToStaff] = useState('');
-  const [selectedUserMessage, setSelectedUserMessage] = useState(null);
-  const [selectedStaffMessage, setSelectedStaffMessage] = useState(null);
-  const [taggedMessageId, setTaggedMessageId] = useState(null);
-  const [selectedChatType, setSelectedChatType] = useState('web'); // Default to web chat
+  const [selectedUserMessageId, setSelectedUserMessageId] = useState(null);
+  const [selectedStaffMessageId, setSelectedStaffMessageId] = useState(null);
+
+  useEffect(() => {
+    const fetchContactMessages = async () => {
+      try {
+        const response = await fetch('http://localhost:9000/get-contact-messages');
+        const data = await response.json();
+        setContactMessages(data);
+        const sortedUserMessages = data.map(message => ({
+          id: message.id,
+          sender: message.name,
+          message: message.message,
+          email: message.email,
+          phone: message.phone,
+          date: message.created_at
+        })).sort((a, b) => a.email.localeCompare(b.email));
+        setUserMessages(sortedUserMessages);
+      } catch (error) {
+        console.error('Error fetching contact messages:', error);
+      }
+    };
+
+    fetchContactMessages();
+  }, []);
 
   const handleSendResponseToUser = () => {
     const message = adminResponseToUser.trim();
     if (message !== '') {
-      const newMessage = {
-        id: userMessages.length + 1,
-        sender: 'Admin',
-        message,
-        date: new Date().toISOString(),
-        inResponseTo: selectedUserMessage ? selectedUserMessage.id : null // Reference to the selected user message if any
-      };
-      setUserMessages([...userMessages, newMessage]);
+      const newMessages = userMessages.map(selectedMessage => {
+        if (selectedMessage.id === selectedUserMessageId) {
+          return {
+            ...selectedMessage,
+            adminResponse: message
+          };
+        }
+        return selectedMessage;
+      });
+      setUserMessages(newMessages);
       setAdminResponseToUser('');
-      setSelectedUserMessage(null);
+      setSelectedUserMessageId(null);
     }
   };
-  
+
   const handleSendResponseToStaff = () => {
     const message = adminResponseToStaff.trim();
     if (message !== '') {
@@ -45,24 +65,20 @@ const Comm = () => {
         sender: 'Admin',
         message,
         date: new Date().toISOString(),
-        inResponseTo: selectedStaffMessage ? selectedStaffMessage.id : null // Reference to the selected staff message if any
+        inResponseTo: selectedStaffMessageId ? selectedStaffMessageId : null
       };
       setStaffMessages([...staffMessages, newMessage]);
       setAdminResponseToStaff('');
-      setSelectedStaffMessage(null);
+      setSelectedStaffMessageId(null);
     }
   };
 
-  const handleTagMessage = (messageId) => {
-    if (taggedMessageId === messageId) {
-      setTaggedMessageId(null);
+  const handleMessageSelect = (messageId, chatType) => {
+    if (chatType === 'web') {
+      setSelectedUserMessageId(messageId);
     } else {
-      setTaggedMessageId(messageId); 
+      setSelectedStaffMessageId(messageId);
     }
-  };
-
-  const handleChatTypeChange = (chatType) => {
-    setSelectedChatType(chatType);
   };
 
   return (
@@ -72,16 +88,12 @@ const Comm = () => {
         <div className='chat-box'>
           <GroupChatAppInterface
             messages={userMessages}
-            onMessageSelect={setSelectedUserMessage}
+            onMessageSelect={(messageId) => handleMessageSelect(messageId, 'web')}
             onMessageSend={handleSendResponseToUser}
-            selectedMessage={selectedUserMessage}
+            selectedMessageId={selectedUserMessageId}
             adminResponse={adminResponseToUser}
             onAdminResponseChange={setAdminResponseToUser}
-            onMessageTag={handleTagMessage}
-            taggedMessageId={taggedMessageId}
             chatType="web"
-            onChatTypeChange={handleChatTypeChange}
-            selectedChatType={selectedChatType}
           />
         </div>
       </div>
@@ -90,16 +102,12 @@ const Comm = () => {
         <div className='chat-box'>
           <GroupChatAppInterface
             messages={staffMessages}
-            onMessageSelect={setSelectedStaffMessage}
+            onMessageSelect={(messageId) => handleMessageSelect(messageId, 'staff')}
             onMessageSend={handleSendResponseToStaff}
-            selectedMessage={selectedStaffMessage}
+            selectedMessageId={selectedStaffMessageId}
             adminResponse={adminResponseToStaff}
             onAdminResponseChange={setAdminResponseToStaff}
-            onMessageTag={handleTagMessage}
-            taggedMessageId={taggedMessageId}
             chatType="staff"
-            onChatTypeChange={handleChatTypeChange}
-            selectedChatType={selectedChatType}
           />
         </div>
       </div>
@@ -111,11 +119,9 @@ const GroupChatAppInterface = ({
   messages,
   onMessageSelect,
   onMessageSend,
-  selectedMessage,
+  selectedMessageId,
   adminResponse,
   onAdminResponseChange,
-  onMessageTag,
-  taggedMessageId,
   chatType,
 }) => {
   const isAdminMessage = (message) => {
@@ -134,21 +140,10 @@ const GroupChatAppInterface = ({
     return '';
   };
 
-  const handleToggleMessageSelection = (message) => {
-    if (selectedMessage && selectedMessage.id === message.id) {
-      onMessageSelect(null); 
-    } else {
-      onMessageSelect(message); 
-    }
-  };
-
   const handleMessageClassName = (message) => {
     let className = 'message';
-    if (selectedMessage && selectedMessage.id === message.id) {
+    if (selectedMessageId === message.id) {
       className += ' selected';
-    }
-    if (taggedMessageId === message.id) {
-      className += ' tagged';
     }
     if (isAdminMessage(message)) {
       className += ' admin-message';
@@ -157,10 +152,10 @@ const GroupChatAppInterface = ({
       className += ' sent-by-user';
     }
     if (isAdminMessage(message) && chatType === 'web') {
-      className += ' admin-message-web'; 
+      className += ' admin-message-web';
     }
     if (isAdminMessage(message) && chatType === 'staff') {
-      className += ' admin-message-staff'; 
+      className += ' admin-message-staff';
     }
     return className;
   };
@@ -172,9 +167,7 @@ const GroupChatAppInterface = ({
           <div
             key={message.id}
             className={handleMessageClassName(message)}
-            onClick={() => handleToggleMessageSelection(message)} 
-            onMouseEnter={() => onMessageTag(message.id)}
-            onMouseLeave={() => onMessageTag(null)}
+            onClick={() => onMessageSelect(message.id)}
           >
             {message.inResponseTo && (
               <div className='message-reference'>
@@ -183,6 +176,7 @@ const GroupChatAppInterface = ({
             )}
             <div className='message-sender'>{message.sender}</div>
             <div className='message-content'>{message.message}</div>
+            <div className='message-content'>{message.email}</div>
             <div className='message-date'>{new Date(message.date).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</div>
             {message.adminResponse && <div className='admin-response'>{message.adminResponse}</div>}
           </div>

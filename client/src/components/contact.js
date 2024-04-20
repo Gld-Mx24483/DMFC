@@ -71,23 +71,6 @@ const Contact = () => {
         </div>
         <div className="left-halff">
             <h1>Keep in touch with us</h1>
-          {/* <form className='contact-form'>
-            <div className="form-group">
-              <input type="text" placeholder="Name" />
-              <input type="email" placeholder="Email" />
-            </div>
-            <div className="form-group">
-              <input type="tel" placeholder="Phone" />
-            </div>
-            <div className="form-group">
-              <textarea placeholder="Your Message" />
-            </div>
-            <div className="contact-us">
-            <a href='#' className='contact-us-link'>
-              Submit <i className='fas fa-arrow-right'></i>
-            </a>
-            </div>
-          </form> */}
           <form className='contact-form' onSubmit={handleSubmit}>
   <div className="form-group">
     <input type="text" placeholder="Name" name="name" value={formData.name} onChange={handleInputChange} required />
