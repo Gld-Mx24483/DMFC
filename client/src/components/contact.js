@@ -9,6 +9,8 @@ const Contact = () => {
   const navigate = useNavigate();
   const [showReplySection, setShowReplySection] = useState(false);
   const [userEmail, setUserEmail] = useState('');
+  const [showViewReply, setShowViewReply] = useState(false);
+  const [showGlobalReply, setShowGlobalReply] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -16,6 +18,7 @@ const Contact = () => {
     message: '',
   });
   const [userMessages, setUserMessages] = useState([]);
+  const [globalReplyMessages, setGlobalReplyMessages] = useState([]);
 
   useEffect(() => {
     const fetchUserMessagesWithAdminResponses = async () => {
@@ -36,20 +39,12 @@ const Contact = () => {
       try {
         const response = await fetch('http://localhost:9000/get-admin-broadcast-messages');
         const data = await response.json();
-        setUserMessages((prevMessages) => [
-          ...prevMessages,
-          ...data.map((message) => ({
-            id: message.id,
-            sender: 'Admin',
-            message: message.message,
-            date: message.created_at,
-          })),
-        ]);
+        setGlobalReplyMessages(data);
       } catch (error) {
         console.error('Error fetching admin broadcast messages:', error);
       }
     };
-  
+
     fetchAdminBroadcastMessages();
   }, []);
 
@@ -164,33 +159,70 @@ const Contact = () => {
         </div>
       </div>
       {showReplySection && (
-        <div className="reply-section-button">
-          <h3>View Reply</h3>
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={userEmail}
-            onChange={(e) => setUserEmail(e.target.value)}
-          />
-          <div className="user-messages-chat">
-            {userMessages
-              .filter((message) => message.email === userEmail)
-              .map((message) => (
-                <div key={message.id} className="user-message-container-chat">
-                  <div className="user-message-chat">
-                    <div className="message-sender-chat">{message.name}</div>
-                    <div className="message-content-chat">{message.message}</div>
-                    <div className="message-date-chat">{new Date(message.created_at).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</div>
-                  </div>
-                  {message.admin_message && (
-                    <div className="admin-reply-chat">
-                      <div className="message-sender-chat">Admin</div>
-                      <div className="message-content-chat">{message.admin_message}</div>
-                      <div className="message-date-chat">{new Date().toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</div>
-                    </div>
-                  )}
+        <div className="reply-section-container">
+          <div className="reply-section-button">
+            <h3>View Replies</h3>
+            <div className="toggle-buttons">
+              <button
+                className={`toggle-btn ${showViewReply ? 'active' : ''}`}
+                onClick={() => {
+                  setShowViewReply(true);
+                  setShowGlobalReply(false);
+                }}
+              >
+                View Reply
+              </button>
+              <button
+                className={`toggle-btn ${showGlobalReply ? 'active' : ''}`}
+                onClick={() => {
+                  setShowGlobalReply(true);
+                  setShowViewReply(false);
+                }}
+              >
+                Global Reply
+              </button>
+            </div>
+            {showViewReply && (
+              <div>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={userEmail}
+                  onChange={(e) => setUserEmail(e.target.value)}
+                />
+                <div className="user-messages-chat">
+                  {userMessages
+                    .filter((message) => message.email === userEmail)
+                    .map((message) => (
+                      <div key={message.id} className="user-message-container-chat">
+                        <div className="user-message-chat">
+                          <div className="message-sender-chat">{message.name}</div>
+                          <div className="message-content-chat">{message.message}</div>
+                          <div className="message-date-chat">{new Date(message.created_at).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</div>
+                        </div>
+                        {message.admin_message && (
+                          <div className="admin-reply-chat">
+                            <div className="message-sender-chat">Admin</div>
+                            <div className="message-content-chat">{message.admin_message}</div>
+                            <div className="message-date-chat">{new Date().toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
                 </div>
-              ))}
+              </div>
+            )}
+            {showGlobalReply && (
+              <div className="global-reply-messages">
+                {globalReplyMessages.map((message) => (
+                  <div key={message.id} className="global-reply-message">
+                    <div className="message-sender-global">Admin</div>
+                    <div className="message-content-global">{message.message}</div>
+                    <div className="message-date-global">{new Date(message.created_at).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
