@@ -51,6 +51,17 @@ const Comm = () => {
         }
         return selectedMessage;
       });
+  
+      // Add a new message from the admin as a reply
+      const newAdminMessage = {
+        id: userMessages.length + 1,
+        sender: 'Admin',
+        message,
+        date: new Date().toISOString(),
+        inResponseTo: selectedUserMessageId
+      };
+      newMessages.push(newAdminMessage);
+  
       setUserMessages(newMessages);
       setAdminResponseToUser('');
       setSelectedUserMessageId(null);
@@ -135,7 +146,11 @@ const GroupChatAppInterface = ({
   const getMessageReference = (message) => {
     const referencedMessage = messages.find(msg => msg.id === message.inResponseTo);
     if (referencedMessage) {
-      return `${referencedMessage.sender}: ${referencedMessage.message}`;
+      if (isAdminMessage(message)) {
+        return `${referencedMessage.sender}: ${referencedMessage.message}`;
+      } else {
+        return `${referencedMessage.message}`;
+      }
     }
     return '';
   };
