@@ -7,6 +7,7 @@ const eventManagementAPI = require('./event-management-api');
 const galleryAPI = require('./gallery-api');
 const volunteerAPI = require('./volunteer-api');
 const teamAPI = require('./team-api');
+const contactAPI = require('./contact-api');
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use('/', eventManagementAPI);
 app.use('/', galleryAPI);
 app.use('/', volunteerAPI);
 app.use('/', teamAPI);
+app.use('/', contactAPI);
 app.use(cors({
   origin: 'http://localhost:3000' // Add this line
 }));
