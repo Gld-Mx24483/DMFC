@@ -3,7 +3,6 @@ import './staff-dash.css';
 import EventMann from './event-management';
 import ContentMann from './content-management';
 import Gallery from './gallery';
-import Communication from './communication';
 
 const StaffDash = () => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -35,12 +34,6 @@ const StaffDash = () => {
             Event Management
           </button>
           <button
-            className={`staff-dash-option ${selectedOption === 'Communication' ? 'selected' : ''}`}
-            onClick={() => handleOptionClick('Communication')}
-          >
-            Communication
-          </button>
-          <button
             className={`staff-dash-option ${selectedOption === 'Gallery' ? 'selected' : ''}`}
             onClick={() => handleOptionClick('Gallery')}
           >
@@ -53,7 +46,6 @@ const StaffDash = () => {
         {selectedOption === 'Event Management' && <EventMann />}
         {selectedOption === 'Content Management' && <ContentMann />}
         {selectedOption === 'Gallery' && <Gallery />}
-        {selectedOption === 'Communication' && <Communication />}
       </div>
       <div className="menu-icons" onClick={toggleSidebar}>
         ☰
