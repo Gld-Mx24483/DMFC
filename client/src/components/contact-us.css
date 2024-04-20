@@ -1,7 +1,9 @@
     .contactt{
         /* border: 2px solid black; */
         margin-top: 150px;
-        height: 115vh;
+        height: 150vh;
+        overflow-y: scroll;
+        margin-bottom: 20px;
     }
 
     @media screen and (max-width: 500px) {
