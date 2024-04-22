@@ -9,6 +9,7 @@
     @media screen and (max-width: 500px) {
         .contactt{
             height: 150vh;
+            margin-top: 50px;
         }
 
     }
