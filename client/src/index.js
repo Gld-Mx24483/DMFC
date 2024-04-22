@@ -24,6 +24,7 @@ import StaffLogin from './components/staff-login';
 import AdminDashboard from './components/admin-dashboard';
 import StaffDashboard from './components/staff-dashboard';
 import Blogs from './components/blogs-main';
+import GallMainn from './components/gallery-main';
 import TM from './components/team-main';
 import reportWebVitals from './reportWebVitals';
 import '@fortawesome/fontawesome-free/css/all.min.css'
@@ -55,6 +56,7 @@ root.render(
       <Route exact path="/admin-dashboard" element={<AdminDashboard />} />
       <Route exact path="/staff-dashboard" element={<StaffDashboard />} />
       <Route exact path="/blogs-main" element={<Blogs />} />
+      <Route exact path="/gallery-main" element={<GallMainn />} />
       <Route exact path="/team-main" element={<TM />} />
       </Routes>
     </Router>

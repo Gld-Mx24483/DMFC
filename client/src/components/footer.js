@@ -27,6 +27,7 @@ const Footer = () => {
         <p><a href="./programs-main">Programs</a></p>
         <p><a href="./events-main">Events</a></p>
         <p><a href="./blogs-main">Blogs</a></p>
+        <p><a href="./gallery-main">Gallery</a></p>
         <p><a href="./donating">Support</a></p>
       </div>
       <div className="footer-column">

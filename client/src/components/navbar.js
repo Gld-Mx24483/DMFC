@@ -8,7 +8,7 @@ import { faArrowRight, faBars } from '@fortawesome/free-solid-svg-icons';
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { pathname } = useLocation(); // Get current pathname
+  const { pathname } = useLocation(); 
 
   const handleScroll = () => {
     const offset = window.scrollY;
@@ -49,6 +49,9 @@ const Navbar = () => {
         </li>
         <li className={pathname === "/blogs-main" ? "active" : ""}>
           <Link to="/blogs-main">Blogs</Link>
+        </li>
+        <li className={pathname === "/gallery-main" ? "active" : ""}>
+          <Link to="/gallery-main">Gallery</Link>
         </li>
         <li className={pathname === "/get-involved" ? "active" : ""}>
           <Link to="/involve-main">Get Involved</Link>

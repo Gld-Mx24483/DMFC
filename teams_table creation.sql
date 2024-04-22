@@ -1,0 +1,10 @@
+CREATE TABLE team (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  fullName VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  address VARCHAR(255) NOT NULL,
+  phoneNumber VARCHAR(20) NOT NULL,
+  role VARCHAR(100) NOT NULL,
+  status ENUM('pending', 'accepted') NOT NULL DEFAULT 'pending',
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
