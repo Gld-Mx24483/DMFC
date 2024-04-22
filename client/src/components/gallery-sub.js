@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './gallery-sub.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCompress, faExpand } from '@fortawesome/free-solid-svg-icons';
+import screenfull from 'screenfull';
 
 const GallSub = () => {
   const [mediaList, setMediaList] = useState([]);
@@ -10,6 +11,10 @@ const GallSub = () => {
 
   useEffect(() => {
     fetchMedia();
+    document.addEventListener('keydown', handleEscKey, false);
+    return () => {
+      document.removeEventListener('keydown', handleEscKey, false);
+    };
   }, []);
 
   const fetchMedia = () => {
@@ -23,20 +28,33 @@ const GallSub = () => {
   };
 
   const handleFullScreen = (media) => {
-    setFullScreenMedia(media);
+    if (screenfull.isEnabled) {
+      screenfull.request();
+      setFullScreenMedia(media);
+    } else {
+      console.log('Full screen mode is not supported by this browser');
+    }
   };
 
   const handleCloseFullScreen = () => {
+    screenfull.exit();
     setFullScreenMedia(null);
+  };
+
+  const handleEscKey = (event) => {
+    if (event.key === 'Escape') {
+      screenfull.exit();
+      setFullScreenMedia(null);
+    }
   };
 
   return (
     <div className="gall-sub-main-container">
-        <div className="events-heading-container">
-    <p className="events-subheading">
-    Discover our captivating <span className="spanns">photo gallery</span> and{' '}
-    <span className="spanns">engaging videos</span> from various events
-    </p>
+      <div className="events-heading-container">
+        <p className="events-subheading">
+          Discover our captivating <span className="spanns">photo gallery</span> and{' '}
+          <span className="spanns">engaging videos</span> from various events
+        </p>
       </div>
       {fullScreenMedia ? (
         <div className="full-screen-overlay">
@@ -54,26 +72,26 @@ const GallSub = () => {
         </div>
       ) : null}
       <div className='media-grid-container'>
-      <div className="media-grid">
-        {mediaList.map((media, index) => (
-          <div className="media-card" key={index}>
-            <div className="media-container">
-              {media.imagePath && <img src={media.imagePath} alt="Media" />}
-              {media.videoPath && <video src={media.videoPath} controls />}
-              <div className="hover-overlay">
-                <FontAwesomeIcon
-                  icon={faExpand}
-                  onClick={() => handleFullScreen(media)}
-                />
+        <div className="media-grid">
+          {mediaList.map((media, index) => (
+            <div className="media-card" key={index}>
+              <div className="media-container">
+                {media.imagePath && <img src={media.imagePath} alt="Media" />}
+                {media.videoPath && <video src={media.videoPath} controls />}
+                <div className="hover-overlay">
+                  <FontAwesomeIcon
+                    icon={faExpand}
+                    onClick={() => handleFullScreen(media)}
+                  />
+                </div>
+              </div>
+              <div className="media-details">
+                <h3>{media.title}</h3>
+                <p>{new Date(media.upload_date).toLocaleDateString()}</p>
               </div>
             </div>
-            <div className="media-details">
-              <h3>{media.title}</h3>
-              <p>{new Date(media.upload_date).toLocaleDateString()}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
       </div>
     </div>
   );

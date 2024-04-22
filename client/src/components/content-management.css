@@ -155,7 +155,7 @@
 
 .create-content-button,
 .content-form .but{
-  background-color: #007bff;
+  background-color: rgb(238, 132, 3);
   color: white;
   border: none;
   padding: 10px 20px;
@@ -165,7 +165,7 @@
 
 .create-content-button:hover,
 .content-form button:hover {
-  background-color: #0056b3; 
+  background-color: rgb(203, 113, 4); 
 }
 
 .create-content-button svg {

@@ -12,7 +12,6 @@
     left: 0;
     width: 100%;
     z-index: 1000;
-    /* transition: all 4s ease-in-out; */
   }
 
   .brief-info-navbar.hide {
@@ -31,6 +30,15 @@
     margin-right: 5px;
     padding: 0px 10px;
     font-size: 25px;
+    cursor: pointer;
+  }
+  
+  .info-left svg:hover {
+    color: #fff;
+  }
+
+  .info-right svg:hover {
+    color: #fff;
   }
   
   .info-right {
@@ -43,11 +51,12 @@
     margin: 0 5px;
     padding: 0px 10px;
     font-size: 25px;
+    cursor: pointer;
   }
   
   @media only screen and (max-width: 500px) {
   .brief-info-navbar {
-    padding: 10px; /* Adjust padding as needed */
+    padding: 10px; 
     visibility: hidden;
   }
 
@@ -61,14 +70,14 @@
   }
 
   .info-left {
-    flex-grow: 1; /* Allow info-left to take remaining space */
+    flex-grow: 1;
   }
 
   .info-left svg,
   .info-right svg {
     margin: 0 5px;
-    padding: 0px 5px; /* Adjust padding as needed */
-    font-size: 10px; /* Adjust font size as needed */
+    padding: 0px 5px; 
+    font-size: 10px; 
   }
 
   .info-left svg {
@@ -76,6 +85,6 @@
   }
 
   .info-right {
-    justify-content: flex-end; /* Align info-right to the right */
+    justify-content: flex-end; 
   }
 }

@@ -119,7 +119,7 @@ const Gall = () => {
             className="date-input"
           />
           <button className="submit-button" onClick={handleUploadMedia}>
-            Submit
+            Upload
           </button>
         </div>
       )}

@@ -35,7 +35,6 @@
   
   .login-form label {
     display: block;
-    /* text-align: left; */
     align-self:self-start;
     margin-bottom: 5px;
     font-weight: bold;
@@ -57,7 +56,7 @@
   }
   
   .login-form button {
-    background-color: #333;
+    background-color: rgb(238, 132, 3);
     color: #fff;
     padding: 10px 20px;
     border: none;
@@ -66,7 +65,7 @@
   }
   
   .login-form button:hover {
-    background-color: #222;
+    background-color: rgb(195, 109, 3);
   }
 
   .remember-me input{

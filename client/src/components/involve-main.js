@@ -13,8 +13,8 @@ const Involvee = () => {
         <BriefInfo />
         <Navbar />
         <div className="centered-text sub-top">
-        <h1>Get Involved</h1>
-        <p>Home / Get Involved</p>
+        <h1>Volunteer</h1>
+        <p>Home /  Volunteer</p>
       </div>
       </div>
       <div className='Involve'>

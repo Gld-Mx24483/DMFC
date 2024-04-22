@@ -5,6 +5,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 const Footer = () => {
+
+  const handleEmailClick = () => {
+    window.open('mailto:dalmachfoundation@gmail.com', '_blank');
+  };
+
+  const handleLinkedLnClick = () => {
+    window.open('https://www.linkedin.com/in/adedapo-toki-b3a277287', '_blank');
+  };
+
   return (
     <div className="footer-container">
       <div className="footer-column">
@@ -16,9 +25,9 @@ const Footer = () => {
       </div>
       <div className="footer-column">
         <h4>Address</h4>
-        <p><FontAwesomeIcon icon={faMapMarkerAlt} /> Lagos, Nigeria</p>
-        <p><FontAwesomeIcon icon={faPhone} /> +234 810 677 5111</p>
-        <p><FontAwesomeIcon icon={faEnvelope} /> foundation@gmail.com</p>
+        <p className='click'><FontAwesomeIcon icon={faMapMarkerAlt} /> Lagos, Nigeria</p>
+        <p className='click'><FontAwesomeIcon icon={faPhone} /> +234 813 992 2932</p>
+        <p onClick={handleEmailClick} className='click' ><FontAwesomeIcon icon={faEnvelope} /> dalmachfoundation@gmail.com</p>
       </div>
       <div className="footer-column">
         <h4>Quick Links</h4>
@@ -38,6 +47,7 @@ const Footer = () => {
       </div>
       <div className="footer-bottom">
         <p>&copy; DalmachFoundation.org, All Right Reserved</p>
+        <p>Developed By <span className='developer' onClick={handleLinkedLnClick}>Toki Adedapo</span></p>
         <p><a href="/admin">Admin</a></p>
       </div>
     </div>

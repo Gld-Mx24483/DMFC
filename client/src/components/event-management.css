@@ -4,7 +4,7 @@
   }
   
   .add-event-button {
-    background-color: #007bff;
+    background-color: rgb(238, 132, 3);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -42,7 +42,7 @@
   }
   
   .save-event-button {
-    background-color: #28a745;
+    background-color: rgb(238, 132, 3);
     color: white;
     border: none;
     padding: 10px 20px;

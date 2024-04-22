@@ -54,7 +54,7 @@ const Navbar = () => {
           <Link to="/gallery-main">Gallery</Link>
         </li>
         <li className={pathname === "/get-involved" ? "active" : ""}>
-          <Link to="/involve-main">Get Involved</Link>
+          <Link to="/involve-main">Volunteer</Link>
         </li>
         <li className={pathname === "/contact-us" ? "active" : ""}>
           <Link to="/contact-us">Contact Us</Link>

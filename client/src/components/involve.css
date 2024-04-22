@@ -1,5 +1,4 @@
 /* involve.css styles for the get-involved form */
-
 .get-involved-form {
   display: flex;
   flex-direction: column;
@@ -25,9 +24,8 @@
     font-size: 18px;
 }
 
-
-.get-involved-form input[type="submit"] {
-  background-color: #007bff;
+ .sub-bt{
+  background-color: #ff8800;
   color: white;
   padding: 0.8rem 1rem;
   border: none;

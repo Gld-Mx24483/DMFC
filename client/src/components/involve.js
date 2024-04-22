@@ -54,7 +54,7 @@ const Volunteer = () => {
     <div>
       <div className="involve-container">
         <div className="get-involved-form">
-          <h2>Get Involved</h2>
+          <h2>Be a Volunteer</h2>
           <form onSubmit={handleSubmit}>
             <label htmlFor="fullName">
               Full Name <span>*</span>
@@ -150,7 +150,7 @@ const Volunteer = () => {
                 <label htmlFor="fullParticipation">Full Participation</label>
               </div>
             </div>
-            <input type="submit" value="Submit" />
+            <input className='sub-bt' type="submit" value="Submit" />
           </form>
         </div>
       </div>

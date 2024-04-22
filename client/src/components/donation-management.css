@@ -41,7 +41,7 @@
   .sort-button {
     margin-left: 20px; 
     margin-bottom: 10px; 
-    background-color: #007bff;
+    background-color: rgb(238, 132, 3);
     color: white;
     border: none;
     padding: 8px 16px;
@@ -52,11 +52,11 @@
   }
   
   .sort-button:hover {
-    background-color: #0056b3;
+    background-color: rgb(203, 113, 2);
   }
   
   .sort-button:active {
-    background-color: #004080;
+    background-color: rgb(203, 113, 2);
   }
   
   @media screen and (max-width: 500px) {
