@@ -52,7 +52,7 @@ const Blog = () => {
       <p>{selectedContent.dateTime} - {selectedContent.uploadTime}</p>
       <p>{selectedContent.fullName}</p>
       <div dangerouslySetInnerHTML={{ __html: selectedContent.body }}></div>
-      <button className="close-button" onClick={handleCloseSelectedContent}>
+      <button className="close-buttonn " onClick={handleCloseSelectedContent}>
         Close
       </button>
     </div>

@@ -50,7 +50,7 @@ const EventsUser = () => {
             <p className="event-location">{selectedEvent.location}</p>
             <p className="event-description">{selectedEvent.brief}</p>
             <p className="event-description">{selectedEvent.description}</p>
-            <button className="close-button" onClick={handleCloseSelectedEvent}>
+            <button className="close-buttonn" onClick={handleCloseSelectedEvent}>
               Close
             </button>
           </div>
