@@ -142,7 +142,67 @@
   margin-right: 10px;
 }
 
-@media screen and (max-width: 500px) {
+@media (width: 360px) {
+  .event-item {
+    max-width: 200px;
+    transform: translateX(-9px);
+  }
+
+  .edit-icon,
+  .trash-icon {
+    font-size: small;
+  }
+}
+
+@media (width: 320px) {
+  .event-item {
+    max-width: 165px;
+    transform: translateX(-9px);
+  }
+
+  .edit-icon,
+  .trash-icon {
+    font-size: small;
+  }
+}
+
+@media (width: 375px) {
+  .event-item {
+    max-width: 220px;
+    transform: translateX(-9px);
+  }
+
+  .edit-icon,
+  .trash-icon {
+    font-size: small;
+  }
+}
+
+@media (width: 390px) {
+  .event-item {
+    max-width: 235px;
+    transform: translateX(-9px);
+  }
+
+  .edit-icon,
+  .trash-icon {
+    font-size: small;
+  }
+}
+
+@media (width: 412px) {
+  .event-item {
+    max-width: 255px;
+    transform: translateX(-9px);
+  }
+
+  .edit-icon,
+  .trash-icon {
+    font-size: small;
+  }
+}
+
+@media  (max-width: 500px) {
   .add-event-button{
     margin-left: 20px;
   }
@@ -153,7 +213,7 @@
 
   .event-item {
     width: 80%;
-    margin-left: 20px; 
+    margin-left: -75px;
   }
 
   .event-details {
@@ -164,11 +224,6 @@
   .event-details p {
     margin: 5px 0;
     font-size: 14px; 
-  }
-
-  .edit-icon {
-    padding: 5px; 
-    font-size: 20px; 
   }
 
   .event-picture {

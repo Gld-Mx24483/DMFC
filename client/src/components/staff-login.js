@@ -72,7 +72,7 @@ const fetchEmail = async (email) => {
           <label className='label' htmlFor="uniquekey">Unique Key:</label>
           <input
             type="password"
-            id="password"
+            id="confirmpassword"
             value={uniquekey}
             onChange={(e) => setUniqueKey(e.target.value)}
             required

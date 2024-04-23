@@ -367,7 +367,7 @@
     }
 
     .content-item {
-      padding: 20px;
+      padding: 30px;
       margin-bottom: 20px;
       margin-left: 20px;
     }
@@ -383,6 +383,11 @@
     .content-item .Pen {
       margin-right: 40px;
       margin-top: 0;
+      font-size: small;
+    }
+
+    .content-item .Trash{
+      font-size: small;
     }
   
     .content-item .media {
