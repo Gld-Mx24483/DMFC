@@ -65,8 +65,8 @@ const GallSub = () => {
             {fullScreenMedia.videoPath && (
               <video src={fullScreenMedia.videoPath} controls autoPlay />
             )}
-            <button className="close-button" onClick={handleCloseFullScreen}>
-              <FontAwesomeIcon icon={faCompress} />
+            <button className="close-buttonnn" onClick={handleCloseFullScreen}>
+              <FontAwesomeIcon icon={faCompress}  />
             </button>
           </div>
         </div>

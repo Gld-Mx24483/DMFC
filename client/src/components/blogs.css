@@ -2,6 +2,12 @@
     margin-right: 30px;
     margin-top: 350px;
 }
+
+@media (max-width: 375px){
+  .event-card{
+    transform: translateX(25px);
+  }
+}
   
 @media (max-width: 500px) {
   .events-user-main-container {
@@ -30,6 +36,7 @@
     flex-direction: column;
     margin-bottom: 30px;
     position: relative;
+    height: auto;
   }
 
   .selected-event-image {
@@ -51,7 +58,6 @@
   }
 
   .selected-event-content {
-    margin-top: 1400px; 
     margin-right: 0;
     padding: 0;
     position: relative;
@@ -96,8 +102,9 @@
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
-    width: 190%;
+    width: 170%;
     margin-left: -90px;
+    margin-bottom: 40px;
   }
 
   .event-card:hover {

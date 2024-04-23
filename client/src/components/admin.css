@@ -100,10 +100,22 @@
     text-decoration: none;
   }
 
-  @media only screen and (max-width: 500px) {
+  @media (min-width: 390px) {
+    .login-form {
+      transform: translateY(90px);
+    }
+  }
+
+  @media (width: 375px) {
+    .login-form {
+      transform: translateY(20px);
+    }
+  }
+
+  @media (max-width: 500px) {
     .login-form{
         width: 70%;
-        height: 55vh;
+        height: auto;
     }
     .login-form label{
         transform: translateX(-80px);

@@ -151,3 +151,142 @@
     font-size: 16px;
     cursor: pointer;
   }
+
+  @media (width: 375px) {
+    .cards .event-card{
+      transform: translateX(13px);
+    }
+  }
+
+  @media (max-width: 500px) {
+    .events-user-main-container {
+      padding: 20px;
+    }
+  
+    .events-heading-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  
+    .events-heading {
+      font-size: 24px;
+    }
+  
+    .events-subheading {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+  
+    .spanns {
+      font-weight: bold;
+    }
+  
+    .cont {
+      flex-direction: column;
+      margin-bottom: 30px;
+      position: relative;
+      height: auto;
+    }
+  
+    .selected-event-image {
+      width: 90%;
+      max-width: 300px; 
+      height: 300px;
+      border-radius: 10px;
+      position: absolute;
+      top: 0;
+      z-index: 1;
+      left: 0;
+    }
+  
+    .selected-event-image img,
+    .selected-event-image video {
+      width: 100%;
+      height: 300px;
+      object-fit: contain;
+    }
+  
+    .cont .selected-event-content {
+      margin-right: 0;
+      padding: 0;
+      position: relative;
+      flex-direction: column;
+      margin-top: 350px;
+    }
+  
+    .close-button {
+      background-color: #ff6600;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  
+    .selected-event-content h2 {
+      font-size: 20px;
+      color: #333;
+    }
+  
+    .selected-event-content p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+  
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
+      padding: 75px;
+    }
+  
+    .cards .event-card {
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+      width: 145%;
+      margin-left: -75px;
+      margin-bottom: 100px;
+      margin-top: -50px;
+    }
+  
+    .event-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+  
+    .event-card-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px 10px 0 0;
+    }
+  
+    .event-card-content {
+      padding: 15px;
+    }
+  
+    .event-card-content h3 {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 5px;
+    }
+  
+    .event-time,
+    .event-location {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+  
+    .chevron-icon-container {
+      display: none;
+    }
+  }

@@ -10,7 +10,7 @@ const AboutUs = () => {
         <img src={require('../Media/Pictures/About-us.jpg')} alt="About Us" />
       </div>
       <div className="about-us-content">
-        <h2>About Us</h2>
+        {/* <h2>About Us</h2> */}
         <h3>Empowering Lives, <br />Igniting Hope</h3>
         <p>
           Dalmach Foundation is a Charity Foundation established specifically to help empower the life of the less privileged,

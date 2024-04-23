@@ -39,7 +39,7 @@ const EventsUser = () => {
         </p>
       </div>
       {selectedEvent ? (
-        <div className="selected-event-container">
+        <div className="selected-event-container cont">
           <div className="selected-event-image">
             <img src={selectedEvent.imagePath} alt={selectedEvent.title} />
           </div>
@@ -56,7 +56,7 @@ const EventsUser = () => {
           </div>
         </div>
       ) : (
-        <div className="event-cards-container">
+        <div className="event-cards-container cards">
           {events.map((event, index) => (
             <div key={index} className="event-card" onClick={() => handleEventClick(event)}>
               {event.imagePath && (

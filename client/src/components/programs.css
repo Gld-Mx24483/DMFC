@@ -62,9 +62,9 @@ p {
   transition: all ease-in-out .4s;
 }
 
-.r{
+/* .r{
   transform: translateY(-25px);
-}
+} */
 
 .learn-more-link-prog i {
   margin-left: 5px;
