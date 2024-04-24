@@ -24,6 +24,9 @@ app.use('/', contactAPI);
 app.use(cors({
   origin: 'http://localhost:3000' 
 }));
+app.use("/", (req,res) => {
+  res.send("Server is running.");
+})
 
 const port = process.env.PORT || 9000;
 app.listen(port, () => {
