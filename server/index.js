@@ -11,6 +11,10 @@ const contactAPI = require('./contact-api');
 
 const app = express();
 
+app.use("/", (req,res) => {
+  res.send("Server is running.");
+});
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -24,9 +28,7 @@ app.use('/', contactAPI);
 app.use(cors({
   origin: 'http://localhost:3000' 
 }));
-app.use("/", (req,res) => {
-  res.send("Server is running.");
-})
+
 
 const port = process.env.PORT || 9000;
 app.listen(port, () => {
