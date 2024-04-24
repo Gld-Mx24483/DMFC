@@ -178,7 +178,7 @@ const ContentMan = () => {
   };  
 
 useEffect(() => {
-  fetch('http://localhost:9000/get-content')
+  fetch('https://dmfc-server.vercel.app/get-content')
    .then((response) => response.json())
    .then((data) => {
       console.log('Content fetched:', data);
@@ -188,7 +188,7 @@ useEffect(() => {
 }, []);
 
   const fetchContent = () => {
-    fetch('http://localhost:9000/get-content')
+    fetch('https://dmfc-server.vercel.app/get-content')
       .then((response) => response.json())
       .then((data) => {
         console.log('Content fetched:', data);
