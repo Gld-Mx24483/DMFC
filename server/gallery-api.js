@@ -45,7 +45,13 @@ const connection = mysql.createConnection({
     console.log('Gallery Connected to MySQL database');
   });
   
-  router.post('/upload-media', upload.single('media'), (req, res) => {
+  // router.post('/upload-media', upload.single('media'), (req, res) => {
+    router.post('/upload-media', (req, res, next) => {
+      res.header('Access-Control-Allow-Origin', 'https://dmfc.vercel.app'); // Replace with your deployed front-end URL
+      res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+      res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+      next();
+    }, upload.single('media'), (req, res) => {
     const { title, date } = req.body;
     let imagePath = null;
     let videoPath = null;

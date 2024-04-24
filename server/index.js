@@ -23,8 +23,11 @@ app.use('/', galleryAPI);
 app.use('/', volunteerAPI);
 app.use('/', teamAPI);
 app.use('/', contactAPI);
+// app.use(cors({
+//   origin: 'http://localhost:3000' 
+// }));
 app.use(cors({
-  origin: 'http://localhost:3000' 
+  origin: 'https://dmfc.vercel.app' // Replace with your deployed front-end URL
 }));
 app.use("/", (req,res) => {
   res.send("Server is running.");
