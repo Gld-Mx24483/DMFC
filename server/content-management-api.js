@@ -165,7 +165,6 @@ router.post('/delete-image/:id', (req, res) => {
     });
   });
   
-  // Route for deleting video files
   router.post('/delete-video/:id', (req, res) => {
     const contentId = req.params.id;
     
