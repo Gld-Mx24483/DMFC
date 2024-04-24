@@ -26,7 +26,13 @@ connection.connect((err) => {
   console.log('Team Connected to MySQL database');
 });
 
-router.put('/submit-team-form', (req, res) => {
+// router.put('/submit-team-form', (req, res) => {
+  router.put('/submit-team-form', (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'https://dmfc.vercel.app'); // Replace with your deployed front-end URL
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+  }, (req, res) => {
     const { fullName, address, phoneNumber, email, role } = req.body;
   
     const query = 'INSERT INTO team (fullName, address, phoneNumber, email, role, status) VALUES (?, ?, ?, ?, ?, ?)';
@@ -42,7 +48,13 @@ router.put('/submit-team-form', (req, res) => {
   });
 
   // Update user status to 'accepted'
-router.post('/accept-request/:id', (req, res) => {
+// router.post('/accept-request/:id', (req, res) => {
+  router.post('/accept-request/:id', (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'https://dmfc.vercel.app'); // Replace with your deployed front-end URL
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+  }, (req, res) => {
     const userId = req.params.id;
   
     if (!userId || isNaN(userId)) {
