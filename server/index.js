@@ -39,8 +39,6 @@
 //   console.log(`Server is running on port ${port}`);
 // });
 
-
-// index.js
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -48,25 +46,22 @@ const contentManagementAPI = require('./content-management-api');
 const eventManagementAPI = require('./event-management-api');
 const galleryAPI = require('./gallery-api');
 const volunteerAPI = require('./volunteer-api');
-const teamAPI = require('./team-api'); // Import teamAPI
+const teamAPI = require('./team-api');
 const contactAPI = require('./contact-api');
 
 const app = express();
-
-app.use("/", (req,res) => {
-  res.send("Server is running.");
-});
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/api/content', contentManagementAPI); // Use a prefix for content management API
-app.use('/api/events', eventManagementAPI); // Use a prefix for event management API
-app.use('/api/gallery', galleryAPI); // Use a prefix for gallery API
-app.use('/api/volunteers', volunteerAPI); // Use a prefix for volunteer API
-app.use('/api/team', teamAPI); // Use a prefix for team API
-app.use('/api/contact', contactAPI); // Use a prefix for contact API
+app.use('/', contentManagementAPI);
+app.use('/', eventManagementAPI);
+app.use('/', galleryAPI);
+app.use('/', volunteerAPI);
+app.use('/', teamAPI);
+app.use('/', contactAPI);
+
 app.use(cors({
   origin: 'http://localhost:3000' 
 }));
@@ -75,6 +70,9 @@ app.use(cors({
   origin: 'https://dmfc.vercel.app' // or ['https://dmfc.vercel.app', 'http://localhost:3000'] for local development
 }));
 
+app.use("/", (req,res) => {
+  res.send("Server is running.");
+});
 
 const port = process.env.PORT || 9000;
 app.listen(port, () => {
