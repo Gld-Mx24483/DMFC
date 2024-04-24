@@ -8,19 +8,19 @@ const MembersTable = ({ members }) => {
   const [nameFilter, setNameFilter] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
 
-  const handleNameFilterChange = (event) => {
-    setNameFilter(event.target.value);
-  };
+  // const handleNameFilterChange = (event) => {
+  //   setNameFilter(event.target.value);
+  // };
 
-  const handleRoleFilterChange = (event) => {
-    setRoleFilter(event.target.value);
-  };
+  // const handleRoleFilterChange = (event) => {
+  //   setRoleFilter(event.target.value);
+  // };
 
-  const filteredMembers = members?.filter(member => {
-    const nameMatch = member.fullName.toLowerCase().includes(nameFilter.toLowerCase());
-    const roleMatch = member.role.toLowerCase().includes(roleFilter.toLowerCase());
-    return nameMatch && roleMatch;
-  });
+  // const filteredMembers = members?.filter(member => {
+  //   const nameMatch = member.fullName.toLowerCase().includes(nameFilter.toLowerCase());
+  //   const roleMatch = member.role.toLowerCase().includes(roleFilter.toLowerCase());
+  //   return nameMatch && roleMatch;
+  // });
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -64,10 +64,10 @@ const MembersTable = ({ members }) => {
 
   return (
     <div>
-      <div className="filter-section">
+      {/* <div className="filter-section">
         <input type="text" placeholder="Search by Name" value={nameFilter} onChange={handleNameFilterChange} />
         <input type="text" placeholder="Search by Role" value={roleFilter} onChange={handleRoleFilterChange} />
-      </div>
+      </div> */}
       <table className="user-table">
         <thead>
           <tr>
