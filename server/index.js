@@ -29,6 +29,10 @@ app.use(cors({
   origin: 'http://localhost:3000' 
 }));
 
+app.use(cors({
+  origin: 'https://dmfc.vercel.app' // or ['https://dmfc.vercel.app', 'http://localhost:3000'] for local development
+}));
+
 
 const port = process.env.PORT || 9000;
 app.listen(port, () => {

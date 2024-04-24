@@ -47,7 +47,7 @@ const MembersTable = ({ members }) => {
     try {
       const confirmDelete = window.confirm('Delete User data?');
       if (confirmDelete) {
-        const response = await fetch(`http://localhost:9000/delete-team-member/${userId}`, {
+        const response = await fetch(`https://dmfc-server.vercel.app/delete-team-member/${userId}`, {
           method: 'DELETE',
         });
 
