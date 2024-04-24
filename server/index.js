@@ -1,4 +1,4 @@
-// server.js
+// index.js
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -22,11 +22,8 @@ app.use('/', volunteerAPI);
 app.use('/', teamAPI);
 app.use('/', contactAPI);
 app.use(cors({
-  origin: 'http://localhost:3000' // Add this line
+  origin: 'http://localhost:3000' 
 }));
-
-
-// set port, listen for requests
 
 const port = process.env.PORT || 9000;
 app.listen(port, () => {
