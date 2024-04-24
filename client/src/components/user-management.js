@@ -18,7 +18,7 @@ const UserMan = () => {
 
   const fetchIncomingRequests = async () => {
     try {
-      const response = await fetch('http://localhost:9000/get-team-members?status=pending');
+      const response = await fetch('https://dmfc-server.vercel.app/get-team-members?status=pending');
       const data = await response.json();
       setIncomingRequests(data);
     } catch (error) {
@@ -28,7 +28,7 @@ const UserMan = () => {
   
   const fetchTeamMembers = async () => {
     try {
-      const response = await fetch('http://localhost:9000/get-team-members?status=accepted');
+      const response = await fetch('https://dmfc-server.vercel.app/get-team-members?status=accepted');
       const data = await response.json();
       setTeamMembers(data);
     } catch (error) {
