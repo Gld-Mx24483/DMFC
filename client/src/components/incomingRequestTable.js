@@ -16,7 +16,7 @@ const IncomingRequestTable = ({ requests, onAcceptRequest, fetchIncomingRequests
     setRoleFilter(event.target.value);
   };
 
-  const filteredRequests = requests.filter(request => {
+  const filteredRequests = requests?.filter(request => {
     const nameMatch = request.fullName.toLowerCase().includes(nameFilter.toLowerCase());
     const roleMatch = request.role.toLowerCase().includes(roleFilter.toLowerCase());
     return nameMatch && roleMatch;
