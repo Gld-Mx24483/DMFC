@@ -16,7 +16,7 @@ const MembersTable = ({ members }) => {
     setRoleFilter(event.target.value);
   };
 
-  const filteredMembers = members.filter(member => {
+  const filteredMembers = members?.filter(member => {
     const nameMatch = member.fullName.toLowerCase().includes(nameFilter.toLowerCase());
     const roleMatch = member.role.toLowerCase().includes(roleFilter.toLowerCase());
     return nameMatch && roleMatch;
