@@ -52,19 +52,20 @@ const contactAPI = require('./contact-api');
 
 const app = express();
 
-app.use("/", (req,res) => {
+const corsOptions = {
+  origin: ['https://dmfc.vercel.app', 'http://localhost:3000'],
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+};
+
+app.use(cors(corsOptions)); // Apply CORS middleware at the root level
+
+app.use("/", (req, res) => {
   res.send("Server is running.");
 });
 
-const corsOptions = {
-  origin: ['https://dmfc.vercel.app', 'http://localhost:3000'], // Replace with your React app's URL(s)
-  optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true, // If you want to send cookies over CORS
-};
-
-app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -72,8 +73,7 @@ app.use('/', contentManagementAPI);
 app.use('/', eventManagementAPI);
 app.use('/', galleryAPI);
 app.use('/', volunteerAPI);
-// app.use('/', teamAPI);
-app.use('/', teamAPI(corsOptions)); 
+app.use('/', teamAPI); // No need to pass corsOptions here
 app.use('/', contactAPI);
 
 const port = process.env.PORT || 9000;

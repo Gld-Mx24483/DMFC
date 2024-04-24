@@ -26,9 +26,21 @@ const UserMan = () => {
     }
   };
   
+  // const fetchTeamMembers = async () => {
+  //   try {
+  //     const response = await fetch('https://dmfc-server.vercel.app/get-team-members?status=accepted');
+  //     const data = await response.json();
+  //     setTeamMembers(data);
+  //   } catch (error) {
+  //     console.error('Error fetching team members:', error);
+  //   }
+  // };
+
   const fetchTeamMembers = async () => {
     try {
-      const response = await fetch('https://dmfc-server.vercel.app/get-team-members?status=accepted');
+      const response = await fetch('https://dmfc-server.vercel.app/get-team-members?status=accepted', {
+        mode: 'no-cors'
+      });
       const data = await response.json();
       setTeamMembers(data);
     } catch (error) {
