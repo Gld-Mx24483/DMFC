@@ -39,19 +39,8 @@ const Gal = () => {
     }
   }, [currentIndex, mediaList]);
 
-  // const fetchMedia = () => {
-  //   fetch('http://localhost:9000/get-media')
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log('Media fetched:', data);
-  //       setMediaList(data);
-  //       setIsLoading(false);
-  //     })
-  //     .catch((error) => console.error('Error fetching media:', error));
-  // };
-
   const fetchMedia = () => {
-    fetch('https://dmfc-server.vercel.app/get-media')
+    fetch('https://dmfc-server-sql.vercel.app/get-media')
       .then((response) => response.json())
       .then((data) => {
         console.log('Media fetched:', data);

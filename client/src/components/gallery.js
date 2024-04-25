@@ -19,7 +19,7 @@ const Gall = () => {
   }, []);
 
   const fetchMedia = () => {
-    fetch('http://localhost:9000/get-media')
+    fetch('https://dmfc-server-sql.vercel.app/get-media')
       .then((response) => response.json())
       .then((data) => {
         console.log('Media fetched:', data);
@@ -37,7 +37,7 @@ const Gall = () => {
       formData.append('media', selectedFile);
     }
 
-    fetch('http://localhost:9000/upload-media', {
+    fetch('https://dmfc-server-sql.vercel.app/upload-media', {
       method: 'POST',
       body: formData,
     })
