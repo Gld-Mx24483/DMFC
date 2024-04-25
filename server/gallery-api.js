@@ -136,4 +136,6 @@ pool.getConnection((err, conn) => {
       });
     });
     
-    module.exports = router;
+    // module.exports = router;
+
+    module.exports = pool.promise()
