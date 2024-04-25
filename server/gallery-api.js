@@ -30,12 +30,27 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Golden m@trix24483',
-    database: 'dmf_db'
-  });
+// const connection = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'Golden m@trix24483',
+//     database: 'dmf_db'
+//   });
+
+const pool = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DBNAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+})
+
+pool.getConnection((err, conn) => {
+  if(err) console.log(err)
+  console.log("Connected successfully")
+})
   
   connection.connect((err) => {
     if (err) {
