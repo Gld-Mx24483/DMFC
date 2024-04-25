@@ -45,13 +45,14 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const galleryAPI = require('./gallery-api');
-
+const teamAPI = require('./team-api');
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/', teamAPI);
 app.use('/', galleryAPI);
 app.use("/", (req,res) => {
   res.send("Server is running.");

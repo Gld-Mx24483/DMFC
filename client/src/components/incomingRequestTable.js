@@ -40,7 +40,7 @@ const IncomingRequestTable = ({ requests, onAcceptRequest, fetchIncomingRequests
   
     if (acceptConfirmation) {
       try {
-        const response = await fetch(`https://dmfc-server.vercel.app/accept-request/${userId}`, {
+        const response = await fetch(`https://dmfc-server-sql.vercel.app/accept-request/${userId}`, {
           method: 'POST',
         });
   
@@ -76,7 +76,7 @@ const IncomingRequestTable = ({ requests, onAcceptRequest, fetchIncomingRequests
 
     if (rejectConfirmation) {
       try {
-        const response = await fetch(`https://dmfc-server.vercel.app/reject-request/${userId}`, {
+        const response = await fetch(`https://dmfc-server-sql.vercel.app/reject-request/${userId}`, {
           method: 'DELETE',
         });
 

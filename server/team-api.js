@@ -3,7 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql');
-
 const router = express.Router();
 const app = express();
 
@@ -11,19 +10,37 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'Golden m@trix24483',
-  database: 'dmf_db'
+// const connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'Golden m@trix24483',
+//   database: 'dmf_db'
+// });
+
+const pool = mysql.createPool({
+  host: 'bijx6x2fdwh3ntipeogx-mysql.services.clever-cloud.com',
+  user: 'uk1vlxqfb5xlnslo',
+  password: 'kNYqDHtRvssAOxhVNWOA',
+  database: 'bijx6x2fdwh3ntipeogx',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
-connection.connect((err) => {
+// connection.connect((err) => {
+//   if (err) {
+//     console.error('Error connecting to MySQL database:', err);
+//     return;
+//   }
+//   console.log('Team Connected to MySQL database');
+// });
+
+pool.getConnection((err, conn) => {
   if (err) {
     console.error('Error connecting to MySQL database:', err);
     return;
   }
-  console.log('Team Connected to MySQL database');
+  console.log('Gallery Connected to MySQL database');
 });
 
 // router.put('/submit-team-form', (req, res) => {

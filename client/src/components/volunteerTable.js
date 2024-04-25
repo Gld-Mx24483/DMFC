@@ -10,7 +10,7 @@ const VolunteerTable = () => {
 
   const fetchVolunteers = async () => {
     try {
-      const response = await fetch('https://dmfc-server.vercel.app/get-volunteers');
+      const response = await fetch('https://dmfc-server-sql.vercel.app/get-volunteers');
       const data = await response.json();
       setVolunteers(data);
     } catch (error) {
