@@ -1,4 +1,4 @@
-
+//membersTable.js
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH, faTrash, faPen } from '@fortawesome/free-solid-svg-icons';
@@ -47,7 +47,7 @@ const MembersTable = ({ members }) => {
     try {
       const confirmDelete = window.confirm('Delete User data?');
       if (confirmDelete) {
-        const response = await fetch(`https://dmfc-server.vercel.app/delete-team-member/${userId}`, {
+        const response = await fetch(`https://dmfc-server-sql.vercel.app/delete-team-member/${userId}`, {
           method: 'DELETE',
         });
 
