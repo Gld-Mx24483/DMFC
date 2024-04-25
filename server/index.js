@@ -53,6 +53,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/', galleryAPI);
+app.use("/", (req,res) => {
+  res.send("Server is running.");
+})
 app.use(cors({
   origin: 'https://dmfc.vercel.app' // Replace with your deployed front-end URL
 }));
