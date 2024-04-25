@@ -24,7 +24,7 @@ const Volunteer = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    fetch('http://localhost:9000/submit-volunteer-form', {
+    fetch('https://dmfc-server-sql.vercel.app/submit-volunteer-form', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

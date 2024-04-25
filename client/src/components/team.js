@@ -28,7 +28,7 @@ const TeamForm = () => {
 
     const role = formData.role === 'custom' ? formData.customRole : formData.role;
 
-    fetch('http://localhost:9000/submit-team-form', {
+    fetch('https://dmfc-server-sql.vercel.app/submit-team-form', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
