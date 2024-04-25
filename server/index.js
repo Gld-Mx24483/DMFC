@@ -46,6 +46,7 @@ const cors = require('cors');
 const path = require('path');
 const galleryAPI = require('./gallery-api');
 const teamAPI = require('./team-api');
+const contactAPI = require('./contact-api');
 const app = express();
 
 app.use(cors());
@@ -54,6 +55,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/', teamAPI);
 app.use('/', galleryAPI);
+app.use('/', contactAPI);
 app.use("/", (req,res) => {
   res.send("Server is running.");
 })

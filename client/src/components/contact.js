@@ -23,7 +23,7 @@ const Contact = () => {
   useEffect(() => {
     const fetchUserMessagesWithAdminResponses = async () => {
       try {
-        const response = await fetch('http://localhost:9000/get-user-messages-with-admin-responses');
+        const response = await fetch('https://dmfc-server-sql.vercel.app/get-user-messages-with-admin-responses');
         const data = await response.json();
         setUserMessages(data);
       } catch (error) {
@@ -37,7 +37,7 @@ const Contact = () => {
   useEffect(() => {
     const fetchAdminBroadcastMessages = async () => {
       try {
-        const response = await fetch('http://localhost:9000/get-admin-broadcast-messages');
+        const response = await fetch('https://dmfc-server-sql.vercel.app/get-admin-broadcast-messages');
         const data = await response.json();
         setGlobalReplyMessages(data);
       } catch (error) {
@@ -64,7 +64,7 @@ const Contact = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    fetch('http://localhost:9000/submit-contact-form', {
+    fetch('https://dmfc-server-sql.vercel.app/submit-contact-form', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

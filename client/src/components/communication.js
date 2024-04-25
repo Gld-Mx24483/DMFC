@@ -351,7 +351,7 @@ const Comm = () => {
   useEffect(() => {
     const fetchContactMessages = async () => {
       try {
-        const response = await fetch('http://localhost:9000/get-contact-messages');
+        const response = await fetch('https://dmfc-server-sql.vercel.app/get-contact-messages');
         const data = await response.json();
         setContactMessages(data);
         const sortedUserMessages = data.map(message => ({
@@ -374,7 +374,7 @@ const Comm = () => {
   useEffect(() => {
     const fetchUserMessagesWithAdminResponses = async () => {
       try {
-        const response = await fetch('http://localhost:9000/get-user-messages-with-admin-responses');
+        const response = await fetch('https://dmfc-server-sql.vercel.app/get-user-messages-with-admin-responses');
         const data = await response.json();
         const sortedUserMessages = data
           .map((message) => ({
@@ -398,7 +398,7 @@ const Comm = () => {
   useEffect(() => {
     const fetchAdminBroadcastMessages = async () => {
       try {
-        const response = await fetch('http://localhost:9000/get-admin-broadcast-messages');
+        const response = await fetch('https://dmfc-server-sql.vercel.app/get-admin-broadcast-messages');
         const data = await response.json();
         setUserMessages((prevMessages) => [
           ...prevMessages,
@@ -451,7 +451,7 @@ const Comm = () => {
   
   const saveAdminResponseToDatabase = async (userMessageId, userEmail, adminResponse) => {
     try {
-      const response = await fetch('http://localhost:9000/save-admin-response', {
+      const response = await fetch('https://dmfc-server-sql.vercel.app/save-admin-response', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -511,7 +511,7 @@ const GroupChatAppInterface = ({
       } else {
         // Send the message as a broadcast message
         try {
-          const response = await fetch('http://localhost:9000/submit-admin-broadcast', {
+          const response = await fetch('https://dmfc-server-sql.vercel.app/submit-admin-broadcast', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
