@@ -67,7 +67,7 @@ const Gall = () => {
     if (confirmDelete) {
       const mediaId = mediaList[index].id;
 
-      fetch(`http://localhost:9000/delete-media/${mediaId}`, {
+      fetch(`https://dmfc-server-sql.vercel.app/delete-media/${mediaId}`, {
         method: 'DELETE',
       })
         .then((response) => {
