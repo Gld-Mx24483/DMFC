@@ -73,9 +73,9 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const galleryAPI = require('./gallery-api');
-const teamAPI = require('./team-api');
-const contactAPI = require('./contact-api');
-const contentManagementAPI = require('./content-management-api');
+// const teamAPI = require('./team-api');
+// const contactAPI = require('./contact-api');
+// const contentManagementAPI = require('./content-management-api');
 const app = express();
 
 // Configure CORS
@@ -87,10 +87,10 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/', teamAPI);
+// app.use('/', teamAPI);
 app.use('/', galleryAPI);
-app.use('/', contactAPI);
-app.use('/', contentManagementAPI);
+// app.use('/', contactAPI);
+// app.use('/', contentManagementAPI);
 app.use("/", (req,res) => {
   res.send("Server is running.");
 })
