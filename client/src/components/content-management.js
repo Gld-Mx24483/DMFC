@@ -94,7 +94,7 @@ const ContentMan = () => {
       formData.append('video', videoFile);
     }
   
-    const url = editIndex !== null ? 'http://localhost:9000/update-content' : 'http://localhost:9000/save-content';
+    const url = editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-content' : 'https://dmfc-server-sql.vercel.app/save-content';
     const method = editIndex !== null ? 'POST' : 'PUT';
   
     fetch(url, {
@@ -105,8 +105,8 @@ const ContentMan = () => {
       .then((data) => {
         console.log('Content saved successfully:', data);
         setContentDetails({
-          imageSrc: data.imagePath ? `https://dmfc-server-sql.vercel.app/server/uploads/${data.imagePath}` : '',
-          videoSrc: data.videoPath ? `https://dmfc-server-sql.vercel.app/server/uploads/${data.videoPath}` : '',
+          imageSrc: data.imagePath ? `http://localhost:9000/uploads/${data.imagePath}` : '',
+          videoSrc: data.videoPath ? `http://localhost:9000/uploads/${data.videoPath}` : '',
           fullName: '',
           title: '',
           dateTime: new Date(),
