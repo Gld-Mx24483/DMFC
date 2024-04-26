@@ -127,14 +127,24 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
 
+// const pool = mysql.createPool({
+//   host: 'bijx6x2fdwh3ntipeogx-mysql.services.clever-cloud.com',
+//   user: 'uk1vlxqfb5xlnslo',
+//   password: 'kNYqDHtRvssAOxhVNWOA',
+//   database: 'bijx6x2fdwh3ntipeogx',
+//   waitForConnections: true,
+//   connectionLimit: 10,
+//   queueLimit: 0
+// });
+
 const pool = mysql.createPool({
-  host: 'bijx6x2fdwh3ntipeogx-mysql.services.clever-cloud.com',
-  user: 'uk1vlxqfb5xlnslo',
-  password: 'kNYqDHtRvssAOxhVNWOA',
-  database: 'bijx6x2fdwh3ntipeogx',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
+  host: 'bu119d598mxvdidbobkz-mysql.services.clever-cloud.com',
+  user: 'uagrkuch76vflvej',
+  password: 'TQsl2xm0U694WFB6Orh',
+  database: 'bu119d598mxvdidbobkz',
+  // waitForConnections: true,
+  // connectionLimit: 10,
+  // queueLimit: 0
 });
 
 pool.getConnection((err, conn) => {
