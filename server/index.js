@@ -11,8 +11,6 @@
 
 // const app = express();
 
-
-
 // app.use(cors());
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
@@ -62,7 +60,7 @@ app.use("/", (req,res) => {
   res.send("Server is running.");
 })
 app.use(cors({
-  origin: 'https://dmfc.vercel.app' // Replace with your deployed front-end URL
+  origin: 'https://dmfc.vercel.app' 
 }));
 
 const port = process.env.PORT || 9000;
