@@ -75,6 +75,7 @@ const cors = require('cors');
 const path = require('path');
 const galleryAPI = require('./gallery-api');
 const teamAPI = require('./team-api');
+const volunteerAPI = require('./volunteer-api');
 const contactAPI = require('./contact-api');
 const contentManagementAPI = require('./content-management-api');
 const app = express();
@@ -87,6 +88,7 @@ app.use('/', teamAPI);
 app.use('/', galleryAPI);
 app.use('/', contactAPI);
 app.use('/', contentManagementAPI);
+app.use('/', volunteerAPI);
 app.use("/", (req,res) => {
   res.send("Server is running.");
 })
