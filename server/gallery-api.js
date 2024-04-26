@@ -156,7 +156,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const pool = mysql.createPool({
-  host: 'bijx6x2fdwh3ntipeogx-mysql.services.clever-cloud.com',
+  host: 'bu119d598mxvdidbobkz-mysql.services.clever-cloud.com',
   user: 'uk1vlxqfb5xlnslo',
   password: 'kNYqDHtRvssAOxhVNWOA',
   database: 'bijx6x2fdwh3ntipeogx',
