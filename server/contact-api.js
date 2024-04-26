@@ -128,13 +128,11 @@ const router = express.Router();
 const mysql = require('mysql');
 
 const pool = mysql.createPool({
-  host: 'bijx6x2fdwh3ntipeogx-mysql.services.clever-cloud.com',
-  user: 'uk1vlxqfb5xlnslo',
-  password: 'kNYqDHtRvssAOxhVNWOA',
-  database: 'bijx6x2fdwh3ntipeogx',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
+  host: 'dmf-db.cd0i6o42e4on.ca-central-1.rds.amazonaws.com',
+  user: 'admin',
+  password: 'goldenmatrix24483',
+  database: 'dmf_db',
+  port: '3306',
 });
 
 pool.getConnection((err, conn) => {
