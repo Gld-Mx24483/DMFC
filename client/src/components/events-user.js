@@ -11,7 +11,7 @@ const EventsUser = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch('http://localhost:9000/get-events');
+        const response = await fetch('https://dmfc-server-sql.vercel.app/get-events');
         const data = await response.json();
         setEvents(data);
       } catch (error) {

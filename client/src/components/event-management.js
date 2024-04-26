@@ -60,7 +60,7 @@ const EventMan = () => {
       formData.append('image', imageFile);
     }
 
-    const url = editIndex !== null ? 'http://localhost:9000/update-event' : 'http://localhost:9000/save-event';
+    const url = editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-event' : 'https://dmfc-server-sql.vercel.app/save-event';
     const method = editIndex !== null ? 'POST' : 'PUT';
 
     fetch(url, {
@@ -71,7 +71,7 @@ const EventMan = () => {
       .then((data) => {
         console.log('Event saved successfully:', data);
         setEventDetails({
-          picture: data.imagePath ? `http://localhost:9000/uploads/${data.imagePath}` : '',
+          picture: data.imagePath ? `https://dmfc-server-sql.vercel.app/uploads/${data.imagePath}` : '',
           title: '',
           dateTime: new Date(),
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -102,7 +102,7 @@ const EventMan = () => {
   };
 
   const fetchEvents = () => {
-    fetch('http://localhost:9000/get-events')
+    fetch('https://dmfc-server-sql.vercel.app/get-events')
       .then((response) => response.json())
       .then((data) => {
         console.log('Events fetched:', data);
@@ -121,7 +121,7 @@ const EventMan = () => {
     if (confirmDelete) {
       const eventId = events[index].id;
   
-      fetch(`http://localhost:9000/delete-event/${eventId}`, {
+      fetch(`https://dmfc-server-sql.vercel.app/delete-event/${eventId}`, {
         method: 'DELETE',
       })
        .then((response) => {

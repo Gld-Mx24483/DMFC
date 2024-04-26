@@ -16,7 +16,7 @@ const Admin = () => {
 
 const fetchEmail = async (email) => {
   try {
-    const response = await fetch(`http://localhost:9000/get-team-members?email=${email}`);
+    const response = await fetch(`https://dmfc-server-sql.vercel.app/get-team-members?email=${email}`);
     const data = await response.json();
 
     if (data.length > 0) {
