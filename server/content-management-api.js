@@ -214,16 +214,6 @@
 // module.exports = router;
 
 //content-management-api.js
-
-process.on('uncaughtException', (err) => {
-  console.error('Uncaught Exception:', err);
-});
-
-process.on('unhandledRejection', (err) => {
-  console.error('Unhandled Rejection:', err);
-});
-
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
