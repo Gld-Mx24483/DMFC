@@ -157,9 +157,9 @@ const upload = multer({ storage: storage });
 
 const pool = mysql.createPool({
   host: 'bu119d598mxvdidbobkz-mysql.services.clever-cloud.com',
-  user: 'uk1vlxqfb5xlnslo',
-  password: 'kNYqDHtRvssAOxhVNWOA',
-  database: 'bijx6x2fdwh3ntipeogx',
+  user: 'uagrkuch76vflvej',
+  password: 'TQsl2xm0U694WFB6Orh',
+  database: 'bu119d598mxvdidbobkz',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
