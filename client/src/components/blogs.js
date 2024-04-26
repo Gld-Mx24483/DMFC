@@ -11,7 +11,7 @@ const Blog = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        const response = await fetch('http://localhost:9000/get-content');
+        const response = await fetch('https://dmfc-server-sql.vercel.app/get-content');
         const data = await response.json();
         setContent(data);
       } catch (error) {
