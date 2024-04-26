@@ -156,13 +156,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const pool = mysql.createPool({
-  host: 'bu119d598mxvdidbobkz-mysql.services.clever-cloud.com',
-  user: 'uagrkuch76vflvej',
-  password: 'TQsl2xm0U694WFB6Orh',
-  database: 'bu119d598mxvdidbobkz',
+  host: 'bijx6x2fdwh3ntipeogx-mysql.services.clever-cloud.com',
+  user: 'uk1vlxqfb5xlnslo',
+  password: 'kNYqDHtRvssAOxhVNWOA',
+  database: 'bijx6x2fdwh3ntipeogx',
   waitForConnections: true,
   connectionLimit: 10,
-  // queueLimit: 0
+  queueLimit: 0
 });
 
 pool.getConnection((err, conn) => {
@@ -173,13 +173,7 @@ pool.getConnection((err, conn) => {
   console.log('Gallery Connected to MySQL database');
 });
 
-// router.post('/upload-media', upload.single('media'), (req, res) => {
-  router.post('/upload-media', (req, res, next) => {
-          res.header('Access-Control-Allow-Origin', 'https://dmfc.vercel.app'); // Replace with your deployed front-end URL
-          res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-          res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-          next();
-        }, upload.single('media'), (req, res) => {
+router.post('/upload-media', upload.single('media'), (req, res) => {
   const { title, date } = req.body;
   let imagePath = null;
   let videoPath = null;
