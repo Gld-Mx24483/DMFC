@@ -86,21 +86,26 @@ const ContentMan = () => {
       formData.append('deletedFiles', JSON.stringify(deletedFiles));
     }
   
+    // if (imageFile) {
+    //   formData.append('image', imageFile);
+    // }
+  
+    // if (videoFile) {
+    //   formData.append('video', videoFile);
+    // }
+
     if (imageFile) {
-      formData.append('image', imageFile);
+      formData.append('image', imageFile, imageFile.name); // Add the image file along with its name
     }
   
     if (videoFile) {
-      formData.append('video', videoFile);
+      formData.append('video', videoFile, videoFile.name); // Add the video file along with its name
     }
   
     const url = editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-content' : 'https://dmfc-server-sql.vercel.app/save-content';
     const method = editIndex !== null ? 'POST' : 'PUT';
   
-    fetch(url, {
-      method: method,
-      body: formData,
-    })
+    fetch(url, { method: method, body: formData,})
       .then((response) => response.json())
       .then((data) => {
         console.log('Content saved successfully:', data);

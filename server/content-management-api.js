@@ -269,11 +269,29 @@ router.put('/save-content', upload.fields([
   let imagePath = null;
   let videoPath = null;
 
+  // if (req.files && req.files.image && req.files.image.length > 0) {
+  //   imagePath = req.files.image[0].originalname;
+  // }
+  // if (req.files && req.files.video && req.files.video.length > 0) {
+  //   videoPath = req.files.video[0].originalname;
+  // }
+
   if (req.files && req.files.image && req.files.image.length > 0) {
-    imagePath = req.files.image[0].originalname;
+    const imageFile = req.files.image[0];
+    const imageName = `${Date.now()}-${imageFile.originalname}`;
+    const imageFilePath = path.join(__dirname, 'uploads', imageName);
+    imagePath = `/uploads/${imageName}`; // Update the imagePath to include the '/uploads' prefix
+
+    fs.copyFileSync(imageFile.path, imageFilePath); // Copy the uploaded file to the desired location
   }
+
   if (req.files && req.files.video && req.files.video.length > 0) {
-    videoPath = req.files.video[0].originalname;
+    const videoFile = req.files.video[0];
+    const videoName = `${Date.now()}-${videoFile.originalname}`;
+    const videoFilePath = path.join(__dirname, 'uploads', videoName);
+    videoPath = `/uploads/${videoName}`; // Update the videoPath to include the '/uploads' prefix
+
+    fs.copyFileSync(videoFile.path, videoFilePath); // Copy the uploaded file to the desired location
   }
 
   const insertQuery =
@@ -299,11 +317,29 @@ router.post('/update-content', upload.fields([
   let imagePath = null;
   let videoPath = null;
 
+  // if (req.files && req.files.image && req.files.image.length > 0) {
+  //   imagePath = req.files.image[0].originalname;
+  // }
+  // if (req.files && req.files.video && req.files.video.length > 0) {
+  //   videoPath = req.files.video[0].originalname;
+  // }
+
   if (req.files && req.files.image && req.files.image.length > 0) {
-    imagePath = req.files.image[0].originalname;
+    const imageFile = req.files.image[0];
+    const imageName = `${Date.now()}-${imageFile.originalname}`;
+    const imageFilePath = path.join(__dirname, 'uploads', imageName);
+    imagePath = `/uploads/${imageName}`; // Update the imagePath to include the '/uploads' prefix
+
+    fs.copyFileSync(imageFile.path, imageFilePath); // Copy the uploaded file to the desired location
   }
+
   if (req.files && req.files.video && req.files.video.length > 0) {
-    videoPath = req.files.video[0].originalname;
+    const videoFile = req.files.video[0];
+    const videoName = `${Date.now()}-${videoFile.originalname}`;
+    const videoFilePath = path.join(__dirname, 'uploads', videoName);
+    videoPath = `/uploads/${videoName}`; // Update the videoPath to include the '/uploads' prefix
+
+    fs.copyFileSync(videoFile.path, videoFilePath); // Copy the uploaded file to the desired location
   }
 
   const updateQuery = `UPDATE content 
