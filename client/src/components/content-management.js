@@ -38,48 +38,12 @@ const ContentMan = () => {
     }));
   };
 
-  // const handleImageUpload = (file) => {
-  //   if (file) {
-  //     setImageFile(file);
-  //     setContentDetails((prevState) => ({
-  //       ...prevState,
-  //       imageSrc: URL.createObjectURL(file),
-  //       body: prevState.body,
-  //     }));
-  //   } else {
-  //     setImageFile(null);
-  //     setContentDetails((prevState) => ({
-  //       ...prevState,
-  //       imageSrc: '',
-  //       body: prevState.body,
-  //     }));
-  //   }
-  // };
-  
-  // const handleVideoUpload = (file) => {
-  //   if (file) {
-  //     setVideoFile(file);
-  //     setContentDetails((prevState) => ({
-  //       ...prevState,
-  //       videoSrc: URL.createObjectURL(file),
-  //       body: prevState.body,
-  //     }));
-  //   } else {
-  //     setVideoFile(null);
-  //     setContentDetails((prevState) => ({
-  //       ...prevState,
-  //       videoSrc: '',
-  //       body: prevState.body,
-  //     }));
-  //   }
-  // };
-
   const handleImageUpload = (file) => {
     if (file) {
       setImageFile(file);
       setContentDetails((prevState) => ({
         ...prevState,
-        imageSrc: `https://dmfc-server-sql.vercel.app/uploads/${file.name}`,
+        imageSrc: URL.createObjectURL(file),
         body: prevState.body,
       }));
     } else {
@@ -97,7 +61,7 @@ const ContentMan = () => {
       setVideoFile(file);
       setContentDetails((prevState) => ({
         ...prevState,
-        videoSrc: `https://dmfc-server-sql.vercel.app/uploads/${file.name}`,
+        videoSrc: URL.createObjectURL(file),
         body: prevState.body,
       }));
     } else {
@@ -211,110 +175,7 @@ const ContentMan = () => {
           alert('Error deleting video!');
         });
     }
-  };
-
-  // const handleSaveContent = () => {
-  //   const formData = new FormData();
-  //   formData.append('id', editIndex !== null ? content[editIndex].id : null);
-  //   formData.append('fullName', contentDetails.fullName);
-  //   formData.append('title', contentDetails.title);
-  //   formData.append('dateTime', contentDetails.dateTime.toISOString().split('T')[0]);
-  //   formData.append('body', contentDetails.body);
-  //   formData.append('uploadTime', contentDetails.uploadTime);
-  //   if (deletedFiles.length > 0) {
-  //     formData.append('deletedFiles', JSON.stringify(deletedFiles));
-  //   }
-  
-  //   if (imageFile) {
-  //     formData.append('image', imageFile);
-  //   }
-  
-  //   if (videoFile) {
-  //     formData.append('video', videoFile);
-  //   }
-  
-  //   const url = editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-content' : 'https://dmfc-server-sql.vercel.app/save-content';
-  //   const method = editIndex !== null ? 'POST' : 'PUT';
-  
-  //   fetch(url, {
-  //     method: method,
-  //     body: formData,
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log('Content saved successfully:', data);
-  //       setContentDetails({
-  //         imageSrc: data.imagePath ? `https://dmfc-server-sql.vercel.app/uploads/${data.imagePath}` : '',
-  //         videoSrc: data.videoPath ? `https://dmfc-server-sql.vercel.app/uploads/${data.videoPath}` : '',
-  //         fullName: '',
-  //         title: '',
-  //         dateTime: new Date(),
-  //         body: '',
-  //         uploadTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-  //       });
-  //       setImageFile(null);
-  //       setVideoFile(null);
-  //       setEditIndex(null);
-  //       setShowContentForm(false);
-  //       alert('Content successfully saved!');
-  //       fetchContent(); // Fetch updated content data
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error saving content:', error);
-  //       alert('Error saving content!');
-  //     });
-  
-  //   // Handle separately deleting image and video files if they were deleted
-  //   if (deletedFiles.includes('image') && editIndex !== null) {
-  //     const contentToDelete = content[editIndex];
-  //     const formData = new FormData();
-  //     formData.append('id', contentToDelete.id);
-  
-  //     fetch(`https://dmfc-server-sql.vercel.app/delete-image/${contentToDelete.id}`, {
-  //       method: 'POST',
-  //       body: formData,
-  //     })
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         console.log('Image deleted successfully:', data);
-  //         const updatedContent = [...content];
-  //         updatedContent[editIndex] = {
-  //           ...updatedContent[editIndex],
-  //           imagePath: null,
-  //         };
-  //         setContent(updatedContent);
-  //       })
-  //       .catch((error) => {
-  //         console.error('Error deleting image:', error);
-  //         alert('Error deleting image!');
-  //       });
-  //   }
-  
-  //   if (deletedFiles.includes('video') && editIndex !== null) {
-  //     const contentToDelete = content[editIndex];
-  //     const formData = new FormData();
-  //     formData.append('id', contentToDelete.id);
-  
-  //     fetch(`https://dmfc-server-sql.vercel.app/delete-video/${contentToDelete.id}`, {
-  //       method: 'POST',
-  //       body: formData,
-  //     })
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         console.log('Video deleted successfully:', data);
-  //         const updatedContent = [...content];
-  //         updatedContent[editIndex] = {
-  //           ...updatedContent[editIndex],
-  //           videoPath: null,
-  //         };
-  //         setContent(updatedContent);
-  //       })
-  //       .catch((error) => {
-  //         console.error('Error deleting video:', error);
-  //         alert('Error deleting video!');
-  //       });
-  //   }
-  // };  
+  };  
 
 useEffect(() => {
   fetch('https://dmfc-server-sql.vercel.app/get-content')
