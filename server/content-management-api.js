@@ -214,6 +214,15 @@
 // module.exports = router;
 
 //content-management-api.js
+
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+});
+
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled Rejection:', err);
+});
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -261,37 +270,32 @@ pool.getConnection((err, conn) => {
   console.log('CMS Connected to MySQL database');
 });
 
-router.put('/save-content', upload.fields([
+const uploadMiddleware = upload.fields([
   { name: 'image', maxCount: 1 },
   { name: 'video', maxCount: 1 },
-]), (req, res) => {
+]);
+
+router.put('/save-content', uploadMiddleware, (req, res) => {
   const { fullName, title, dateTime, body, uploadTime } = req.body;
   let imagePath = null;
   let videoPath = null;
-
-  // if (req.files && req.files.image && req.files.image.length > 0) {
-  //   imagePath = req.files.image[0].originalname;
-  // }
-  // if (req.files && req.files.video && req.files.video.length > 0) {
-  //   videoPath = req.files.video[0].originalname;
-  // }
 
   if (req.files && req.files.image && req.files.image.length > 0) {
     const imageFile = req.files.image[0];
     const imageName = `${Date.now()}-${imageFile.originalname}`;
     const imageFilePath = path.join(__dirname, 'uploads', imageName);
-    imagePath = `/uploads/${imageName}`; // Update the imagePath to include the '/uploads' prefix
+    imagePath = `/uploads/${imageName}`;
 
-    fs.copyFileSync(imageFile.path, imageFilePath); // Copy the uploaded file to the desired location
+    fs.copyFileSync(imageFile.path, imageFilePath);
   }
 
   if (req.files && req.files.video && req.files.video.length > 0) {
     const videoFile = req.files.video[0];
     const videoName = `${Date.now()}-${videoFile.originalname}`;
     const videoFilePath = path.join(__dirname, 'uploads', videoName);
-    videoPath = `/uploads/${videoName}`; // Update the videoPath to include the '/uploads' prefix
+    videoPath = `/uploads/${videoName}`;
 
-    fs.copyFileSync(videoFile.path, videoFilePath); // Copy the uploaded file to the desired location
+    fs.copyFileSync(videoFile.path, videoFilePath);
   }
 
   const insertQuery =
@@ -301,54 +305,44 @@ router.put('/save-content', upload.fields([
   pool.query(insertQuery, values, (error, results) => {
     if (error) {
       console.error('Error saving content:', error);
-      res.status(500).json({ message: 'Error saving content', error: error.message });
-      return;
+      res.status(500).json({ error: error.message });
+    } else {
+      console.log('Content saved successfully:', results);
+      res.status(200).json({ message: 'Content saved successfully!', imagePath, videoPath });
     }
-    console.log('Content saved successfully:', results);
-    res.status(200).json({ message: 'Content saved successfully!' });
   });
 });
 
-router.post('/update-content', upload.fields([
-  { name: 'image', maxCount: 1 },
-  { name: 'video', maxCount: 1 },
-]), (req, res) => {
+router.post('/update-content', uploadMiddleware, (req, res) => {
   const { id, fullName, title, dateTime, body, uploadTime } = req.body;
   let imagePath = null;
   let videoPath = null;
-
-  // if (req.files && req.files.image && req.files.image.length > 0) {
-  //   imagePath = req.files.image[0].originalname;
-  // }
-  // if (req.files && req.files.video && req.files.video.length > 0) {
-  //   videoPath = req.files.video[0].originalname;
-  // }
 
   if (req.files && req.files.image && req.files.image.length > 0) {
     const imageFile = req.files.image[0];
     const imageName = `${Date.now()}-${imageFile.originalname}`;
     const imageFilePath = path.join(__dirname, 'uploads', imageName);
-    imagePath = `/uploads/${imageName}`; // Update the imagePath to include the '/uploads' prefix
+    imagePath = `/uploads/${imageName}`;
 
-    fs.copyFileSync(imageFile.path, imageFilePath); // Copy the uploaded file to the desired location
+    fs.copyFileSync(imageFile.path, imageFilePath);
   }
 
   if (req.files && req.files.video && req.files.video.length > 0) {
     const videoFile = req.files.video[0];
     const videoName = `${Date.now()}-${videoFile.originalname}`;
     const videoFilePath = path.join(__dirname, 'uploads', videoName);
-    videoPath = `/uploads/${videoName}`; // Update the videoPath to include the '/uploads' prefix
+    videoPath = `/uploads/${videoName}`;
 
-    fs.copyFileSync(videoFile.path, videoFilePath); // Copy the uploaded file to the desired location
+    fs.copyFileSync(videoFile.path, videoFilePath);
   }
 
-  const updateQuery = `UPDATE content 
-                       SET imagePath = COALESCE(?, imagePath), 
+  const updateQuery = `UPDATE content
+                       SET imagePath = COALESCE(?, imagePath),
                            videoPath = COALESCE(?, videoPath),
-                           fullName = ?, 
-                           title = ?, 
-                           dateTime = ?, 
-                           body = ?, 
+                           fullName = ?,
+                           title = ?,
+                           dateTime = ?,
+                           body = ?,
                            uploadTime = ?
                        WHERE id = ?`;
   const values = [imagePath, videoPath, fullName, title, dateTime, body, uploadTime, id];
@@ -356,19 +350,124 @@ router.post('/update-content', upload.fields([
   pool.query(updateQuery, values, (error, results) => {
     if (error) {
       console.error('Error updating content:', error);
-      res.status(500).json({ message: 'Error updating content', error: error.message });
-      return;
-    }
-
-    if (results.affectedRows === 0) {
+      res.status(500).json({ error: error.message });
+    } else if (results.affectedRows === 0) {
       res.status(404).json({ message: 'Content not found' });
-      return;
+    } else {
+      console.log(`Content with ID ${id} updated successfully`);
+      res.status(200).json({ message: 'Content updated successfully!', imagePath, videoPath });
     }
-
-    console.log(`Content with ID ${id} updated successfully`);
-    res.status(200).json({ message: 'Content updated successfully!', imagePath, videoPath });
   });
 });
+
+// router.put('/save-content', upload.fields([
+//   { name: 'image', maxCount: 1 },
+//   { name: 'video', maxCount: 1 },
+// ]), (req, res) => {
+//   const { fullName, title, dateTime, body, uploadTime } = req.body;
+//   let imagePath = null;
+//   let videoPath = null;
+
+//   // if (req.files && req.files.image && req.files.image.length > 0) {
+//   //   imagePath = req.files.image[0].originalname;
+//   // }
+//   // if (req.files && req.files.video && req.files.video.length > 0) {
+//   //   videoPath = req.files.video[0].originalname;
+//   // }
+
+//   if (req.files && req.files.image && req.files.image.length > 0) {
+//     const imageFile = req.files.image[0];
+//     const imageName = `${Date.now()}-${imageFile.originalname}`;
+//     const imageFilePath = path.join(__dirname, 'uploads', imageName);
+//     imagePath = `/uploads/${imageName}`; // Update the imagePath to include the '/uploads' prefix
+
+//     fs.copyFileSync(imageFile.path, imageFilePath); // Copy the uploaded file to the desired location
+//   }
+
+//   if (req.files && req.files.video && req.files.video.length > 0) {
+//     const videoFile = req.files.video[0];
+//     const videoName = `${Date.now()}-${videoFile.originalname}`;
+//     const videoFilePath = path.join(__dirname, 'uploads', videoName);
+//     videoPath = `/uploads/${videoName}`; // Update the videoPath to include the '/uploads' prefix
+
+//     fs.copyFileSync(videoFile.path, videoFilePath); // Copy the uploaded file to the desired location
+//   }
+
+//   const insertQuery =
+//     'INSERT INTO content (imagePath, videoPath, fullName, title, dateTime, body, uploadTime) VALUES (?, ?, ?, ?, ?, ?, ?)';
+//   const values = [imagePath, videoPath, fullName, title, dateTime, body, uploadTime];
+
+//   pool.query(insertQuery, values, (error, results) => {
+//     if (error) {
+//       console.error('Error saving content:', error);
+//       res.status(500).json({ message: 'Error saving content', error: error.message });
+//       return;
+//     }
+//     console.log('Content saved successfully:', results);
+//     res.status(200).json({ message: 'Content saved successfully!' });
+//   });
+// });
+
+// router.post('/update-content', upload.fields([
+//   { name: 'image', maxCount: 1 },
+//   { name: 'video', maxCount: 1 },
+// ]), (req, res) => {
+//   const { id, fullName, title, dateTime, body, uploadTime } = req.body;
+//   let imagePath = null;
+//   let videoPath = null;
+
+//   // if (req.files && req.files.image && req.files.image.length > 0) {
+//   //   imagePath = req.files.image[0].originalname;
+//   // }
+//   // if (req.files && req.files.video && req.files.video.length > 0) {
+//   //   videoPath = req.files.video[0].originalname;
+//   // }
+
+//   if (req.files && req.files.image && req.files.image.length > 0) {
+//     const imageFile = req.files.image[0];
+//     const imageName = `${Date.now()}-${imageFile.originalname}`;
+//     const imageFilePath = path.join(__dirname, 'uploads', imageName);
+//     imagePath = `/uploads/${imageName}`; // Update the imagePath to include the '/uploads' prefix
+
+//     fs.copyFileSync(imageFile.path, imageFilePath); // Copy the uploaded file to the desired location
+//   }
+
+//   if (req.files && req.files.video && req.files.video.length > 0) {
+//     const videoFile = req.files.video[0];
+//     const videoName = `${Date.now()}-${videoFile.originalname}`;
+//     const videoFilePath = path.join(__dirname, 'uploads', videoName);
+//     videoPath = `/uploads/${videoName}`; // Update the videoPath to include the '/uploads' prefix
+
+//     fs.copyFileSync(videoFile.path, videoFilePath); // Copy the uploaded file to the desired location
+//   }
+
+//   const updateQuery = `UPDATE content 
+//                        SET imagePath = COALESCE(?, imagePath), 
+//                            videoPath = COALESCE(?, videoPath),
+//                            fullName = ?, 
+//                            title = ?, 
+//                            dateTime = ?, 
+//                            body = ?, 
+//                            uploadTime = ?
+//                        WHERE id = ?`;
+//   const values = [imagePath, videoPath, fullName, title, dateTime, body, uploadTime, id];
+
+//   pool.query(updateQuery, values, (error, results) => {
+//     if (error) {
+//       console.error('Error updating content:', error);
+//       res.status(500).json({ message: 'Error updating content', error: error.message });
+//       return;
+//     }
+
+//     if (results.affectedRows === 0) {
+//       res.status(404).json({ message: 'Content not found' });
+//       return;
+//     }
+
+//     console.log(`Content with ID ${id} updated successfully`);
+//     res.status(200).json({ message: 'Content updated successfully!', imagePath, videoPath });
+//   });
+// });
 
 router.delete('/delete-content/:id', (req, res) => {
   const contentId = req.params.id;
