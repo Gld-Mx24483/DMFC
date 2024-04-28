@@ -225,6 +225,14 @@ const mysql = require('mysql');
 const router = express.Router();
 const app = express();
 
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+  cloud_name: 'dua8dfweh',
+  api_key: '751154813919773',
+  api_secret: 'GrBhMTA9cHYq0zuWjtI69XMcxRI'
+});
+
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -261,20 +269,39 @@ pool.getConnection((err, conn) => {
   console.log('CMS Connected to MySQL database');
 });
 
+// router.put('/save-content', upload.fields([
+//   { name: 'image', maxCount: 1 },
+//   { name: 'video', maxCount: 1 },
+// ]), (req, res) => {
+//   const { fullName, title, dateTime, body, uploadTime } = req.body;
+//   let imagePath = null;
+//   let videoPath = null;
+
+//   if (req.files && req.files.image && req.files.image.length > 0) {
+//     imagePath = req.files.image[0].originalname;
+//   }
+//   if (req.files && req.files.video && req.files.video.length > 0) {
+//     videoPath = req.files.video[0].originalname;
+//   }
+
 router.put('/save-content', upload.fields([
   { name: 'image', maxCount: 1 },
   { name: 'video', maxCount: 1 },
-]), (req, res) => {
+]), async (req, res) => {
   const { fullName, title, dateTime, body, uploadTime } = req.body;
   let imagePath = null;
   let videoPath = null;
 
   if (req.files && req.files.image && req.files.image.length > 0) {
-    imagePath = req.files.image[0].originalname;
+    const imageUploadResult = await cloudinary.uploader.upload(req.files.image[0].path, { resource_type: 'image' });
+    imagePath = imageUploadResult.secure_url;
   }
+
   if (req.files && req.files.video && req.files.video.length > 0) {
-    videoPath = req.files.video[0].originalname;
+    const videoUploadResult = await cloudinary.uploader.upload(req.files.video[0].path, { resource_type: 'video' });
+    videoPath = videoUploadResult.secure_url;
   }
+
 
   const insertQuery =
     'INSERT INTO content (imagePath, videoPath, fullName, title, dateTime, body, uploadTime) VALUES (?, ?, ?, ?, ?, ?, ?)';
@@ -291,20 +318,39 @@ router.put('/save-content', upload.fields([
   });
 });
 
+// router.post('/update-content', upload.fields([
+//   { name: 'image', maxCount: 1 },
+//   { name: 'video', maxCount: 1 },
+// ]), (req, res) => {
+//   const { id, fullName, title, dateTime, body, uploadTime } = req.body;
+//   let imagePath = null;
+//   let videoPath = null;
+
+//   if (req.files && req.files.image && req.files.image.length > 0) {
+//     imagePath = req.files.image[0].originalname;
+//   }
+//   if (req.files && req.files.video && req.files.video.length > 0) {
+//     videoPath = req.files.video[0].originalname;
+//   }
+
 router.post('/update-content', upload.fields([
   { name: 'image', maxCount: 1 },
   { name: 'video', maxCount: 1 },
-]), (req, res) => {
+]), async (req, res) => {
   const { id, fullName, title, dateTime, body, uploadTime } = req.body;
   let imagePath = null;
   let videoPath = null;
 
   if (req.files && req.files.image && req.files.image.length > 0) {
-    imagePath = req.files.image[0].originalname;
+    const imageUploadResult = await cloudinary.uploader.upload(req.files.image[0].path, { resource_type: 'image' });
+    imagePath = imageUploadResult.secure_url;
   }
+
   if (req.files && req.files.video && req.files.video.length > 0) {
-    videoPath = req.files.video[0].originalname;
+    const videoUploadResult = await cloudinary.uploader.upload(req.files.video[0].path, { resource_type: 'video' });
+    videoPath = videoUploadResult.secure_url;
   }
+
 
   const updateQuery = `UPDATE content 
                        SET imagePath = COALESCE(?, imagePath), 
