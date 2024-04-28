@@ -38,48 +38,12 @@ const ContentMan = () => {
     }));
   };
 
-  // const handleImageUpload = (file) => {
-  //   if (file) {
-  //     setImageFile(file);
-  //     setContentDetails((prevState) => ({
-  //       ...prevState,
-  //       imageSrc: URL.createObjectURL(file),
-  //       body: prevState.body,
-  //     }));
-  //   } else {
-  //     setImageFile(null);
-  //     setContentDetails((prevState) => ({
-  //       ...prevState,
-  //       imageSrc: '',
-  //       body: prevState.body,
-  //     }));
-  //   }
-  // };
-  
-  // const handleVideoUpload = (file) => {
-  //   if (file) {
-  //     setVideoFile(file);
-  //     setContentDetails((prevState) => ({
-  //       ...prevState,
-  //       videoSrc: URL.createObjectURL(file),
-  //       body: prevState.body,
-  //     }));
-  //   } else {
-  //     setVideoFile(null);
-  //     setContentDetails((prevState) => ({
-  //       ...prevState,
-  //       videoSrc: '',
-  //       body: prevState.body,
-  //     }));
-  //   }
-  // };
-
   const handleImageUpload = (file) => {
     if (file) {
       setImageFile(file);
       setContentDetails((prevState) => ({
         ...prevState,
-        imageSrc: '', // Remove URL.createObjectURL(file)
+        imageSrc: URL.createObjectURL(file),
         body: prevState.body,
       }));
     } else {
@@ -97,7 +61,7 @@ const ContentMan = () => {
       setVideoFile(file);
       setContentDetails((prevState) => ({
         ...prevState,
-        videoSrc: '', // Remove URL.createObjectURL(file)
+        videoSrc: URL.createObjectURL(file),
         body: prevState.body,
       }));
     } else {
@@ -109,7 +73,6 @@ const ContentMan = () => {
       }));
     }
   };
-  
   
   const handleSaveContent = () => {
     const formData = new FormData();
@@ -142,10 +105,8 @@ const ContentMan = () => {
       .then((data) => {
         console.log('Content saved successfully:', data);
         setContentDetails({
-          // imageSrc: data.imagePath ? `https://dmfc-server-sql.vercel.app/uploads/${data.imagePath}` : '',
-          // videoSrc: data.videoPath ? `https://dmfc-server-sql.vercel.app/uploads/${data.videoPath}` : '',
-          imageSrc: data.imagePath || '', // Use the imagePath from the server response
-          videoSrc: data.videoPath || '', 
+          imageSrc: data.imagePath ? `https://dmfc-server-sql.vercel.app/uploads/${data.imagePath}` : '',
+          videoSrc: data.videoPath ? `https://dmfc-server-sql.vercel.app/uploads/${data.videoPath}` : '',
           fullName: '',
           title: '',
           dateTime: new Date(),
