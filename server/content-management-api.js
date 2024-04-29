@@ -424,7 +424,7 @@
 
 // module.exports = router;
 
-
+//content-management-api.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -442,13 +442,6 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadsDir = path.join(__dirname, 'uploads');
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir);
-    }
-    cb(null, uploadsDir);
-  },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
   },
