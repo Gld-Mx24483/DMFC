@@ -229,25 +229,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json({ limit: '1000000mb' }));
-app.use(express.urlencoded({ limit: '1000000mb', extended: true }));
-app.use(bodyParser.urlencoded({ extended: true, limit: '100000mb' }));
-app.use(bodyParser.json({ limit: '100000mb' }));
 
-// const storage = multer.diskStorage({
-//   filename: (req, file, cb) => {
-//     cb(null, file.originalname);
-//   },
-// });
-
-// const upload = multer({ storage: storage });
-
-const storage = multer.memoryStorage();
-
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 900000000 },
+const storage = multer.diskStorage({
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
 });
+
+const upload = multer({ storage: storage });
 
 const pool = mysql.createPool({
   host: 'dmf-db.cd0i6o42e4on.ca-central-1.rds.amazonaws.com',
