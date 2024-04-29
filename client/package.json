@@ -22,6 +22,7 @@
     "analogue-time-picker": "^1.0.2",
     "antd": "^5.16.0",
     "axios": "^1.6.8",
+    "browser-image-compression": "^2.0.2",
     "cloudinary": "^2.2.0",
     "cloudinary-core": "^2.13.1",
     "cloudinary-react": "^1.8.1",
