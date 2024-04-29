@@ -106,8 +106,8 @@ const ContentMan = () => {
       .then((data) => {
         console.log('Content saved successfully:', data);
         setContentDetails({
-          imageSrc: data.imagePath ? `http://localhost:9000/uploads/${data.imagePath}` : '',
-          videoSrc: data.videoPath ? `http://localhost:9000/uploads/${data.videoPath}` : '',
+          imageSrc: data.imagePath ? `https://dmfc-server-sql.vercel.app/uploads/${data.imagePath}` : '',
+          videoSrc: data.videoPath ? `https://dmfc-server-sql.vercel.app/uploads/${data.videoPath}` : '',
           fullName: '',
           title: '',
           dateTime: new Date(),
