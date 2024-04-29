@@ -609,7 +609,7 @@ const ContentMan = () => {
               </div>
               </>
               )}
-              <div className="content-list">
+              {/* <div className="content-list">
               {content.length === 0 ? (
               <div className="no-events-message no-content">
               <p>No content at the moment</p>
@@ -629,7 +629,29 @@ const ContentMan = () => {
               </div>
               ))
               )}
-              </div>
+              </div> */}
+              <div className="content-list">
+  {Array.isArray(content) && content.length === 0 ? (
+    <div className="no-events-message no-content">
+      <p>No content at the moment</p>
+      <FontAwesomeIcon icon={faCalendarTimes} className="no-events-icon" />
+    </div>
+  ) : (
+    Array.isArray(content) &&
+    content.map((item, index) => (
+      <div className="content-item" key={item.id}>
+        <FontAwesomeIcon className='Pen' icon={faPen} onClick={() => handleEditContent(index)} />
+        <FontAwesomeIcon className='Trash' icon={faTrash} onClick={() => handleDeleteContent(index, item.id)} />
+        {item.imageUrl && <Image cloudName="dua8dfweh" publicId={item.imageUrl} width="300" crop="scale" />}
+        {item.videoUrl && <Video cloudName="dua8dfweh" publicId={item.videoUrl} width="300" controls />}
+        <h3>{item.title}</h3>
+        <p>{item.dateTime} - {item.uploadTime}</p>
+        <p>{item.fullName}</p>
+        <div className='wysiwyg' dangerouslySetInnerHTML={{ __html: item.body }}></div>
+      </div>
+    ))
+  )}
+</div>
               </div>
               </CloudinaryContext>
               );
