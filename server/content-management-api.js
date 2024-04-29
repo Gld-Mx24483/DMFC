@@ -13,11 +13,11 @@
 // app.use(cors());
 // app.use(express.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 // const storage = multer.diskStorage({
 //   destination: (req, file, cb) => {
-//     const uploadsDir = path.join(__dirname, 'uploads');
+//     const uploadsDir = path.join(__dirname, '..', 'uploads'); 
 //     if (!fs.existsSync(uploadsDir)) {
 //       fs.mkdirSync(uploadsDir);
 //     }
@@ -228,21 +228,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
-
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     const uploadsDir = path.join(__dirname, 'uploads');
-//     if (!fs.existsSync(uploadsDir)) {
-//       fs.mkdirSync(uploadsDir);
-//     }
-//     cb(null, uploadsDir);
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, file.originalname);
-//   },
-// });
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

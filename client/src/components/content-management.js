@@ -94,7 +94,8 @@ const ContentMan = () => {
       formData.append('video', videoFile);
     }
   
-    const url = editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-content' : 'https://dmfc-server-sql.vercel.app/save-content';
+    // const url = editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-content' : 'https://dmfc-server-sql.vercel.app/save-content';
+    const url = editIndex !== null ? 'http://localhost:9000/update-content' : 'http://localhost:9000/save-content';
     const method = editIndex !== null ? 'POST' : 'PUT';
   
     fetch(url, {
@@ -105,8 +106,8 @@ const ContentMan = () => {
       .then((data) => {
         console.log('Content saved successfully:', data);
         setContentDetails({
-          imageSrc: data.imagePath ? `https://dmfc-server-sql.vercel.app/uploads/${data.imagePath}` : '',
-          videoSrc: data.videoPath ? `https://dmfc-server-sql.vercel.app/uploads/${data.videoPath}` : '',
+          imageSrc: data.imagePath ? `http://localhost:9000/uploads/${data.imagePath}` : '',
+          videoSrc: data.videoPath ? `http://localhost:9000/uploads/${data.videoPath}` : '',
           fullName: '',
           title: '',
           dateTime: new Date(),
@@ -131,7 +132,7 @@ const ContentMan = () => {
       const formData = new FormData();
       formData.append('id', contentToDelete.id);
   
-      fetch(`https://dmfc-server-sql.vercel.app/delete-image/${contentToDelete.id}`, {
+      fetch(`http://localhost:9000/delete-image/${contentToDelete.id}`, {
         method: 'POST',
         body: formData,
       })
@@ -156,7 +157,7 @@ const ContentMan = () => {
       const formData = new FormData();
       formData.append('id', contentToDelete.id);
   
-      fetch(`https://dmfc-server-sql.vercel.app/delete-video/${contentToDelete.id}`, {
+      fetch(`http://localhost:9000/delete-video/${contentToDelete.id}`, {
         method: 'POST',
         body: formData,
       })
@@ -178,7 +179,7 @@ const ContentMan = () => {
   };  
 
 useEffect(() => {
-  fetch('https://dmfc-server-sql.vercel.app/get-content')
+  fetch('http://localhost:9000/get-content')
    .then((response) => response.json())
    .then((data) => {
       console.log('Content fetched:', data);
@@ -188,7 +189,7 @@ useEffect(() => {
 }, []);
 
   const fetchContent = () => {
-    fetch('https://dmfc-server-sql.vercel.app/get-content')
+    fetch('http://localhost:9000/get-content')
       .then((response) => response.json())
       .then((data) => {
         console.log('Content fetched:', data);
@@ -212,7 +213,7 @@ useEffect(() => {
     const confirmDelete = window.confirm("Are you sure you want to delete this content?");
   
     if (confirmDelete) {
-      fetch(`https://dmfc-server-sql.vercel.app/delete-content/${id}`, {
+      fetch(`http://localhost:9000/delete-content/${id}`, {
         method: 'DELETE',
       })
         .then((response) => {
@@ -238,7 +239,7 @@ useEffect(() => {
       formData.append('id', contentId);
       formData.append('deletedFiles', 'image');
   
-      fetch(`https://dmfc-server-sql.vercel.app/delete-image/${contentId}`, {
+      fetch(`http://localhost:9000/delete-image/${contentId}`, {
         method: 'POST',
         body: formData,
       })
@@ -260,7 +261,7 @@ useEffect(() => {
       formData.append('id', contentId);
       formData.append('deletedFiles', 'video');
   
-      fetch(`https://dmfc-server-sql.vercel.app/delete-video/${contentId}`, {
+      fetch(`http://localhost:9000/delete-video/${contentId}`, {
         method: 'POST',
         body: formData,
       })
