@@ -132,7 +132,7 @@ const ContentMan = () => {
       const formData = new FormData();
       formData.append('id', contentToDelete.id);
   
-      fetch(`http://localhost:9000/delete-image/${contentToDelete.id}`, {
+      fetch(`https://dmfc-server-sql.vercel.app/delete-image/${contentToDelete.id}`, {
         method: 'POST',
         body: formData,
       })
@@ -157,7 +157,7 @@ const ContentMan = () => {
       const formData = new FormData();
       formData.append('id', contentToDelete.id);
   
-      fetch(`http://localhost:9000/delete-video/${contentToDelete.id}`, {
+      fetch(`https://dmfc-server-sql.vercel.app/delete-video/${contentToDelete.id}`, {
         method: 'POST',
         body: formData,
       })
@@ -179,7 +179,7 @@ const ContentMan = () => {
   };  
 
 useEffect(() => {
-  fetch('http://localhost:9000/get-content')
+  fetch('https://dmfc-server-sql.vercel.app/get-content')
    .then((response) => response.json())
    .then((data) => {
       console.log('Content fetched:', data);
@@ -189,7 +189,7 @@ useEffect(() => {
 }, []);
 
   const fetchContent = () => {
-    fetch('http://localhost:9000/get-content')
+    fetch('https://dmfc-server-sql.vercel.app/get-content')
       .then((response) => response.json())
       .then((data) => {
         console.log('Content fetched:', data);
@@ -213,7 +213,7 @@ useEffect(() => {
     const confirmDelete = window.confirm("Are you sure you want to delete this content?");
   
     if (confirmDelete) {
-      fetch(`http://localhost:9000/delete-content/${id}`, {
+      fetch(`https://dmfc-server-sql.vercel.app/delete-content/${id}`, {
         method: 'DELETE',
       })
         .then((response) => {
@@ -239,7 +239,7 @@ useEffect(() => {
       formData.append('id', contentId);
       formData.append('deletedFiles', 'image');
   
-      fetch(`http://localhost:9000/delete-image/${contentId}`, {
+      fetch(`https://dmfc-server-sql.vercel.app/delete-image/${contentId}`, {
         method: 'POST',
         body: formData,
       })
@@ -261,7 +261,7 @@ useEffect(() => {
       formData.append('id', contentId);
       formData.append('deletedFiles', 'video');
   
-      fetch(`http://localhost:9000/delete-video/${contentId}`, {
+      fetch(`https://dmfc-server-sql.vercel.app/delete-video/${contentId}`, {
         method: 'POST',
         body: formData,
       })
