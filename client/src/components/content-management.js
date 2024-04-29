@@ -94,8 +94,8 @@ const ContentMan = () => {
       formData.append('video', videoFile);
     }
   
-    // const url = editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-content' : 'https://dmfc-server-sql.vercel.app/save-content';
-    const url = editIndex !== null ? 'http://localhost:9000/update-content' : 'http://localhost:9000/save-content';
+    const url = editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-content' : 'https://dmfc-server-sql.vercel.app/save-content';
+    // const url = editIndex !== null ? 'http://localhost:9000/update-content' : 'http://localhost:9000/save-content';
     const method = editIndex !== null ? 'POST' : 'PUT';
   
     fetch(url, {
