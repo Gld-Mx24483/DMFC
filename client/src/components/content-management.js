@@ -188,15 +188,15 @@ useEffect(() => {
    .catch((error) => console.error('Error fetching content:', error));
 }, []);
 
-  const fetchContent = () => {
-    fetch('https://dmfc-server-sql.vercel.app/get-content')
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Content fetched:', data);
-        setContent(data);
-      })
-      .catch((error) => console.error('Error fetching content:', error));
-  };
+  // const fetchContent = () => {
+  //   fetch('https://dmfc-server-sql.vercel.app/get-content')
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log('Content fetched:', data);
+  //       setContent(data);
+  //     })
+  //     .catch((error) => console.error('Error fetching content:', error));
+  // };
 
   const handleEditContent = (index) => {
     setEditIndex(index);
