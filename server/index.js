@@ -63,13 +63,13 @@ app.use('/', eventManagementAPI);
 app.use("/", (req,res) => {
   res.send("Server is running.");
 })
-// app.use(cors({
-//   origin: 'https://dmfc.vercel.app' 
-// }));
-
 app.use(cors({
-  origin: 'http://localhost:9000' 
+  origin: 'https://dmfc.vercel.app' 
 }));
+
+// app.use(cors({
+//   origin: 'http://localhost:9000' 
+// }));
 
 const port = process.env.PORT || 9000;
 app.listen(port, () => {
