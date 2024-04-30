@@ -88,7 +88,6 @@ const FileUpload = ({ onFileUpload, text, acceptedFileTypes = 'image/*,video/*' 
           }
         }
 
-        // Check if the file is a video and its size is <= 10MB
         if (file.type.startsWith('video/')) {
           onFileUpload(file);
           setFileUploaded(true);
