@@ -55,19 +55,43 @@ const ContentMan = () => {
     }
   };
 
+  // const handleVideoUpload = (file) => {
+  //   if (file) {
+  //     setVideoFile(file);
+  //     setContentDetails((prevState) => ({
+  //       ...prevState,
+  //       videoSrc: URL.createObjectURL(file), 
+  //       body: prevState.body,
+  //     }));
+  //   } else {
+  //     setVideoFile(null);
+  //     setContentDetails((prevState) => ({
+  //       ...prevState,
+  //       videoSrc: '', 
+  //       body: prevState.body,
+  //     }));
+  //   }
+  // };
+
   const handleVideoUpload = (file) => {
     if (file) {
-      setVideoFile(file);
-      setContentDetails((prevState) => ({
-        ...prevState,
-        videoSrc: URL.createObjectURL(file), 
-        body: prevState.body,
-      }));
+      const videoFileSize = file.size / (1024 * 1024); // Convert file size to MB
+  
+      if (videoFileSize <= 400) {
+        setVideoFile(file);
+        setContentDetails((prevState) => ({
+          ...prevState,
+          videoSrc: URL.createObjectURL(file),
+          body: prevState.body,
+        }));
+      } else {
+        alert('Video file size should be 400MB or less. Please reduce the video size and try again.');
+      }
     } else {
       setVideoFile(null);
       setContentDetails((prevState) => ({
         ...prevState,
-        videoSrc: '', 
+        videoSrc: '',
         body: prevState.body,
       }));
     }

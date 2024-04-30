@@ -275,6 +275,7 @@ router.put('/save-content', upload.fields([
       const videoUploadResult = await cloudinary.uploader.upload(req.files.video[0].path, {
         resource_type: 'video',
         public_id: `content-videos/${req.files.video[0].originalname}`,
+        max_file_size: 400000000,
       });
       videoPath = videoUploadResult.secure_url;
     }
@@ -319,6 +320,7 @@ router.post('/update-content', upload.fields([
       const videoUploadResult = await cloudinary.uploader.upload(req.files.video[0].path, {
         resource_type: 'video',
         public_id: `content-videos/${req.files.video[0].originalname}`,
+        max_file_size: 400000000,
       });
       videoPath = videoUploadResult.secure_url;
     }
