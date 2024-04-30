@@ -13,6 +13,7 @@ import 'react-calendar/dist/Calendar.css';
 import FileUpload from './fileupload';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { compressed } from "react-native-compressor";
 
 const ContentMan = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -59,20 +60,58 @@ const ContentMan = () => {
     }
   };
 
-  const handleVideoUpload = (file) => {
-    if (file) {
-      const videoFileSize = file.size / (1024 * 1024); // Convert file size to MB
+  // const handleVideoUpload = (file) => {
+  //   if (file) {
+  //     const videoFileSize = file.size / (1024 * 1024); // Convert file size to MB
   
-      if (videoFileSize <= 400) {
-        setVideoFile(file);
-        setContentDetails((prevState) => ({
-          ...prevState,
-          videoSrc: URL.createObjectURL(file),
-          body: prevState.body,
-        }));
-        setUploadProgress(0);
-      } else {
-        alert('Video file size should be 400MB or less. Please reduce the video size and try again.');
+  //     if (videoFileSize <= 400) {
+  //       setVideoFile(file);
+  //       setContentDetails((prevState) => ({
+  //         ...prevState,
+  //         videoSrc: URL.createObjectURL(file),
+  //         body: prevState.body,
+  //       }));
+  //       setUploadProgress(0);
+  //     } else {
+  //       alert('Video file size should be 400MB or less. Please reduce the video size and try again.');
+  //     }
+  //   } else {
+  //     setVideoFile(null);
+  //     setContentDetails((prevState) => ({
+  //       ...prevState,
+  //       videoSrc: '',
+  //       body: prevState.body,
+  //     }));
+  //     setUploadProgress(0);
+  //   }
+  // };
+
+  const handleVideoUpload = async (file) => {
+    if (file) {
+      try {
+        const videoFileSize = file.size / (1024 * 1024); // Convert file size to MB
+  
+        if (videoFileSize <= 10) {
+          // Compress the video before uploading
+          const compressedVideo = await Compressed.compress(file.uri, {
+            maxSize: 10 * 1024 * 1024, // 10MB maximum size
+            quality: 0.8, // Compression quality (0 - 1)
+            compressFormat: 'mp4', // Compression format
+          });
+  
+          setVideoFile(compressedVideo);
+          setContentDetails((prevState) => ({
+            ...prevState,
+            videoSrc: URL.createObjectURL(compressedVideo),
+            body: prevState.body,
+          }));
+          setUploadProgress(0);
+        } else {
+          alert('Video file size should be 10MB or less. Please reduce the video size and try again.');
+        }
+      } catch (error) {
+        console.error('Error compressing video:', error);
+        alert('Error compressing video. Please try again.');
       }
     } else {
       setVideoFile(null);
@@ -83,7 +122,7 @@ const ContentMan = () => {
       }));
       setUploadProgress(0);
     }
-  };
+  };  
 
   const handleSaveContent = () => {
     const formData = new FormData();
