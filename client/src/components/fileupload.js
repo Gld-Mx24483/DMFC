@@ -74,10 +74,10 @@ const FileUpload = ({ onFileUpload, text, acceptedFileTypes = 'image/*,video/*' 
         const file = acceptedFiles[0];
         let compressedFile = file;
 
-        if (file.type.startsWith('image/') && file.size > 4 * 1024 * 1024) {
+        if (file.type.startsWith('image/') && file.size > 8 * 1024 * 1024) {
           try {
             const options = {
-              maxSizeMB: 4,
+              maxSizeMB: 8,
               maxWidthOrHeight: 1920,
               useWebWorker: true,
             };
