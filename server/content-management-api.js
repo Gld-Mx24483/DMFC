@@ -236,7 +236,15 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 50 * 1024 * 1024 }, // Example limit: 50 MB, adjust as needed
+});
+
+// Your existing routes that handle file uploads continue here...
+
+
+// const upload = multer({ storage: storage });
 
 const pool = mysql.createPool({
   host: 'dmf-db.cd0i6o42e4on.ca-central-1.rds.amazonaws.com',
