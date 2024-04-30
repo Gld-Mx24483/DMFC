@@ -228,9 +228,20 @@ const streamTransform = require('stream-transform');
 const router = express.Router();
 const app = express();
 
-app.use(cors());
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(cors());
+// app.use(express.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+
+
+const MAX_PAYLOAD_SIZE = '200mb'; // Set the maximum payload size to 50 MB, adjust as needed
+
+app.use(cors({
+  origin: 'https://dmfc.vercel.app', 
+}));
+app.use(express.json({ limit: MAX_PAYLOAD_SIZE }));
+app.use(express.urlencoded({ limit: MAX_PAYLOAD_SIZE, extended: true }));
+app.use(bodyParser.json({ limit: MAX_PAYLOAD_SIZE }));
+app.use(bodyParser.urlencoded({ limit: MAX_PAYLOAD_SIZE, extended: true }));
 
 const storage = multer.diskStorage({
   filename: (req, file, cb) => {
