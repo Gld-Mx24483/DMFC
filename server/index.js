@@ -40,8 +40,6 @@
 // server.js
 const express = require('express');
 const cors = require('cors');
-const multer = require('multer');
-const bodyParser = require('body-parser');
 const path = require('path');
 const galleryAPI = require('./gallery-api');
 const teamAPI = require('./team-api');
@@ -53,10 +51,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.urlencoded({ extended: true, limit: '100000mb' }));
-app.use(bodyParser.json({ limit: '100000mb' }));
-
+app.use(express.urlencoded({ extended: true }));
 
 app.use('/', teamAPI);
 app.use('/', galleryAPI);
@@ -70,17 +65,6 @@ app.use("/", (req,res) => {
 app.use(cors({
   origin: 'https://dmfc.vercel.app' 
 }));
-
-const storage = multer.diskStorage({
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
-
-const upload = multer({
-  storage: storage,
-  limits: {fileSize: 900000000},
-});
 
 // app.use(cors({
 //   origin: 'http://localhost:9000' 
