@@ -63,7 +63,6 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import imageCompression from 'browser-image-compression';
-import axios from 'axios';
 
 const FileUpload = ({ onFileUpload, text, acceptedFileTypes = 'image/*,video/*' }) => {
   const [fileUploaded, setFileUploaded] = useState(false);
@@ -89,72 +88,25 @@ const FileUpload = ({ onFileUpload, text, acceptedFileTypes = 'image/*,video/*' 
           }
         }
 
-  //       // Check if the file is a video and its size is <= 10MB
-  //       if (file.type.startsWith('video/') && file.size <= 10 * 1024 * 1024) {
-  //         onFileUpload(file);
-  //         setFileUploaded(true);
-  //         setFileType('video');
-  //       } else {
-  //         // If not a video or exceeds size limit, upload the compressed file (for images) or original file (for videos)
-  //         onFileUpload(compressedFile);
-  //         setFileUploaded(true);
-  //         setFileType(compressedFile.type.startsWith('image/') ? 'image' : 'video');
-  //       }
-  //     } else {
-  //       onFileUpload(null);
-  //       setFileUploaded(false);
-  //       setFileType(null);
-  //     }
-  //   },
-  //   [onFileUpload]
-  // );
-
-  if (file.type.startsWith('video/')) {
-    const chunkSize = 4 * 1024 * 1024; // 4MB chunk size
-    const totalChunks = Math.ceil(file.size / chunkSize);
-
-    for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
-      const start = chunkIndex * chunkSize;
-      const end = Math.min(start + chunkSize, file.size);
-      const chunk = file.slice(start, end);
-
-      const formData = new FormData();
-      formData.append('chunk', chunk);
-      formData.append('chunkIndex', chunkIndex);
-      formData.append('totalChunks', totalChunks);
-      formData.append('fileName', file.name);
-
-      try {
-        await axios.post('https://dmfc-server-sql.vercel.app/upload-video-chunk', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          onUploadProgress: (progressEvent) => {
-            const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
-            setUploadProgress(progress);
-          },
-        });
-      } catch (error) {
-        console.error('Error uploading video chunk:', error);
+        // Check if the file is a video and its size is <= 10MB
+        if (file.type.startsWith('video/') && file.size <= 10 * 1024 * 1024) {
+          onFileUpload(file);
+          setFileUploaded(true);
+          setFileType('video');
+        } else {
+          // If not a video or exceeds size limit, upload the compressed file (for images) or original file (for videos)
+          onFileUpload(compressedFile);
+          setFileUploaded(true);
+          setFileType(compressedFile.type.startsWith('image/') ? 'image' : 'video');
+        }
+      } else {
+        onFileUpload(null);
+        setFileUploaded(false);
+        setFileType(null);
       }
-    }
-
-    onFileUpload(file);
-    setFileUploaded(true);
-    setFileType('video');
-  } else {
-    onFileUpload(compressedFile);
-    setFileUploaded(true);
-    setFileType(compressedFile.type.startsWith('image/') ? 'image' : 'video');
-  }
-} else {
-  onFileUpload(null);
-  setFileUploaded(false);
-  setFileType(null);
-}
-},
-[onFileUpload]
-);
+    },
+    [onFileUpload]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: acceptedFileTypes });
 
