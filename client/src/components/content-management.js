@@ -232,17 +232,6 @@ const ContentMan = () => {
                 <video controls src={contentDetails.videoSrc}></video>
               )}
             </div>
-            <div className="upload-progress">
-    <CircularProgressbar
-      value={uploadProgress}
-      text={`${uploadProgress}%`}
-      styles={buildStyles({
-        textColor: 'black',
-        pathColor: 'green',
-        trailColor: 'lightgray',
-      })}
-    />
-  </div>
             <input type="text" name="fullName" placeholder="Full Name" value={contentDetails.fullName} onChange={handleInputChange} />
             <input type="text" name="title" placeholder="Title" value={contentDetails.title} onChange={handleInputChange} />
             <div className="date-time-picker">
@@ -272,6 +261,17 @@ const ContentMan = () => {
                 onModelChange={(newModel) => setContentDetails({ ...contentDetails, body: newModel })}
               />
             </div>
+            <div className="upload-progress">
+        <CircularProgressbar
+          value={uploadProgress}
+          text={`${uploadProgress}%`}
+          styles={buildStyles({
+            textColor: 'black',
+            pathColor: 'green',
+            trailColor: 'lightgray',
+          })}
+        />
+      </div>
             <button className="but" onClick={handleSaveContent}>{editIndex !== null ? 'Update Content' : 'Save Content'}</button>
           </div>
         </>

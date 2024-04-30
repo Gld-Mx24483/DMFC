@@ -310,6 +310,12 @@
   border-radius: 10px;
  }
 
+.upload-progress{
+  width: 100px;
+  transform: translateX(10px);
+  margin-bottom: 20px;
+}
+
 @media screen and (max-width: 500px) {
   .create-content-button{
     margin-left: 20px;
