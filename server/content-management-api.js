@@ -228,7 +228,9 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '100000mb' }));
+app.use(bodyParser.json({ limit: '100000mb' }));
 
 const storage = multer.diskStorage({
   filename: (req, file, cb) => {
@@ -238,13 +240,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 50 * 1024 * 1024 }, // Example limit: 50 MB, adjust as needed
+  limits: { fileSize: 900000000},
 });
-
-// Your existing routes that handle file uploads continue here...
-
-
-// const upload = multer({ storage: storage });
 
 const pool = mysql.createPool({
   host: 'dmf-db.cd0i6o42e4on.ca-central-1.rds.amazonaws.com',
