@@ -143,7 +143,7 @@ const ContentMan = () => {
       }
     };
 
-    uploadRequest.maxSendingSize = 200 * 1024 * 1024; // Set the maximum payload size to 200 MB
+    // Set the maximum payload size to 200 MB
     uploadRequest.send(formData);
   };
 
