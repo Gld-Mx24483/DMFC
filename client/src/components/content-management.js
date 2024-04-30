@@ -231,8 +231,8 @@ const ContentMan = () => {
               {contentDetails.videoSrc && (
                 <video controls src={contentDetails.videoSrc}></video>
               )}
-              {uploadProgress > 0 && (
-  <div className="upload-progress">
+            </div>
+            <div className="upload-progress">
     <CircularProgressbar
       value={uploadProgress}
       text={`${uploadProgress}%`}
@@ -243,8 +243,6 @@ const ContentMan = () => {
       })}
     />
   </div>
-)}
-            </div>
             <input type="text" name="fullName" placeholder="Full Name" value={contentDetails.fullName} onChange={handleInputChange} />
             <input type="text" name="title" placeholder="Title" value={contentDetails.title} onChange={handleInputChange} />
             <div className="date-time-picker">
