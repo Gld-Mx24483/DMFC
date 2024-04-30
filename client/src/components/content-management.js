@@ -13,7 +13,6 @@ import 'react-calendar/dist/Calendar.css';
 import FileUpload from './fileupload';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { compressed } from "react-native-compressor";
 
 const ContentMan = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
