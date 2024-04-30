@@ -230,16 +230,13 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// const storage = multer.diskStorage({
-//   filename: (req, file, cb) => {
-//     cb(null, file.originalname);
-//   },
-// });
-
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 50 * 1024 * 1024 }, // Example limit: 50 MB, adjust as needed
+const storage = multer.diskStorage({
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
 });
+
+const upload = multer({ storage: storage });
 
 const pool = mysql.createPool({
   host: 'dmf-db.cd0i6o42e4on.ca-central-1.rds.amazonaws.com',
