@@ -243,6 +243,13 @@ app.use(express.urlencoded({ limit: MAX_PAYLOAD_SIZE, extended: true }));
 app.use(bodyParser.json({ limit: MAX_PAYLOAD_SIZE }));
 app.use(bodyParser.urlencoded({ limit: MAX_PAYLOAD_SIZE, extended: true }));
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://dmfc.vercel.app');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
 const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     cb(null, file.originalname);
