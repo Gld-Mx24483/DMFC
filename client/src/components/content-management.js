@@ -85,61 +85,6 @@ const ContentMan = () => {
     }
   };
 
-  // const handleSaveContent = () => {
-  //   const formData = new FormData();
-  //   formData.append('id', editIndex !== null ? content[editIndex].id : null);
-  //   formData.append('fullName', contentDetails.fullName);
-  //   formData.append('title', contentDetails.title);
-  //   formData.append('dateTime', contentDetails.dateTime.toISOString().split('T')[0]);
-  //   formData.append('body', contentDetails.body);
-  //   formData.append('uploadTime', contentDetails.uploadTime);
-
-  //   if (imageFile) {
-  //     formData.append('image', imageFile);
-  //   }
-
-  //   if (videoFile) {
-  //     formData.append('video', videoFile);
-  //   }
-
-  //   const url = editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-content' : 'https://dmfc-server-sql.vercel.app/save-content';
-  //   // const url = editIndex !== null ? 'http://localhost:9000/update-content' : 'http://localhost:9000/save-content';
-  //   const method = editIndex !== null ? 'POST' : 'PUT';
-
-  //   fetch(url, {
-  //     method: method,
-  //     body: formData,
-  //     onUploadProgress: (progressEvent) => {
-  //       const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
-  //       setUploadProgress(progress);
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log('Content saved successfully:', data);
-  //       setContentDetails({
-  //         imageSrc: '',
-  //         videoSrc: '',
-  //         fullName: '',
-  //         title: '',
-  //         dateTime: new Date(),
-  //         body: '',
-  //         uploadTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-  //       });
-  //       setImageFile(null);
-  //       setVideoFile(null);
-  //       setEditIndex(null);
-  //       setShowContentForm(false);
-  //       alert('Content successfully saved!');
-  //       fetchContent(); // Fetch updated content data
-  //       setUploadProgress(0);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error saving content:', error);
-  //       alert('Error saving content!');
-  //     });
-  // };
-
   const handleSaveContent = () => {
     const formData = new FormData();
     formData.append('id', editIndex !== null ? content[editIndex].id : null);
