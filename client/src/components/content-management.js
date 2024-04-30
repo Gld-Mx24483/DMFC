@@ -61,19 +61,13 @@ const ContentMan = () => {
 
   const handleVideoUpload = (file) => {
     if (file) {
-      const videoFileSize = file.size / (1024 * 1024); // Convert file size to MB
-  
-      if (videoFileSize <= 10) {
-        setVideoFile(file);
-        setContentDetails((prevState) => ({
-          ...prevState,
-          videoSrc: URL.createObjectURL(file),
-          body: prevState.body,
-        }));
-        setUploadProgress(0);
-      } else {
-        alert('Video file size should be 400MB or less. Please reduce the video size and try again.');
-      }
+      setVideoFile(file);
+      setContentDetails((prevState) => ({
+        ...prevState,
+        videoSrc: URL.createObjectURL(file),
+        body: prevState.body,
+      }));
+      setUploadProgress(0);
     } else {
       setVideoFile(null);
       setContentDetails((prevState) => ({

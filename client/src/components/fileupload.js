@@ -89,12 +89,11 @@ const FileUpload = ({ onFileUpload, text, acceptedFileTypes = 'image/*,video/*' 
         }
 
         // Check if the file is a video and its size is <= 10MB
-        if (file.type.startsWith('video/') && file.size <= 10 * 1024 * 1024) {
+        if (file.type.startsWith('video/')) {
           onFileUpload(file);
           setFileUploaded(true);
           setFileType('video');
         } else {
-          // If not a video or exceeds size limit, upload the compressed file (for images) or original file (for videos)
           onFileUpload(compressedFile);
           setFileUploaded(true);
           setFileType(compressedFile.type.startsWith('image/') ? 'image' : 'video');
