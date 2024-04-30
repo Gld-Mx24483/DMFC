@@ -48,10 +48,13 @@ const contactAPI = require('./contact-api');
 const contentManagementAPI = require('./content-management-api');
 const eventManagementAPI = require('./event-management-api');
 const app = express();
+const MAX_PAYLOAD_SIZE = 200 * 1024 * 1024; // Set the maximum payload size to 200 MB
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: MAX_PAYLOAD_SIZE }));
+app.use(bodyParser.urlencoded({ limit: MAX_PAYLOAD_SIZE, extended: true }));
 app.use('/', teamAPI);
 app.use('/', galleryAPI);
 app.use('/', contactAPI);
