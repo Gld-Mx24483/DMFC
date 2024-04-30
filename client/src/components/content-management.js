@@ -11,8 +11,11 @@ import 'froala-editor/js/third_party/font_awesome.min';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import FileUpload from './fileupload';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 const ContentMan = () => {
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [imageFile, setImageFile] = useState(null);
   const [videoFile, setVideoFile] = useState(null);
   const [content, setContent] = useState([]);
@@ -84,6 +87,7 @@ const ContentMan = () => {
           videoSrc: URL.createObjectURL(file),
           body: prevState.body,
         }));
+        setUploadProgress(0);
       } else {
         alert('Video file size should be 400MB or less. Please reduce the video size and try again.');
       }
@@ -94,6 +98,7 @@ const ContentMan = () => {
         videoSrc: '',
         body: prevState.body,
       }));
+      setUploadProgress(0);
     }
   };
 
@@ -121,6 +126,10 @@ const ContentMan = () => {
     fetch(url, {
       method: method,
       body: formData,
+      onUploadProgress: (progressEvent) => {
+        const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+        setUploadProgress(progress);
+      },
     })
       .then((response) => response.json())
       .then((data) => {
@@ -140,6 +149,7 @@ const ContentMan = () => {
         setShowContentForm(false);
         alert('Content successfully saved!');
         fetchContent(); // Fetch updated content data
+        setUploadProgress(0);
       })
       .catch((error) => {
         console.error('Error saving content:', error);
@@ -221,6 +231,19 @@ const ContentMan = () => {
               {contentDetails.videoSrc && (
                 <video controls src={contentDetails.videoSrc}></video>
               )}
+              {uploadProgress > 0 && (
+  <div className="upload-progress">
+    <CircularProgressbar
+      value={uploadProgress}
+      text={`${uploadProgress}%`}
+      styles={buildStyles({
+        textColor: 'black',
+        pathColor: 'green',
+        trailColor: 'lightgray',
+      })}
+    />
+  </div>
+)}
             </div>
             <input type="text" name="fullName" placeholder="Full Name" value={contentDetails.fullName} onChange={handleInputChange} />
             <input type="text" name="title" placeholder="Title" value={contentDetails.title} onChange={handleInputChange} />
