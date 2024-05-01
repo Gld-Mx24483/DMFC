@@ -222,7 +222,6 @@ const path = require('path');
 const fs = require('fs');
 const mysql = require('mysql');
 const cloudinary = require('./cloudinary');
-const stream = require('stream');
 
 const router = express.Router();
 const app = express();
@@ -258,79 +257,6 @@ pool.getConnection((err, conn) => {
     return;
   }
   console.log('CMS Connected to MySQL database');
-});
-
-const videoChunks = {};
-
-// router.post('/upload-video-chunk', upload.single('chunk'), async (req, res) => {
-//   const { totalChunks, chunkIndex } = req.body;
-//   const chunkName = req.file.originalname;
-
-//   // Create a new stream or append to an existing one
-//   if (!videoChunks[chunkName]) {
-//     videoChunks[chunkName] = {
-//       stream: new stream.PassThrough(),
-//       chunks: [],
-//       totalChunks,
-//     };
-//   }
-
-//   // Append the chunk to the stream
-//   videoChunks[chunkName].stream.write(req.file.buffer);
-//   videoChunks[chunkName].chunks.push(chunkIndex);
-
-//   // If all chunks are received, upload the video to Cloudinary
-//   if (videoChunks[chunkName].chunks.length === parseInt(totalChunks)) {
-//     const uploadedVideo = await cloudinary.uploader.upload_large_stream(
-//       videoChunks[chunkName].stream,
-//       { resource_type: 'video', public_id: `content-videos/${chunkName}` }
-//     );
-
-//     // Clean up the stream and chunks
-//     delete videoChunks[chunkName];
-
-//     res.status(200).json({ message: 'Video uploaded successfully', videoUrl: uploadedVideo.secure_url });
-//   } else {
-//     res.status(200).json({ message: 'Chunk uploaded successfully' });
-//   }
-// });
-
-router.post('/upload-video-chunk', upload.single('chunk'), async (req, res) => {
-  try {
-    const { totalChunks, chunkIndex } = req.body;
-    const chunkName = req.file.originalname;
-
-    // Create a new stream or append to an existing one
-    if (!videoChunks[chunkName]) {
-      videoChunks[chunkName] = {
-        stream: new stream.PassThrough(),
-        chunks: [],
-        totalChunks,
-      };
-    }
-
-    // Append the chunk to the stream
-    videoChunks[chunkName].stream.write(req.file.buffer);
-    videoChunks[chunkName].chunks.push(chunkIndex);
-
-    // If all chunks are received, upload the video to Cloudinary
-    if (videoChunks[chunkName].chunks.length === parseInt(totalChunks)) {
-      const uploadedVideo = await cloudinary.uploader.upload_large_stream(
-        videoChunks[chunkName].stream,
-        { resource_type: 'video', public_id: `content-videos/${chunkName}` }
-      );
-
-      // Clean up the stream and chunks
-      delete videoChunks[chunkName];
-
-      res.status(200).json({ message: 'Video uploaded successfully', videoUrl: uploadedVideo.secure_url });
-    } else {
-      res.status(200).json({ message: 'Chunk uploaded successfully' });
-    }
-  } catch (error) {
-    console.error('Error uploading video chunk:', error);
-    res.status(500).json({ message: 'Error uploading video chunk', error: error.message });
-  }
 });
 
 router.put('/save-content', upload.fields([

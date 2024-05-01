@@ -13,7 +13,6 @@ import 'react-calendar/dist/Calendar.css';
 import FileUpload from './fileupload';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import stream from 'stream-browserify';
 
 const ContentMan = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -80,75 +79,6 @@ const ContentMan = () => {
     }
   };
 
-  // const handleSaveContent = () => {
-  //   const formData = new FormData();
-  //   formData.append('id', editIndex !== null ? content[editIndex].id : null);
-  //   formData.append('fullName', contentDetails.fullName);
-  //   formData.append('title', contentDetails.title);
-  //   formData.append('dateTime', contentDetails.dateTime.toISOString().split('T')[0]);
-  //   formData.append('body', contentDetails.body);
-  //   formData.append('uploadTime', contentDetails.uploadTime);
-
-  //   let totalBytes = 0;
-  //   let uploadedBytes = 0;
-
-  //   if (imageFile) {
-  //     totalBytes += imageFile.size;
-  //     formData.append('image', imageFile);
-  //   }
-
-  //   if (videoFile) {
-  //     totalBytes += videoFile.size;
-  //     formData.append('video', videoFile);
-  //   }
-
-  //   const url = editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-content' : 'https://dmfc-server-sql.vercel.app/save-content';
-  //   const method = editIndex !== null ? 'POST' : 'PUT';
-
-  //   const uploadRequest = new XMLHttpRequest();
-  //   uploadRequest.open(method, url, true);
-
-  //   uploadRequest.upload.addEventListener('progress', (event) => {
-  //     if (event.lengthComputable) {
-  //       uploadedBytes = event.loaded;
-  //       const progress = Math.round((uploadedBytes / totalBytes) * 100);
-  //       setOverallUploadProgress(progress);
-  //     }
-  //   });
-
-  //   uploadRequest.onreadystatechange = function () {
-  //     if (uploadRequest.readyState === 4) {
-  //       if (uploadRequest.status === 200) {
-  //         console.log('Content saved successfully:', uploadRequest.responseText);
-  //         setContentDetails({
-  //           imageSrc: '',
-  //           videoSrc: '',
-  //           fullName: '',
-  //           title: '',
-  //           dateTime: new Date(),
-  //           body: '',
-  //           uploadTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-  //         });
-  //         setImageFile(null);
-  //         setVideoFile(null);
-  //         setEditIndex(null);
-  //         setShowContentForm(false);
-  //         alert('Content successfully saved!');
-  //         fetchContent();
-  //         setOverallUploadProgress(0);
-  //       } else {
-  //         console.error('Error saving content:', uploadRequest.statusText);
-  //         alert('Error saving content!');
-  //         setOverallUploadProgress(0);
-  //       }
-  //     }
-  //   };
-
-  //   // Set the maximum payload size to 200 MB
-  //   uploadRequest.send(formData);
-  // };
-
-
   const handleSaveContent = () => {
     const formData = new FormData();
     formData.append('id', editIndex !== null ? content[editIndex].id : null);
@@ -167,52 +97,23 @@ const ContentMan = () => {
     }
 
     if (videoFile) {
-      uploadVideoInChunks(videoFile, formData);
-    } else {
-      sendRequestWithFormData(formData);
-    }
-  };
-
-  const uploadVideoInChunks = async (videoFile, formData) => {
-    const chunkSize = 1024 * 1024; // 1MB chunk size
-    const totalChunks = Math.ceil(videoFile.size / chunkSize);
-
-    for (let i = 0; i < totalChunks; i++) {
-      const start = i * chunkSize;
-      const end = start + chunkSize >= videoFile.size ? videoFile.size : start + chunkSize;
-      const chunk = videoFile.slice(start, end);
-
-      formData.append('chunk', chunk, `${i}_${videoFile.name}`);
-      formData.append('totalChunks', totalChunks);
-      formData.append('chunkIndex', i);
-
-      try {
-        const response = await fetch('https://dmfc-server-sql.vercel.app/upload-video-chunk', {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const progressPercentage = ((i + 1) / totalChunks) * 100;
-        setOverallUploadProgress(progressPercentage);
-      } catch (error) {
-        console.error('Error uploading video chunk:', error);
-        // Handle error
-      }
+      totalBytes += videoFile.size;
+      formData.append('video', videoFile);
     }
 
-    sendRequestWithFormData(formData);
-  };
-
-  const sendRequestWithFormData = (formData) => {
     const url = editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-content' : 'https://dmfc-server-sql.vercel.app/save-content';
     const method = editIndex !== null ? 'POST' : 'PUT';
 
     const uploadRequest = new XMLHttpRequest();
     uploadRequest.open(method, url, true);
+
+    uploadRequest.upload.addEventListener('progress', (event) => {
+      if (event.lengthComputable) {
+        uploadedBytes = event.loaded;
+        const progress = Math.round((uploadedBytes / totalBytes) * 100);
+        setOverallUploadProgress(progress);
+      }
+    });
 
     uploadRequest.onreadystatechange = function () {
       if (uploadRequest.readyState === 4) {
@@ -242,10 +143,10 @@ const ContentMan = () => {
       }
     };
 
+    // Set the maximum payload size to 200 MB
     uploadRequest.send(formData);
   };
 
-  
   useEffect(() => {
     fetch('https://dmfc-server-sql.vercel.app/get-content')
       .then((response) => response.json())
