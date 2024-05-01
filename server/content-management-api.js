@@ -222,7 +222,6 @@ const path = require('path');
 const fs = require('fs');
 const mysql = require('mysql');
 const cloudinary = require('./cloudinary');
-const fileUpload = require('express-fileupload');
 
 const router = express.Router();
 const app = express();
@@ -231,12 +230,7 @@ app.use(cors());
 app.use(bodyParser.json({ limit: '100000mb' }));
 app.use(bodyParser.urlencoded({  limit: '100000mb', extended: true }));
 app.use(express.json());
-app.use(fileUpload({
-  useTempFiles: true,
-  tempFileDir: '/tmp/',
-  createParentPath: true,
-  safeFileNames: true,
-}));
+
 
 const storage = multer.diskStorage({
   filename: (req, file, cb) => {
@@ -263,41 +257,6 @@ pool.getConnection((err, conn) => {
     return;
   }
   console.log('CMS Connected to MySQL database');
-});
-
-router.post('/upload-video', async (req, res) => {
-  if (!req.files || Object.keys(req.files).length === 0) {
-    return res.status(400).send('No files were uploaded.');
-  }
-
-  const { fullName, title, dateTime, body, uploadTime } = req.query;
-  const videoFile = req.files.video;
-
-  try {
-    const videoUploadResult = await cloudinary.uploader.upload(videoFile.tempFilePath, {
-      resource_type: 'video',
-      public_id: `content-videos/${videoFile.name}`,
-    });
-
-    const videoPath = videoUploadResult.secure_url;
-
-    const insertQuery =
-      'INSERT INTO content (videoPath, fullName, title, dateTime, body, uploadTime) VALUES (?, ?, ?, ?, ?, ?)';
-    const values = [videoPath, fullName, title, dateTime, body, uploadTime];
-
-    pool.query(insertQuery, values, (error, results) => {
-      if (error) {
-        console.error('Error saving content:', error);
-        res.status(500).json({ message: 'Error saving content', error: error.message });
-        return;
-      }
-      console.log('Content saved successfully:', results);
-      res.status(200).json({ message: 'Content saved successfully!' });
-    });
-  } catch (error) {
-    console.error('Error saving content:', error);
-    res.status(500).json({ message: 'Error saving content', error: error.message });
-  }
 });
 
 router.put('/save-content', upload.fields([

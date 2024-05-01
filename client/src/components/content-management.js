@@ -13,7 +13,6 @@ import 'react-calendar/dist/Calendar.css';
 import FileUpload from './fileupload';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import Resumable from 'react-resumable-js';
 
 const ContentMan = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -22,7 +21,6 @@ const ContentMan = () => {
   const [videoFile, setVideoFile] = useState(null);
   const [content, setContent] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
-  const [videoUploader, setVideoUploader] = useState(null);
   const [contentDetails, setContentDetails] = useState({
     imageSrc: '',
     videoSrc: '',
@@ -61,44 +59,15 @@ const ContentMan = () => {
     }
   };
 
-  // const handleVideoUpload = (file) => {
-  //   if (file) {
-  //     setVideoFile(file);
-  //     setContentDetails((prevState) => ({
-  //       ...prevState,
-  //       videoSrc: URL.createObjectURL(file),
-  //       body: prevState.body,
-  //     }));
-  //     setUploadProgress(0);
-  //   } else {
-  //     setVideoFile(null);
-  //     setContentDetails((prevState) => ({
-  //       ...prevState,
-  //       videoSrc: '',
-  //       body: prevState.body,
-  //     }));
-  //     setUploadProgress(0);
-  //   }
-  // };
-
   const handleVideoUpload = (file) => {
     if (file) {
-      const uploader = new Resumable({
-        target: 'https://dmfc-server-sql.vercel.app/upload-video',
-        chunkSize: 2 * 1024 * 1024, // 2MB chunks
-        headers: {
-          'Content-Type': 'video/*',
-        },
-        query: { fullName: contentDetails.fullName, title: contentDetails.title, dateTime: contentDetails.dateTime, body: contentDetails.body, uploadTime: contentDetails.uploadTime },
-        testChunks: true,
-        maxChunkRetries: 3,
-        throttleProgressCallbacks: 1,
-        fileParameterName: 'video',
-      });
-
-      uploader.addFile(file);
-      setVideoUploader(uploader);
-      uploader.upload();
+      setVideoFile(file);
+      setContentDetails((prevState) => ({
+        ...prevState,
+        videoSrc: URL.createObjectURL(file),
+        body: prevState.body,
+      }));
+      setUploadProgress(0);
     } else {
       setVideoFile(null);
       setContentDetails((prevState) => ({
@@ -109,29 +78,6 @@ const ContentMan = () => {
       setUploadProgress(0);
     }
   };
-
-  useEffect(() => {
-    if (videoUploader) {
-      videoUploader.on('fileSuccess', (file, message) => {
-        console.log('Video upload successful:', message);
-        setVideoFile(file);
-        setContentDetails((prevState) => ({
-          ...prevState,
-          videoSrc: URL.createObjectURL(file),
-          body: prevState.body,
-        }));
-      });
-
-      videoUploader.on('progress', () => {
-        setUploadProgress(Math.floor(videoUploader.progress() * 100));
-      });
-
-      videoUploader.on('error', (message, file) => {
-        console.error('Video upload error:', message, file);
-        alert('Video upload failed!');
-      });
-    }
-  }, [videoUploader]);
 
   const handleSaveContent = () => {
     const formData = new FormData();
