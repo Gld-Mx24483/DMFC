@@ -37,7 +37,7 @@
 //   console.log(`Server is running on port ${port}`);
 // });
 
-// server.js
+// index.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');

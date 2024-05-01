@@ -56,6 +56,7 @@
     "react-time-picker": "^6.6.0",
     "screenfull": "^6.0.2",
     "stream-chunker": "^1.2.8",
+    "streamsaver": "^2.0.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
