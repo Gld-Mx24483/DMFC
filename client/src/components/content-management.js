@@ -59,7 +59,27 @@ const ContentMan = () => {
     }
   };
 
-  const handleVideoUpload = (file) => {
+  // const handleVideoUpload = (file) => {
+  //   if (file) {
+  //     setVideoFile(file);
+  //     setContentDetails((prevState) => ({
+  //       ...prevState,
+  //       videoSrc: URL.createObjectURL(file),
+  //       body: prevState.body,
+  //     }));
+  //     setUploadProgress(0);
+  //   } else {
+  //     setVideoFile(null);
+  //     setContentDetails((prevState) => ({
+  //       ...prevState,
+  //       videoSrc: '',
+  //       body: prevState.body,
+  //     }));
+  //     setUploadProgress(0);
+  //   }
+  // };
+
+  const handleVideoUpload = async (file) => {
     if (file) {
       setVideoFile(file);
       setContentDetails((prevState) => ({
@@ -68,6 +88,20 @@ const ContentMan = () => {
         body: prevState.body,
       }));
       setUploadProgress(0);
+  
+      const chunkSize = 2 * 1024 * 1024; // 2MB
+      const chunks = Math.ceil(file.size / chunkSize);
+  
+      const uploadChunks = async () => {
+        let start = 0;
+        for (let i = 0; i < chunks; i++) {
+          const chunk = file.slice(start, start + chunkSize);
+          await uploadChunk(chunk, i + 1, chunks); // Upload chunk, pass chunk number and total chunks
+          start += chunkSize;
+        }
+      };
+  
+      uploadChunks();
     } else {
       setVideoFile(null);
       setContentDetails((prevState) => ({
@@ -78,6 +112,32 @@ const ContentMan = () => {
       setUploadProgress(0);
     }
   };
+  
+  const uploadChunk = async (chunk, chunkNumber, totalChunks) => {
+    const formData = new FormData();
+    formData.append('chunk', chunk);
+    formData.append('chunkNumber', chunkNumber);
+    formData.append('totalChunks', totalChunks);
+  
+    try {
+      const response = await fetch('https://dmfc-server-sql.vercel.app/upload-chunk', {
+        method: 'POST',
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error('Error uploading chunk');
+      }
+      const result = await response.json();
+      console.log('Chunk uploaded successfully:', result);
+      const { overallUploadProgress } = result; // Update overall progress based on response
+      setOverallUploadProgress(overallUploadProgress);
+    } catch (error) {
+      console.error('Error uploading chunk:', error);
+      alert('Error uploading chunk!');
+      setOverallUploadProgress(0);
+    }
+  };
+  
 
   const handleSaveContent = () => {
     const formData = new FormData();

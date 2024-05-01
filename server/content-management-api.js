@@ -232,15 +232,25 @@ app.use(bodyParser.urlencoded({  limit: '100000mb', extended: true }));
 app.use(express.json());
 
 
-const storage = multer.diskStorage({
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
+// const storage = multer.diskStorage({
+//   filename: (req, file, cb) => {
+//     cb(null, file.originalname);
+//   },
+// });
 
+// const upload = multer({
+//   storage: storage,
+//   limits: { fileSize: 900000000},
+// });
+
+// Multer storage for chunk uploads
 const upload = multer({
-  storage: storage,
-  limits: { fileSize: 900000000},
+  storage: multer.diskStorage({
+    destination: path.join(__dirname, 'uploads'),
+    filename: (req, file, cb) => {
+      cb(null, file.originalname);
+    },
+  }),
 });
 
 const pool = mysql.createPool({
@@ -359,6 +369,48 @@ router.post('/update-content', upload.fields([
     res.status(500).json({ message: 'Error updating content', error: error.message });
   }
 });
+
+router.post('/upload-chunk', upload.single('chunk'), async (req, res) => {
+  const { chunk, chunkNumber, totalChunks } = req.body;
+
+  const chunkFileName = `${chunkNumber}.chunk`;
+  const chunkFilePath = path.join(__dirname, 'uploads', chunkFileName);
+
+  fs.writeFile(chunkFilePath, chunk, { encoding: 'binary' }, async (err) => {
+    if (err) {
+      console.error('Error writing chunk:', err);
+      res.status(500).json({ message: 'Error writing chunk', error: err.message });
+      return;
+    }
+
+    // Check if all chunks have been uploaded
+    if (+chunkNumber === +totalChunks) {
+      await mergeChunks(totalChunks);
+      res.status(200).json({ message: 'All chunks uploaded and merged successfully' });
+    } else {
+      const overallUploadProgress = Math.round((chunkNumber / totalChunks) * 100);
+      res.status(200).json({ message: 'Chunk uploaded successfully', overallUploadProgress });
+    }
+  });
+});
+
+// Merge chunks into a single file
+const mergeChunks = async (totalChunks) => {
+  const mergedFilePath = path.join(__dirname, 'uploads', 'merged-video.mp4');
+
+  const writeStream = fs.createWriteStream(mergedFilePath, { flags: 'a' });
+
+  for (let i = 1; i <= totalChunks; i++) {
+    const chunkFilePath = path.join(__dirname, 'uploads', `${i}.chunk`);
+    const chunkData = fs.readFileSync(chunkFilePath);
+    writeStream.write(chunkData);
+    fs.unlinkSync(chunkFilePath); // Remove the chunk file after merging
+  }
+
+  writeStream.end();
+
+  console.log('Chunks merged successfully');
+};
 
 router.delete('/delete-content/:id', (req, res) => {
   const contentId = req.params.id;
