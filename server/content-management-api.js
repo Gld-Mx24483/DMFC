@@ -227,10 +227,10 @@ const router = express.Router();
 const app = express();
 
 app.use(cors());
-app.use(express.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.urlencoded({ extended: true, limit: '100000mb' }));
 app.use(bodyParser.json({ limit: '100000mb' }));
+app.use(bodyParser.urlencoded({  limit: '100000mb', extended: true }));
+app.use(express.json());
+
 
 const storage = multer.diskStorage({
   filename: (req, file, cb) => {

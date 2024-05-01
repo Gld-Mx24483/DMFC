@@ -39,6 +39,7 @@
 
 // server.js
 const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const galleryAPI = require('./gallery-api');
@@ -50,8 +51,10 @@ const eventManagementAPI = require('./event-management-api');
 const app = express();
 
 app.use(cors());
+app.use(bodyParser.json({ limit: '100000mb' }));
+app.use(bodyParser.urlencoded({  limit: '100000mb', extended: true }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 
 app.use('/', teamAPI);
 app.use('/', galleryAPI);
