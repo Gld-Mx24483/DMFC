@@ -91,7 +91,7 @@ const ContentMan = () => {
       setUploadProgress(0);
   
       const reader = new FileReader();
-      reader.onload = async () => {
+      reader.onload = () => {
         const arrayBuffer = reader.result;
         const stream = new ReadableStream({
           start(controller) {
@@ -114,54 +114,58 @@ const ContentMan = () => {
           },
         });
   
-        const fileStream = StreamSaver.createWriteStream(`${file.name}`);
-        const writer = fileStream.getWriter();
+        const processStream = async (stream) => {
+          const fileStream = StreamSaver.createWriteStream(`${file.name}`);
+          const writer = fileStream.getWriter();
   
-        const reader = stream.getReader();
-        let totalChunks = 0;
-        let uploadedChunks = 0;
+          const reader = stream.getReader();
+          let totalChunks = 0;
+          let uploadedChunks = 0;
   
-        while (true) {
-          const { value, done } = await reader.read();
-          if (done) {
-            break;
+          while (true) {
+            const { value, done } = await reader.read();
+            if (done) {
+              break;
+            }
+  
+            totalChunks++;
+            writer.write(value);
+  
+            const formData = new FormData();
+            formData.append('video', value, `chunk_${uploadedChunks}`);
+  
+            const uploadRequest = new XMLHttpRequest();
+            uploadRequest.open('POST', `${editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-content' : 'https://dmfc-server-sql.vercel.app/save-content'}`);
+  
+            uploadRequest.upload.addEventListener('progress', (event) => {
+              if (event.lengthComputable) {
+                const progress = Math.round(((uploadedChunks + 1) / totalChunks) * 100);
+                setUploadProgress(progress);
+              }
+            });
+  
+            uploadRequest.onreadystatechange = function () {
+              if (uploadRequest.readyState === 4) {
+                if (uploadRequest.status === 200) {
+                  uploadedChunks++;
+                  if (uploadedChunks === totalChunks) {
+                    console.log('Video uploaded successfully');
+                    // Handle any additional logic after successful upload
+                  }
+                } else {
+                  console.error('Error uploading video chunk:', uploadRequest.statusText);
+                  alert('Error uploading video!');
+                }
+              }
+            };
+  
+            uploadRequest.send(formData);
           }
   
-          totalChunks++;
-          writer.write(value);
+          await writer.close();
+        };
   
-          const formData = new FormData();
-          formData.append('video', value, `chunk_${uploadedChunks}`);
-  
-          const uploadRequest = new XMLHttpRequest();
-          uploadRequest.open('POST', `${editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-content' : 'https://dmfc-server-sql.vercel.app/save-content'}`);
-  
-          uploadRequest.upload.addEventListener('progress', (event) => {
-            if (event.lengthComputable) {
-              const progress = Math.round(((uploadedChunks + 1) / totalChunks) * 100);
-              setUploadProgress(progress);
-            }
-          });
-  
-          uploadRequest.onreadystatechange = function () {
-            if (uploadRequest.readyState === 4) {
-              if (uploadRequest.status === 200) {
-                uploadedChunks++;
-                if (uploadedChunks === totalChunks) {
-                  console.log('Video uploaded successfully');
-                  // Handle any additional logic after successful upload
-                }
-              } else {
-                console.error('Error uploading video chunk:', uploadRequest.statusText);
-                alert('Error uploading video!');
-              }
-            }
-          };
-  
-          uploadRequest.send(formData);
-        }
-  
-        await writer.close();
+        processStream(stream);
       };
   
       reader.readAsArrayBuffer(file);
