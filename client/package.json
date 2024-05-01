@@ -50,6 +50,7 @@
     "react-froala-wysiwyg": "^4.2.0",
     "react-native-compressor": "^1.8.24",
     "react-paystack": "^5.0.0",
+    "react-resumable-js": "^1.1.24",
     "react-router-dom": "^6.22.1",
     "react-scripts": "5.0.1",
     "react-scroll": "^1.9.0",
