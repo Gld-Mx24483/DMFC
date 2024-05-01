@@ -132,7 +132,8 @@ const ContentMan = () => {
             writer.write(value);
   
             const formData = new FormData();
-            formData.append('video', value, `chunk_${uploadedChunks}`);
+            const blob = new Blob([value], { type: 'application/octet-stream' });
+            formData.append('video', blob, `chunk_${uploadedChunks}`);
   
             const uploadRequest = new XMLHttpRequest();
             uploadRequest.open('POST', `${editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-content' : 'https://dmfc-server-sql.vercel.app/save-content'}`);
