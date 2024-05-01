@@ -370,29 +370,28 @@ router.post('/update-content', upload.fields([
   }
 });
 
-router.post('/upload-chunk', upload.single('chunk'), async (req, res) => {
+router.post('/upload-chunk', async (req, res) => {
   const { chunk, chunkNumber, totalChunks } = req.body;
 
   const chunkFileName = `${chunkNumber}.chunk`;
   const chunkFilePath = path.join(__dirname, 'uploads', chunkFileName);
 
-  fs.writeFile(chunkFilePath, chunk, { encoding: 'binary' }, async (err) => {
-    if (err) {
-      console.error('Error writing chunk:', err);
-      res.status(500).json({ message: 'Error writing chunk', error: err.message });
-      return;
-    }
+  try {
+    await fs.promises.writeFile(chunkFilePath, chunk, { encoding: 'binary' });
+    const overallUploadProgress = Math.round((chunkNumber / totalChunks) * 100);
 
-    // Check if all chunks have been uploaded
     if (+chunkNumber === +totalChunks) {
       await mergeChunks(totalChunks);
       res.status(200).json({ message: 'All chunks uploaded and merged successfully' });
     } else {
-      const overallUploadProgress = Math.round((chunkNumber / totalChunks) * 100);
       res.status(200).json({ message: 'Chunk uploaded successfully', overallUploadProgress });
     }
-  });
+  } catch (error) {
+    console.error('Error uploading chunk:', error);
+    res.status(500).json({ message: 'Error uploading chunk', error: error.message });
+  }
 });
+
 
 // Merge chunks into a single file
 const mergeChunks = async (totalChunks) => {
