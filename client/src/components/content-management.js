@@ -13,7 +13,6 @@ import 'react-calendar/dist/Calendar.css';
 import FileUpload from './fileupload';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import StreamSaver from 'streamsaver';
 
 const ContentMan = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -60,26 +59,6 @@ const ContentMan = () => {
     }
   };
 
-  // const handleVideoUpload = (file) => {
-  //   if (file) {
-  //     setVideoFile(file);
-  //     setContentDetails((prevState) => ({
-  //       ...prevState,
-  //       videoSrc: URL.createObjectURL(file),
-  //       body: prevState.body,
-  //     }));
-  //     setUploadProgress(0);
-  //   } else {
-  //     setVideoFile(null);
-  //     setContentDetails((prevState) => ({
-  //       ...prevState,
-  //       videoSrc: '',
-  //       body: prevState.body,
-  //     }));
-  //     setUploadProgress(0);
-  //   }
-  // };
-
   const handleVideoUpload = (file) => {
     if (file) {
       setVideoFile(file);
@@ -89,87 +68,6 @@ const ContentMan = () => {
         body: prevState.body,
       }));
       setUploadProgress(0);
-  
-      const reader = new FileReader();
-      reader.onload = () => {
-        const arrayBuffer = reader.result;
-        const stream = new ReadableStream({
-          start(controller) {
-            const uint8Array = new Uint8Array(arrayBuffer);
-            const chunks = [];
-            let position = 0;
-            const chunkSize = 1024 * 1024; // 1MB chunk size
-  
-            while (position < uint8Array.byteLength) {
-              const chunk = uint8Array.subarray(position, position + chunkSize);
-              chunks.push(chunk);
-              position += chunkSize;
-            }
-  
-            for (const chunk of chunks) {
-              controller.enqueue(chunk);
-            }
-  
-            controller.close();
-          },
-        });
-  
-        const processStream = async (stream) => {
-          const fileStream = StreamSaver.createWriteStream(`${file.name}`);
-          const writer = fileStream.getWriter();
-  
-          const reader = stream.getReader();
-          let totalChunks = 0;
-          let uploadedChunks = 0;
-  
-          while (true) {
-            const { value, done } = await reader.read();
-            if (done) {
-              break;
-            }
-  
-            totalChunks++;
-            writer.write(value);
-  
-            const formData = new FormData();
-            const blob = new Blob([value], { type: 'application/octet-stream' });
-            formData.append('video', blob, `chunk_${uploadedChunks}`);
-  
-            const uploadRequest = new XMLHttpRequest();
-            uploadRequest.open('POST', `${editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-content' : 'https://dmfc-server-sql.vercel.app/save-content'}`);
-  
-            uploadRequest.upload.addEventListener('progress', (event) => {
-              if (event.lengthComputable) {
-                const progress = Math.round(((uploadedChunks + 1) / totalChunks) * 100);
-                setUploadProgress(progress);
-              }
-            });
-  
-            uploadRequest.onreadystatechange = function () {
-              if (uploadRequest.readyState === 4) {
-                if (uploadRequest.status === 200) {
-                  uploadedChunks++;
-                  if (uploadedChunks === totalChunks) {
-                    console.log('Video uploaded successfully');
-                    // Handle any additional logic after successful upload
-                  }
-                } else {
-                  console.error('Error uploading video chunk:', uploadRequest.statusText);
-                  alert('Error uploading video!');
-                }
-              }
-            };
-  
-            uploadRequest.send(formData);
-          }
-  
-          await writer.close();
-        };
-  
-        processStream(stream);
-      };
-  
-      reader.readAsArrayBuffer(file);
     } else {
       setVideoFile(null);
       setContentDetails((prevState) => ({
