@@ -274,16 +274,32 @@ const ContentMan = () => {
           </div>
         ) : (
           content.map((item, index) => (
+            // <div className="content-item" key={index.id}>
+            //   <FontAwesomeIcon className='Pen' icon={faPen} onClick={() => handleEditContent(index)} />
+            //   <FontAwesomeIcon className='Trash' icon={faTrash} onClick={() => handleDeleteContent(index, item.id)} />
+            //   {item.imagePath && <img className="media image" src={item.imagePath} alt="Preview" />}
+            //   {item.videoPath && <video className="media video" controls src={item.videoPath}></video>}
+            //   <h3>{item.title}</h3>
+            //   <p>{item.dateTime} - {item.uploadTime}</p>
+            //   <p>{item.fullName}</p>
+            //   <div className='wysiwyg' dangerouslySetInnerHTML={{ __html: item.body }}></div>
+            // </div>
             <div className="content-item" key={index.id}>
-              <FontAwesomeIcon className='Pen' icon={faPen} onClick={() => handleEditContent(index)} />
-              <FontAwesomeIcon className='Trash' icon={faTrash} onClick={() => handleDeleteContent(index, item.id)} />
-              {item.imagePath && <img className="media image" src={item.imagePath} alt="Preview" />}
-              {item.videoPath && <video className="media video" controls src={item.videoPath}></video>}
-              <h3>{item.title}</h3>
-              <p>{item.dateTime} - {item.uploadTime}</p>
-              <p>{item.fullName}</p>
-              <div className='wysiwyg' dangerouslySetInnerHTML={{ __html: item.body }}></div>
-            </div>
+  <FontAwesomeIcon className='Pen' icon={faPen} onClick={() => handleEditContent(index)} />
+  <FontAwesomeIcon className='Trash' icon={faTrash} onClick={() => handleDeleteContent(index, item.id)} />
+  {item.imagePath && <img className="media image" src={item.imagePath} alt="Preview" />}
+  {item.videoPartUrls && item.videoPartUrls.length > 0 && (
+    <div className="video-player">
+      {item.videoPartUrls.map((videoPartUrl, index) => (
+        <video key={index} controls src={videoPartUrl}></video>
+      ))}
+    </div>
+  )}
+  <h3>{item.title}</h3>
+  <p>{item.dateTime} - {item.uploadTime}</p>
+  <p>{item.fullName}</p>
+  <div className='wysiwyg' dangerouslySetInnerHTML={{ __html: item.body }}></div>
+</div>
           ))
         )}
       </div>
