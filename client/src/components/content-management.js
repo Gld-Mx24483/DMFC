@@ -79,6 +79,74 @@ const ContentMan = () => {
     }
   };
 
+  // const handleSaveContent = () => {
+  //   const formData = new FormData();
+  //   formData.append('id', editIndex !== null ? content[editIndex].id : null);
+  //   formData.append('fullName', contentDetails.fullName);
+  //   formData.append('title', contentDetails.title);
+  //   formData.append('dateTime', contentDetails.dateTime.toISOString().split('T')[0]);
+  //   formData.append('body', contentDetails.body);
+  //   formData.append('uploadTime', contentDetails.uploadTime);
+
+  //   let totalBytes = 0;
+  //   let uploadedBytes = 0;
+
+  //   if (imageFile) {
+  //     totalBytes += imageFile.size;
+  //     formData.append('image', imageFile);
+  //   }
+
+  //   if (videoFile) {
+  //     totalBytes += videoFile.size;
+  //     formData.append('video', videoFile);
+  //   }
+
+  //   const url = editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-content' : 'https://dmfc-server-sql.vercel.app/save-content';
+  //   const method = editIndex !== null ? 'POST' : 'PUT';
+
+  //   const uploadRequest = new XMLHttpRequest();
+  //   uploadRequest.open(method, url, true);
+
+  //   uploadRequest.upload.addEventListener('progress', (event) => {
+  //     if (event.lengthComputable) {
+  //       uploadedBytes = event.loaded;
+  //       const progress = Math.round((uploadedBytes / totalBytes) * 100);
+  //       setOverallUploadProgress(progress);
+  //     }
+  //   });
+
+  //   uploadRequest.onreadystatechange = function () {
+  //     if (uploadRequest.readyState === 4) {
+  //       if (uploadRequest.status === 200) {
+  //         console.log('Content saved successfully:', uploadRequest.responseText);
+  //         setContentDetails({
+  //           imageSrc: '',
+  //           videoSrc: '',
+  //           fullName: '',
+  //           title: '',
+  //           dateTime: new Date(),
+  //           body: '',
+  //           uploadTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+  //         });
+  //         setImageFile(null);
+  //         setVideoFile(null);
+  //         setEditIndex(null);
+  //         setShowContentForm(false);
+  //         alert('Content successfully saved!');
+  //         fetchContent();
+  //         setOverallUploadProgress(0);
+  //       } else {
+  //         console.error('Error saving content:', uploadRequest.statusText);
+  //         alert('Error saving content!');
+  //         setOverallUploadProgress(0);
+  //       }
+  //     }
+  //   };
+
+  //   // Set the maximum payload size to 200 MB
+  //   uploadRequest.send(formData);
+  // };
+
   const handleSaveContent = () => {
     const formData = new FormData();
     formData.append('id', editIndex !== null ? content[editIndex].id : null);
@@ -87,64 +155,56 @@ const ContentMan = () => {
     formData.append('dateTime', contentDetails.dateTime.toISOString().split('T')[0]);
     formData.append('body', contentDetails.body);
     formData.append('uploadTime', contentDetails.uploadTime);
-
+  
     let totalBytes = 0;
-    let uploadedBytes = 0;
-
+  
     if (imageFile) {
       totalBytes += imageFile.size;
       formData.append('image', imageFile);
     }
-
+  
     if (videoFile) {
       totalBytes += videoFile.size;
       formData.append('video', videoFile);
     }
-
+  
     const url = editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-content' : 'https://dmfc-server-sql.vercel.app/save-content';
     const method = editIndex !== null ? 'POST' : 'PUT';
-
-    const uploadRequest = new XMLHttpRequest();
-    uploadRequest.open(method, url, true);
-
-    uploadRequest.upload.addEventListener('progress', (event) => {
-      if (event.lengthComputable) {
-        uploadedBytes = event.loaded;
-        const progress = Math.round((uploadedBytes / totalBytes) * 100);
-        setOverallUploadProgress(progress);
-      }
-    });
-
-    uploadRequest.onreadystatechange = function () {
-      if (uploadRequest.readyState === 4) {
-        if (uploadRequest.status === 200) {
-          console.log('Content saved successfully:', uploadRequest.responseText);
-          setContentDetails({
-            imageSrc: '',
-            videoSrc: '',
-            fullName: '',
-            title: '',
-            dateTime: new Date(),
-            body: '',
-            uploadTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          });
-          setImageFile(null);
-          setVideoFile(null);
-          setEditIndex(null);
-          setShowContentForm(false);
-          alert('Content successfully saved!');
-          fetchContent();
-          setOverallUploadProgress(0);
-        } else {
-          console.error('Error saving content:', uploadRequest.statusText);
-          alert('Error saving content!');
-          setOverallUploadProgress(0);
+  
+    fetch(url, {
+      method: method,
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error saving content');
         }
-      }
-    };
-
-    // Set the maximum payload size to 200 MB
-    uploadRequest.send(formData);
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Content saved successfully:', data);
+        setContentDetails({
+          imageSrc: '',
+          videoSrc: '',
+          fullName: '',
+          title: '',
+          dateTime: new Date(),
+          body: '',
+          uploadTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        });
+        setImageFile(null);
+        setVideoFile(null);
+        setEditIndex(null);
+        setShowContentForm(false);
+        alert('Content successfully saved!');
+        fetchContent();
+        setOverallUploadProgress(0);
+      })
+      .catch((error) => {
+        console.error('Error saving content:', error);
+        alert('Error saving content!');
+        setOverallUploadProgress(0);
+      });
   };
 
   useEffect(() => {
