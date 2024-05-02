@@ -239,6 +239,11 @@ const storage = multer.diskStorage({
   },
 });
 
+const tmpDir = path.join(__dirname, 'tmp');
+if (!fs.existsSync(tmpDir)) {
+  fs.mkdirSync(tmpDir);
+}
+
 const upload = multer({
   storage: storage,
   limits: { fileSize: 900000000},
