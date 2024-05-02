@@ -260,6 +260,18 @@ pool.getConnection((err, conn) => {
   console.log('CMS Connected to MySQL database');
 });
 
+const tmpDir = path.join(__dirname, 'tmp');
+
+if (!fs.existsSync(tmpDir)) {
+  try {
+    fs.mkdirSync(tmpDir);
+    console.log('Created tmp directory successfully.');
+  } catch (error) {
+    console.error('Error creating tmp directory:', error);
+  }
+}
+
+
 router.put('/save-content', upload.fields([
   { name: 'image', maxCount: 1 },
   { name: 'video', maxCount: 1 },
