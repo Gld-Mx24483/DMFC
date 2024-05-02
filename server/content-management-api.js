@@ -260,18 +260,6 @@ pool.getConnection((err, conn) => {
   console.log('CMS Connected to MySQL database');
 });
 
-const tmpDir = path.join(__dirname, 'tmp');
-
-if (!fs.existsSync(tmpDir)) {
-  try {
-    fs.mkdirSync(tmpDir);
-    console.log('Created tmp directory successfully.');
-  } catch (error) {
-    console.error('Error creating tmp directory:', error);
-  }
-}
-
-
 router.put('/save-content', upload.fields([
   { name: 'image', maxCount: 1 },
   { name: 'video', maxCount: 1 },
@@ -282,7 +270,7 @@ router.put('/save-content', upload.fields([
 
   try {
     if (req.files && req.files.image && req.files.image.length > 0) {
-      const imageUploadResult = await cloudinary.uploader.upload(req.files.image[0].path, {
+      const imageUploadResult = await cloudinary.uploader.upload(req.files.image[0].buffer, {
         resource_type: 'image',
         public_id: `content-images/${req.files.image[0].originalname}`,
       });
@@ -290,19 +278,8 @@ router.put('/save-content', upload.fields([
     }
 
     if (req.files && req.files.video && req.files.video.length > 0) {
-      const videoPath = req.files.video[0].path;
-      const outputDir = path.join(__dirname, 'tmp');
-
-      if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true });
-      }
-
-      videoPartUrls = await splitVideo(videoPath, outputDir);
-
-      // Clean up temporary video chunks
-      const chunkFiles = fs.readdirSync(outputDir).map(file => path.join(outputDir, file));
-      chunkFiles.forEach(chunkFile => fs.unlinkSync(chunkFile));
-      fs.rmdirSync(outputDir);
+      const videoPath = req.files.video[0].buffer;
+      videoPartUrls = await splitVideo(videoPath);
     }
 
     const insertQuery =
@@ -334,7 +311,7 @@ router.post('/update-content', upload.fields([
 
   try {
     if (req.files && req.files.image && req.files.image.length > 0) {
-      const imageUploadResult = await cloudinary.uploader.upload(req.files.image[0].path, {
+      const imageUploadResult = await cloudinary.uploader.upload(req.files.image[0].buffer, {
         resource_type: 'image',
         public_id: `content-images/${req.files.image[0].originalname}`,
       });
@@ -342,19 +319,8 @@ router.post('/update-content', upload.fields([
     }
 
     if (req.files && req.files.video && req.files.video.length > 0) {
-      const videoPath = req.files.video[0].path;
-      const outputDir = path.join(__dirname, 'tmp');
-
-      if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true });
-      }
-
-      videoPartUrls = await splitVideo(videoPath, outputDir);
-
-      // Clean up temporary video chunks
-      const chunkFiles = fs.readdirSync(outputDir).map(file => path.join(outputDir, file));
-      chunkFiles.forEach(chunkFile => fs.unlinkSync(chunkFile));
-      fs.rmdirSync(outputDir);
+      const videoPath = req.files.video[0].buffer;
+      videoPartUrls = await splitVideo(videoPath);
     }
 
     const updateQuery = `UPDATE content
