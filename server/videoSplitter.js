@@ -3,12 +3,15 @@ const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs');
 const path = require('path');
 const cloudinary = require('cloudinary').v2;
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 
 cloudinary.config({
-    cloud_name: 'dua8dfweh',
-    api_key: '751154813919773',
-    api_secret: 'GrBhMTA9cHYq0zuWjtI69XMcxRI',
+  cloud_name: 'dua8dfweh',
+  api_key: '751154813919773',
+  api_secret: 'GrBhMTA9cHYq0zuWjtI69XMcxRI',
 });
+
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 const splitVideo = async (videoPath, outputDir, chunkSize = '4M') => {
   return new Promise((resolve, reject) => {
@@ -17,16 +20,12 @@ const splitVideo = async (videoPath, outputDir, chunkSize = '4M') => {
       .output(outputPattern)
       .outputOptions([
         '-f segment',
-        '-segment_time 0',
-        `-segment_size ${chunkSize}`,
-        '-reset_timestamps 1',
-        '-c copy',
+        '-segment_time 5', // Specify segment duration in seconds
       ])
       .on('end', async () => {
         const chunkFiles = fs.readdirSync(outputDir).map(file => path.join(outputDir, file));
         const uploadPromises = chunkFiles.map(async (chunkFile, index) => {
-          const stream = fs.createReadStream(chunkFile);
-          const uploadResponse = await cloudinary.uploader.upload_large(stream, {
+          const uploadResponse = await cloudinary.uploader.upload(chunkFile, {
             resource_type: 'video',
             public_id: `content-videos/${path.basename(videoPath, path.extname(videoPath))}-part${index}`,
           });
@@ -44,3 +43,4 @@ const splitVideo = async (videoPath, outputDir, chunkSize = '4M') => {
 };
 
 module.exports = { splitVideo };
+
