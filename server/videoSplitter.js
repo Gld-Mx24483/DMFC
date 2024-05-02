@@ -66,9 +66,7 @@
 
 
 const ffmpeg = require('fluent-ffmpeg');
-const path = require('path');
 const cloudinary = require('cloudinary').v2;
-const fs = require('fs');
 
 cloudinary.config({
   cloud_name: 'dua8dfweh',
@@ -76,34 +74,27 @@ cloudinary.config({
   api_secret: 'GrBhMTA9cHYq0zuWjtI69XMcxRI',
 });
 
-const splitVideo = async (videoPath, outputDir, chunkSize = '4M') => {
+const splitVideo = async (videoPath, chunkSize = '4M') => {
   return new Promise((resolve, reject) => {
-    const outputPattern = path.join(outputDir, 'part-%03d.mp4');
-
     ffmpeg(videoPath)
-      .output(outputPattern)
       .outputOptions([
         '-f segment',
         `-segment_time ${chunkSize}`, // Specify segment duration in seconds
       ])
       .on('end', async () => {
         try {
-          const chunkFiles = fs.readdirSync(outputDir).map(file => path.join(outputDir, file));
-          const uploadPromises = chunkFiles.map(async (chunkFile, index) => {
-            const uploadResponse = await cloudinary.uploader.upload(chunkFile, {
+          const uploadPromises = [];
+
+          for (let i = 0; i < ffmpeg._currentOutput.length; i++) {
+            const outputUrl = ffmpeg._currentOutput[i];
+            const uploadResponse = await cloudinary.uploader.upload(outputUrl, {
               resource_type: 'video',
-              public_id: `content-videos/${path.basename(videoPath, path.extname(videoPath))}-part${index}`,
+              public_id: `content-videos/${path.basename(videoPath, path.extname(videoPath))}-part${i}`,
             });
-            return uploadResponse.secure_url;
-          });
+            uploadPromises.push(uploadResponse.secure_url);
+          }
 
-          const videoPartUrls = await Promise.all(uploadPromises);
-
-          // Clean up temporary video chunks
-          chunkFiles.forEach(chunkFile => fs.unlinkSync(chunkFile));
-          fs.rmdirSync(outputDir);
-
-          resolve(videoPartUrls);
+          resolve(uploadPromises);
         } catch (error) {
           reject(error);
         }
@@ -111,8 +102,9 @@ const splitVideo = async (videoPath, outputDir, chunkSize = '4M') => {
       .on('error', (err) => {
         reject(err);
       })
-      .run();
+      .save('-');
   });
 };
 
 module.exports = { splitVideo };
+
