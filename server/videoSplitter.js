@@ -64,9 +64,46 @@
 // // module.exports = { splitVideo };
 
 
-//videoSpliter.js
+// //videoSpliter.js
+// const ffmpeg = require('fluent-ffmpeg');
+// const path = require('path');
+// const cloudinary = require('cloudinary').v2;
+// const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+
+// cloudinary.config({
+//   cloud_name: 'dua8dfweh',
+//   api_key: '751154813919773',
+//   api_secret: 'GrBhMTA9cHYq0zuWjtI69XMcxRI',
+// });
+
+// ffmpeg.setFfmpegPath(ffmpegPath);
+
+// const splitVideo = async (videoPath, chunkSize = '4M') => {
+//   return new Promise((resolve, reject) => {
+//     const segmentUrls = [];
+//     const baseFileName = path.basename(videoPath, path.extname(videoPath));
+
+//     ffmpeg(videoPath)
+//       .outputOptions([
+//         `-f segment`,
+//         `-segment_time 5`,
+//         `-segment_format mp4`, 
+//       ])
+//       .on('end', async () => {
+//         resolve(segmentUrls);
+//       })
+//       .on('error', (err) => {
+//         reject(err);
+//       })
+//       .output(`${baseFileName}-%03d.mp4`) // Specify the output format for the segmented files
+//       .run();
+//   });
+// };
+
+// module.exports = { splitVideo };
+
+
 const ffmpeg = require('fluent-ffmpeg');
-const path = require('path');
 const cloudinary = require('cloudinary').v2;
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 
@@ -78,24 +115,37 @@ cloudinary.config({
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 
-const splitVideo = async (videoPath, chunkSize = '4M') => {
+const splitVideo = async (videoPath) => {
   return new Promise((resolve, reject) => {
     const segmentUrls = [];
-    const baseFileName = path.basename(videoPath, path.extname(videoPath));
+    const videoName = `split-video-${Date.now()}`;
+
+    const stream = cloudinary.uploader.upload_large(
+      videoPath,
+      {
+        resource_type: 'video',
+        chunk_size: 2000000, // Adjust this value as needed
+      },
+      async (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result.secure_url);
+        }
+      }
+    );
 
     ffmpeg(videoPath)
       .outputOptions([
-        `-f segment`,
-        `-segment_time 5`,
-        `-segment_format mp4`, 
+        '-f segment',
+        '-segment_time 5',
+        '-reset_timestamps 1',
+        '-c copy',
       ])
-      .on('end', async () => {
-        resolve(segmentUrls);
-      })
       .on('error', (err) => {
         reject(err);
       })
-      .output(`${baseFileName}-%03d.mp4`) // Specify the output format for the segmented files
+      .output(stream)
       .run();
   });
 };

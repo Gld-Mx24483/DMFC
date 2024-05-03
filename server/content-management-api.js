@@ -260,13 +260,65 @@ pool.getConnection((err, conn) => {
   console.log('CMS Connected to MySQL database');
 });
 
+// router.put('/save-content', upload.fields([
+//   { name: 'image', maxCount: 1 },
+//   { name: 'video', maxCount: 1 },
+// ]), async (req, res) => {
+//   const { fullName, title, dateTime, body, uploadTime } = req.body;
+//   let imagePath = null;
+//   let videoPartUrls = [];
+
+//   try {
+//     if (req.files && req.files.image && req.files.image.length > 0) {
+//       const imageUploadResult = await cloudinary.uploader.upload(req.files.image[0].path, {
+//         resource_type: 'image',
+//         public_id: `content-images/${req.files.image[0].originalname}`,
+//       });
+//       imagePath = imageUploadResult.secure_url;
+//     }
+
+//     if (req.files && req.files.video && req.files.video.length > 0) {
+//       const videoPath = req.files.video[0].path;
+//       videoPartUrls = await splitVideo(videoPath);
+
+//       if (!fs.existsSync(outputDir)) {
+//         fs.mkdirSync(outputDir, { recursive: true });
+//       }
+
+//       videoPartUrls = await splitVideo(videoPath, outputDir);
+
+//       // Clean up temporary video chunks
+//       const chunkFiles = fs.readdirSync(outputDir).map(file => path.join(outputDir, file));
+//       chunkFiles.forEach(chunkFile => fs.unlinkSync(chunkFile));
+//       fs.rmdirSync(outputDir);
+//     }
+
+//     const insertQuery =
+//       'INSERT INTO content (imagePath, videoPartUrls, fullName, title, dateTime, body, uploadTime) VALUES (?, ?, ?, ?, ?, ?, ?)';
+//     const values = [imagePath, JSON.stringify(videoPartUrls), fullName, title, dateTime, body, uploadTime];
+
+//     pool.query(insertQuery, values, (error, results) => {
+//       if (error) {
+//         console.error('Error saving content:', error);
+//         res.status(500).json({ message: 'Error saving content', error: error.message });
+//         return;
+//       }
+//       console.log('Content saved successfully:', results);
+//       res.status(200).json({ message: 'Content saved successfully!' });
+//     });
+//   } catch (error) {
+//     console.error('Error saving content:', error);
+//     res.status(500).json({ message: 'Error saving content', error: error.message });
+//   }
+// });
+
 router.put('/save-content', upload.fields([
   { name: 'image', maxCount: 1 },
   { name: 'video', maxCount: 1 },
 ]), async (req, res) => {
   const { fullName, title, dateTime, body, uploadTime } = req.body;
   let imagePath = null;
-  let videoPartUrls = [];
+  let videoUrl = null;
 
   try {
     if (req.files && req.files.image && req.files.image.length > 0) {
@@ -279,23 +331,12 @@ router.put('/save-content', upload.fields([
 
     if (req.files && req.files.video && req.files.video.length > 0) {
       const videoPath = req.files.video[0].path;
-      videoPartUrls = await splitVideo(videoPath);
-
-      if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true });
-      }
-
-      videoPartUrls = await splitVideo(videoPath, outputDir);
-
-      // Clean up temporary video chunks
-      const chunkFiles = fs.readdirSync(outputDir).map(file => path.join(outputDir, file));
-      chunkFiles.forEach(chunkFile => fs.unlinkSync(chunkFile));
-      fs.rmdirSync(outputDir);
+      videoUrl = await splitVideo(videoPath);
     }
 
     const insertQuery =
-      'INSERT INTO content (imagePath, videoPartUrls, fullName, title, dateTime, body, uploadTime) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    const values = [imagePath, JSON.stringify(videoPartUrls), fullName, title, dateTime, body, uploadTime];
+      'INSERT INTO content (imagePath, videoUrl, fullName, title, dateTime, body, uploadTime) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const values = [imagePath, videoUrl, fullName, title, dateTime, body, uploadTime];
 
     pool.query(insertQuery, values, (error, results) => {
       if (error) {
