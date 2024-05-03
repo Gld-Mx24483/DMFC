@@ -103,28 +103,76 @@
 // module.exports = { splitVideo };
 
 
+// const ffmpeg = require('fluent-ffmpeg');
+// const cloudinary = require('cloudinary').v2;
+// const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+
+// cloudinary.config({
+//   cloud_name: 'dua8dfweh',
+//   api_key: '751154813919773',
+//   api_secret: 'GrBhMTA9cHYq0zuWjtI69XMcxRI',
+// });
+
+// ffmpeg.setFfmpegPath(ffmpegPath);
+
+// const splitVideo = async (videoPath) => {
+//   return new Promise((resolve, reject) => {
+//     const segmentUrls = [];
+//     const videoName = `split-video-${Date.now()}`;
+
+//     const stream = cloudinary.uploader.upload_large(
+//       videoPath,
+//       {
+//         resource_type: 'video',
+//         chunk_size: 2000000, // Adjust this value as needed
+//       },
+//       async (err, result) => {
+//         if (err) {
+//           reject(err);
+//         } else {
+//           resolve(result.secure_url);
+//         }
+//       }
+//     );
+
+//     ffmpeg(videoPath)
+//       .outputOptions([
+//         '-f segment',
+//         '-segment_time 5',
+//         '-reset_timestamps 1',
+//         '-c copy',
+//       ])
+//       .on('error', (err) => {
+//         reject(err);
+//       })
+//       .output(stream)
+//       .run();
+//   });
+// };
+
+// module.exports = { splitVideo };
+
 const ffmpeg = require('fluent-ffmpeg');
 const cloudinary = require('cloudinary').v2;
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 
 cloudinary.config({
-  cloud_name: 'dua8dfweh',
-  api_key: '751154813919773',
-  api_secret: 'GrBhMTA9cHYq0zuWjtI69XMcxRI',
+  cloud_name: 'your_cloud_name',
+  api_key: 'your_api_key',
+  api_secret: 'your_api_secret',
 });
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 
 const splitVideo = async (videoPath) => {
   return new Promise((resolve, reject) => {
-    const segmentUrls = [];
     const videoName = `split-video-${Date.now()}`;
 
     const stream = cloudinary.uploader.upload_large(
       videoPath,
       {
         resource_type: 'video',
-        chunk_size: 2000000, // Adjust this value as needed
+        chunk_size: 6000000, // Adjust this value as needed
       },
       async (err, result) => {
         if (err) {
@@ -138,7 +186,7 @@ const splitVideo = async (videoPath) => {
     ffmpeg(videoPath)
       .outputOptions([
         '-f segment',
-        '-segment_time 5',
+        '-segment_time 60', // Increase segment duration to 60 seconds
         '-reset_timestamps 1',
         '-c copy',
       ])
