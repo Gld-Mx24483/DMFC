@@ -152,17 +152,16 @@
 
 // module.exports = { splitVideo };
 
-const ffmpeg = require('fluent-ffmpeg');
 const cloudinary = require('cloudinary').v2;
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpegStatic = require('ffmpeg-static');
+const { spawn } = require('child_process');
 
 cloudinary.config({
-   cloud_name: 'dua8dfweh',
+  cloud_name: 'dua8dfweh',
   api_key: '751154813919773',
   api_secret: 'GrBhMTA9cHYq0zuWjtI69XMcxRI',
 });
-
-ffmpeg.setFfmpegPath(ffmpegPath);
 
 const splitVideo = async (videoPath) => {
   return new Promise((resolve, reject) => {
@@ -173,9 +172,10 @@ const splitVideo = async (videoPath) => {
       videoPath,
       {
         resource_type: 'video',
-        chunk_size: 5000000, // Adjust this value as needed
+        chunk_size: 3000000, // Adjust this value as needed
+        upload_prefix: videoName,
       },
-      async (err, result) => {
+      (err, result) => {
         if (err) {
           reject(err);
         } else {
@@ -184,19 +184,22 @@ const splitVideo = async (videoPath) => {
       }
     );
 
-    ffmpeg(videoPath)
-      .inputOptions(['-re'])
-      .outputOptions([
-        '-f segment',
-        '-segment_time 10', 
-        '-reset_timestamps 1',
-        '-c copy',
-      ])
-      .on('error', (err) => {
-        reject(err);
-      })
-      .output(stream)
-      .run();
+    const ffmpegCommand = `${ffmpegStatic} -i ${videoPath} -c copy -f segment -segment_time 10 -reset_timestamps 1 pipe:1`;
+
+    const ffmpeg = spawn(ffmpegCommand, {
+      shell: true,
+      stdio: ['pipe', 'pipe', 'inherit'],
+    });
+
+    ffmpeg.stdout.pipe(stream);
+
+    ffmpeg.on('error', (err) => {
+      reject(err);
+    });
+
+    stream.on('end', () => {
+      console.log('Video chunked and uploaded to Cloudinary successfully');
+    });
   });
 };
 
