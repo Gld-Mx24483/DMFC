@@ -270,7 +270,7 @@ router.put('/save-content', upload.fields([
 
   try {
     if (req.files && req.files.image && req.files.image.length > 0) {
-      const imageUploadResult = await cloudinary.uploader.upload(req.files.image[0].buffer, {
+      const imageUploadResult = await cloudinary.uploader.upload(req.files.image[0].path, {
         resource_type: 'image',
         public_id: `content-images/${req.files.image[0].originalname}`,
       });
@@ -278,8 +278,19 @@ router.put('/save-content', upload.fields([
     }
 
     if (req.files && req.files.video && req.files.video.length > 0) {
-      const videoPath = req.files.video[0].buffer;
+      const videoPath = req.files.video[0].path;
       videoPartUrls = await splitVideo(videoPath);
+
+      if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir, { recursive: true });
+      }
+
+      videoPartUrls = await splitVideo(videoPath, outputDir);
+
+      // Clean up temporary video chunks
+      const chunkFiles = fs.readdirSync(outputDir).map(file => path.join(outputDir, file));
+      chunkFiles.forEach(chunkFile => fs.unlinkSync(chunkFile));
+      fs.rmdirSync(outputDir);
     }
 
     const insertQuery =
@@ -311,7 +322,7 @@ router.post('/update-content', upload.fields([
 
   try {
     if (req.files && req.files.image && req.files.image.length > 0) {
-      const imageUploadResult = await cloudinary.uploader.upload(req.files.image[0].buffer, {
+      const imageUploadResult = await cloudinary.uploader.upload(req.files.image[0].path, {
         resource_type: 'image',
         public_id: `content-images/${req.files.image[0].originalname}`,
       });
@@ -319,8 +330,19 @@ router.post('/update-content', upload.fields([
     }
 
     if (req.files && req.files.video && req.files.video.length > 0) {
-      const videoPath = req.files.video[0].buffer;
-      videoPartUrls = await splitVideo(videoPath);
+      const videoPath = req.files.video[0].path;
+      const outputDir = path.join(__dirname, 'tmp');
+
+      if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir, { recursive: true });
+      }
+
+      videoPartUrls = await splitVideo(videoPath, outputDir);
+
+      // Clean up temporary video chunks
+      const chunkFiles = fs.readdirSync(outputDir).map(file => path.join(outputDir, file));
+      chunkFiles.forEach(chunkFile => fs.unlinkSync(chunkFile));
+      fs.rmdirSync(outputDir);
     }
 
     const updateQuery = `UPDATE content
