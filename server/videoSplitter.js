@@ -185,6 +185,7 @@ const splitVideo = async (videoPath) => {
     );
 
     ffmpeg(videoPath)
+      .inputOptions(['-re'])
       .outputOptions([
         '-f segment',
         '-segment_time 60', // Increase segment duration to 60 seconds
