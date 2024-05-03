@@ -157,9 +157,9 @@ const cloudinary = require('cloudinary').v2;
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 
 cloudinary.config({
-  cloud_name: 'your_cloud_name',
-  api_key: 'your_api_key',
-  api_secret: 'your_api_secret',
+   cloud_name: 'dua8dfweh',
+  api_key: '751154813919773',
+  api_secret: 'GrBhMTA9cHYq0zuWjtI69XMcxRI',
 });
 
 ffmpeg.setFfmpegPath(ffmpegPath);
