@@ -173,7 +173,7 @@ const splitVideo = async (videoPath) => {
       videoPath,
       {
         resource_type: 'video',
-        chunk_size: 6000000, // Adjust this value as needed
+        chunk_size: 5000000, // Adjust this value as needed
       },
       async (err, result) => {
         if (err) {
@@ -188,7 +188,7 @@ const splitVideo = async (videoPath) => {
       .inputOptions(['-re'])
       .outputOptions([
         '-f segment',
-        '-segment_time 60', // Increase segment duration to 60 seconds
+        '-segment_time 10', 
         '-reset_timestamps 1',
         '-c copy',
       ])
