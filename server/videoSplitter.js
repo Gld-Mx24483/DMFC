@@ -166,6 +166,7 @@ ffmpeg.setFfmpegPath(ffmpegPath);
 
 const splitVideo = async (videoPath) => {
   return new Promise((resolve, reject) => {
+    const segmentUrls = [];
     const videoName = `split-video-${Date.now()}`;
 
     const stream = cloudinary.uploader.upload_large(
