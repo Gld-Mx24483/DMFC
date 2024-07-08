@@ -1,18 +1,18 @@
 // content-management.js
-import React, { useState, useEffect } from 'react';
-import './content-management.css';
+import { faCalendarTimes, faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faPlus, faTrash, faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
-import FroalaEditorComponent from 'react-froala-wysiwyg';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
-import 'froala-editor/js/plugins.pkgd.min.js';
 import 'froala-editor/js/languages/es.js';
+import 'froala-editor/js/plugins.pkgd.min.js';
 import 'froala-editor/js/third_party/font_awesome.min';
+import React, { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import FileUpload from './fileupload';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import FroalaEditorComponent from 'react-froala-wysiwyg';
+import './content-management.css';
+import FileUpload from './fileupload';
 
 const ContentMan = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -141,6 +141,7 @@ const ContentMan = () => {
   };
 
   useEffect(() => {
+    // fetch('http://localhost:9000/get-content')
     fetch('https://dmfc-server-sql.vercel.app/get-content')
       .then((response) => response.json())
       .then((data) => {
@@ -267,16 +268,6 @@ const ContentMan = () => {
           </div>
         ) : (
           content.map((item, index) => (
-            // <div className="content-item" key={index.id}>
-            //   <FontAwesomeIcon className='Pen' icon={faPen} onClick={() => handleEditContent(index)} />
-            //   <FontAwesomeIcon className='Trash' icon={faTrash} onClick={() => handleDeleteContent(index, item.id)} />
-            //   {item.imagePath && <img className="media image" src={item.imagePath} alt="Preview" />}
-            //   {item.videoPath && <video className="media video" controls src={item.videoPath}></video>}
-            //   <h3>{item.title}</h3>
-            //   <p>{item.dateTime} - {item.uploadTime}</p>
-            //   <p>{item.fullName}</p>
-            //   <div className='wysiwyg' dangerouslySetInnerHTML={{ __html: item.body }}></div>
-            // </div>
             <div className="content-item" key={index.id}>
   <FontAwesomeIcon className='Pen' icon={faPen} onClick={() => handleEditContent(index)} />
   <FontAwesomeIcon className='Trash' icon={faTrash} onClick={() => handleDeleteContent(index, item.id)} />

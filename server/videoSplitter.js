@@ -64,8 +64,9 @@
 // // module.exports = { splitVideo };
 
 
-// //videoSpliter.js
+// // videoSplitter.js
 // const ffmpeg = require('fluent-ffmpeg');
+// const fs = require('fs');
 // const path = require('path');
 // const cloudinary = require('cloudinary').v2;
 // const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
@@ -78,24 +79,31 @@
 
 // ffmpeg.setFfmpegPath(ffmpegPath);
 
-// const splitVideo = async (videoPath, chunkSize = '4M') => {
+// const splitVideo = async (videoPath, outputDir, chunkSize = '4M') => {
 //   return new Promise((resolve, reject) => {
-//     const segmentUrls = [];
-//     const baseFileName = path.basename(videoPath, path.extname(videoPath));
-
-//     ffmpeg(videoPath)
+//     const outputPattern = path.join(outputDir, 'part-%03d.mp4');
+//     const command = ffmpeg(videoPath)
+//       .output(outputPattern)
 //       .outputOptions([
-//         `-f segment`,
-//         `-segment_time 5`,
-//         `-segment_format mp4`, 
+//         '-f segment',
+//         '-segment_time 5', // Specify segment duration in seconds
 //       ])
 //       .on('end', async () => {
-//         resolve(segmentUrls);
+//         const chunkFiles = fs.readdirSync(outputDir).map(file => path.join(outputDir, file));
+//         const uploadPromises = chunkFiles.map(async (chunkFile, index) => {
+//           const uploadResponse = await cloudinary.uploader.upload(chunkFile, {
+//             resource_type: 'video',
+//             public_id: `content-videos/${path.basename(videoPath, path.extname(videoPath))}-part${index}`,
+//           });
+//           return uploadResponse.secure_url;
+//         });
+
+//         const videoPartUrls = await Promise.all(uploadPromises);
+//         resolve(videoPartUrls);
 //       })
 //       .on('error', (err) => {
 //         reject(err);
 //       })
-//       .output(`${baseFileName}-%03d.mp4`) // Specify the output format for the segmented files
 //       .run();
 //   });
 // };
@@ -103,9 +111,9 @@
 // module.exports = { splitVideo };
 
 
-// const ffmpeg = require('fluent-ffmpeg');
 // const cloudinary = require('cloudinary').v2;
-// const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+// const fs = require('fs');
+// const path = require('path');
 
 // cloudinary.config({
 //   cloud_name: 'dua8dfweh',
@@ -113,49 +121,32 @@
 //   api_secret: 'GrBhMTA9cHYq0zuWjtI69XMcxRI',
 // });
 
-// ffmpeg.setFfmpegPath(ffmpegPath);
-
-// const splitVideo = async (videoPath) => {
-//   return new Promise((resolve, reject) => {
-//     const segmentUrls = [];
-//     const videoName = `split-video-${Date.now()}`;
-
-//     const stream = cloudinary.uploader.upload_large(
-//       videoPath,
-//       {
-//         resource_type: 'video',
-//         chunk_size: 2000000, // Adjust this value as needed
-//       },
-//       async (err, result) => {
-//         if (err) {
-//           reject(err);
-//         } else {
-//           resolve(result.secure_url);
-//         }
+// const splitVideo = async (videoPath, outputDir) => {
+//   const videoBuffer = fs.readFileSync(videoPath);
+//   const uploadResponse = await cloudinary.uploader.upload_large(
+//     videoBuffer,
+//     {
+//       resource_type: 'video',
+//       public_id: `content-videos/${path.basename(videoPath, path.extname(videoPath))}`,
+//       chunk_size: 6000000, // 6MB chunk size
+//     },
+//     (error, result) => {
+//       if (error) {
+//         console.error('Error uploading video:', error);
+//       } else {
+//         console.log('Video uploaded successfully:', result);
 //       }
-//     );
+//     }
+//   );
 
-//     ffmpeg(videoPath)
-//       .outputOptions([
-//         '-f segment',
-//         '-segment_time 5',
-//         '-reset_timestamps 1',
-//         '-c copy',
-//       ])
-//       .on('error', (err) => {
-//         reject(err);
-//       })
-//       .output(stream)
-//       .run();
-//   });
+//   return uploadResponse.secure_url;
 // };
 
 // module.exports = { splitVideo };
 
 const cloudinary = require('cloudinary').v2;
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
-const ffmpegStatic = require('ffmpeg-static');
-const { spawn } = require('child_process');
+const fs = require('fs');
+const path = require('path');
 
 cloudinary.config({
   cloud_name: 'dua8dfweh',
@@ -163,44 +154,30 @@ cloudinary.config({
   api_secret: 'GrBhMTA9cHYq0zuWjtI69XMcxRI',
 });
 
-const splitVideo = async (videoPath) => {
-  return new Promise((resolve, reject) => {
-    const segmentUrls = [];
-    const videoName = `split-video-${Date.now()}`;
+const splitVideo = async (videoPath, outputDir) => {
+  if (!fs.existsSync(videoPath)) {
+    throw new Error('Video file not found');
+  }
 
-    const stream = cloudinary.uploader.upload_large(
-      videoPath,
-      {
-        resource_type: 'video',
-        chunk_size: 3000000, // Adjust this value as needed
-        upload_prefix: videoName,
-      },
-      (err, result) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(result.secure_url);
-        }
+  const videoBuffer = fs.readFileSync(videoPath);
+  const publicId = `content-videos/${path.basename(videoPath, path.extname(videoPath))}`;
+  const uploadResponse = await cloudinary.uploader.upload_large(
+    videoBuffer,
+    {
+      resource_type: 'video',
+      public_id: publicId,
+      chunk_size: 6000000, // 6MB chunk size
+    },
+    (error, result) => {
+      if (error) {
+        console.error('Error uploading video:', error);
+      } else {
+        console.log('Video uploaded successfully:', result);
       }
-    );
+    }
+  );
 
-    const ffmpegCommand = `${ffmpegStatic} -i ${videoPath} -c copy -f segment -segment_time 10 -reset_timestamps 1 pipe:1`;
-
-    const ffmpeg = spawn(ffmpegCommand, {
-      shell: true,
-      stdio: ['pipe', 'pipe', 'inherit'],
-    });
-
-    ffmpeg.stdout.pipe(stream);
-
-    ffmpeg.on('error', (err) => {
-      reject(err);
-    });
-
-    stream.on('end', () => {
-      console.log('Video chunked and uploaded to Cloudinary successfully');
-    });
-  });
+  return uploadResponse.secure_url;
 };
 
 module.exports = { splitVideo };
