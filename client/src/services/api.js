@@ -56,6 +56,23 @@ const api = {
         method: 'DELETE',
       }).then(handleResponse),
   },
+
+  gallery: {
+    getAll: () =>
+      fetch(`${BASE_URL}/get-media`)
+        .then(handleResponse),
+    
+    upload: (formData) =>
+      fetch(`${BASE_URL}/upload-media`, {
+        method: 'POST',
+        body: formData,
+      }).then(handleResponse),
+    
+    delete: (mediaId) =>
+      fetch(`${BASE_URL}/delete-media/${mediaId}`, {
+        method: 'DELETE',
+      }).then(handleResponse),
+  },
 };
 
 export default api;
