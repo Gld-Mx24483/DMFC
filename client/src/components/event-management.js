@@ -1,10 +1,12 @@
-// event-management.js
-import React, { useState, useEffect } from 'react';
-import './event-management.css';
+//event-management.js
+
+import { faCalendarTimes, faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faPlus, faCalendarTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import api from '../services/api';
+import './event-management.css';
 import FileUpload from './fileupload';
 
 const EventMan = () => {
@@ -60,18 +62,13 @@ const EventMan = () => {
       formData.append('image', imageFile);
     }
 
-    const url = editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-event' : 'https://dmfc-server-sql.vercel.app/save-event';
-    const method = editIndex !== null ? 'POST' : 'PUT';
+    const apiCall = editIndex !== null ? api.events.update : api.events.create;
 
-    fetch(url, {
-      method: method,
-      body: formData,
-    })
-      .then((response) => response.json())
+    apiCall(formData)
       .then((data) => {
         console.log('Event saved successfully:', data);
         setEventDetails({
-          picture: data.imagePath ? `https://dmfc-server-sql.vercel.app/uploads/${data.imagePath}` : '',
+          picture: data.imageUrl || '',
           title: '',
           dateTime: new Date(),
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -83,7 +80,7 @@ const EventMan = () => {
         setEditIndex(null);
         setImageFile(null);
         alert("Event successfully added!");
-        fetchEvents(); // Fetch updated events data
+        fetchEvents();
       })
       .catch((error) => {
         console.error('Error saving event:', error);
@@ -96,14 +93,13 @@ const EventMan = () => {
     const eventToEdit = events[index];
     setEventDetails({
       ...eventToEdit,
-      picture: eventToEdit.imagePath || ''
+      picture: eventToEdit.imageUrl || ''
     })
     setIsAddingEvent(true);
   };
 
   const fetchEvents = () => {
-    fetch('https://dmfc-server-sql.vercel.app/get-events')
-      .then((response) => response.json())
+    api.events.getAll()
       .then((data) => {
         console.log('Events fetched:', data);
         setEvents(data);
@@ -121,26 +117,19 @@ const EventMan = () => {
     if (confirmDelete) {
       const eventId = events[index].id;
   
-      fetch(`https://dmfc-server-sql.vercel.app/delete-event/${eventId}`, {
-        method: 'DELETE',
-      })
-       .then((response) => {
-          if (response.ok) {
-            const updatedEvents = [...events];
-            updatedEvents.splice(index, 1);
-            setEvents(updatedEvents);
-            alert('Event deleted successfully!');
-          } else {
-            alert('Failed to delete event!');
-          }
+      api.events.delete(eventId)
+        .then(() => {
+          const updatedEvents = [...events];
+          updatedEvents.splice(index, 1);
+          setEvents(updatedEvents);
+          alert('Event deleted successfully!');
         })
-       .catch((error) => {
+        .catch((error) => {
           console.error('Error deleting event:', error);
           alert('Error deleting event!');
         });
     }
   };
-
 
   return (
     <div className="event-management-main-container">
@@ -188,11 +177,11 @@ const EventMan = () => {
               <FontAwesomeIcon icon={faPen} className="edit-icon" onClick={() => handleEditEvent(index)} />
               <FontAwesomeIcon icon={faTrash} className="trash-icon" onClick={() => handleDeleteEvent(index)} />
               <div className='event-image-container'>
-              {event.imagePath && <img src={event.imagePath} alt="Event" />}
+                {event.imageUrl && <img src={event.imageUrl} alt="Event" />}
               </div>
               <div className="event-details">
                 <p>{event.title}</p>
-                <p>{event.dateTime.split('T')[0]}</p> 
+                <p>{event.dateTime.split('T')[0]}</p>
                 <p>{event.time}</p>
                 <p>{event.location}</p>
                 <p>{event.brief}</p>
