@@ -1,158 +1,9 @@
-// // team-api.js
-// const express = require('express');
-// const bodyParser = require('body-parser');
-// const cors = require('cors');
-// const mysql = require('mysql');
-
-// const router = express.Router();
-// const app = express();
-
-// app.use(cors());
-// app.use(express.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-
-// const connection = mysql.createConnection({
-//   host: 'localhost',
-//   user: 'root',
-//   password: 'Golden m@trix24483',
-//   database: 'dmf_db'
-// });
-
-// connection.connect((err) => {
-//   if (err) {
-//     console.error('Error connecting to MySQL database:', err);
-//     return;
-//   }
-//   console.log('Team Connected to MySQL database');
-// });
-
-// // router.put('/submit-team-form', (req, res) => {
-//   router.put('/submit-team-form', (req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', 'https://dmfc.vercel.app'); // Replace with your deployed front-end URL
-//     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-//     next();
-//   }, (req, res) => {
-//     const { fullName, address, phoneNumber, email, role } = req.body;
-  
-//     const query = 'INSERT INTO team (fullName, address, phoneNumber, email, role, status) VALUES (?, ?, ?, ?, ?, ?)';
-//     connection.query(query, [fullName, address, phoneNumber, email, role, 'pending'], (error, results) => {
-//       if (error) {
-//         console.error('Error executing SQL query:', error);
-//         res.status(500).json({ error: 'Error submitting form' });
-//       } else {
-//         const insertedId = results.insertId;
-//         res.status(200).json({ message: 'Form submitted successfully', insertedId });
-//       }
-//     });
-//   });
-
-//   // Update user status to 'accepted'
-// // router.post('/accept-request/:id', (req, res) => {
-//   router.post('/accept-request/:id', (req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', 'https://dmfc.vercel.app'); // Replace with your deployed front-end URL
-//     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-//     next();
-//   }, (req, res) => {
-//     const userId = req.params.id;
-  
-//     if (!userId || isNaN(userId)) {
-//       res.status(400).json({ error: 'Invalid user ID' });
-//       return;
-//     }
-  
-//     const query = 'UPDATE team SET status = "accepted" WHERE id = ?';
-//     connection.query(query, [userId], (error, results) => {
-//       if (error) {
-//         console.error('Error executing SQL query:', error);
-//         res.status(500).json({ error: 'Error accepting request' });
-//       } else {
-//         res.status(200).json({ message: 'Request accepted successfully' });
-//       }
-//     });
-//   });
-
-// // Get all team members based on status
-// router.get('/get-team-members', (req, res) => {
-//   const status = req.query.status;
-//   const email = req.query.email;
-//   let query = 'SELECT id, fullName, email, address, phoneNumber, role, createdAt FROM team';
-//   let whereClause = '';
-
-//   if (status === 'pending') {
-//     whereClause = ' WHERE status = "pending"';
-//   } else if (status === 'accepted') {
-//     whereClause = ' WHERE status = "accepted"';
-//   }
-
-//   if (email) {
-//     if (whereClause) {
-//       whereClause += ` AND email = '${email}'`;
-//     } else {
-//       whereClause = ` WHERE email = '${email}'`;
-//     }
-//   }
-
-//   query += whereClause;
-
-//   connection.query(query, (error, results) => {
-//     if (error) {
-//       console.error('Error executing SQL query:', error);
-//       res.status(500).json({ error: 'Error fetching team members' });
-//     } else {
-//       res.status(200).json(results);
-//     }
-//   });
-// });
-
-// // Delete a team member
-// router.delete('/delete-team-member/:id', (req, res) => {
-//     const userId = req.params.id;
-  
-//     if (!userId || isNaN(userId)) {
-//       res.status(400).json({ error: 'Invalid user ID' });
-//       return;
-//     }
-  
-//     const query = 'DELETE FROM team WHERE id = ?';
-//     connection.query(query, [userId], (error, results) => {
-//       if (error) {
-//         console.error('Error executing SQL query:', error);
-//         res.status(500).json({ error: 'Error deleting team member' });
-//       } else {
-//         res.status(200).json({ message: 'Team member deleted successfully' });
-//       }
-//     });
-//   });
-
-//   // Delete a pending team member
-// router.delete('/reject-request/:id', (req, res) => {
-//   const userId = req.params.id;
-
-//   if (!userId || isNaN(userId)) {
-//     res.status(400).json({ error: 'Invalid user ID' });
-//     return;
-//   }
-
-//   const query = 'DELETE FROM team WHERE id = ? AND status = "pending"';
-//   connection.query(query, [userId], (error, results) => {
-//     if (error) {
-//       console.error('Error executing SQL query:', error);
-//       res.status(500).json({ error: 'Error rejecting request' });
-//     } else {
-//       res.status(200).json({ message: 'Request rejected successfully' });
-//     }
-//   });
-// });
-
-// module.exports = router;
-
 //team-api.js
 const express = require('express');
+const { MongoClient, ObjectId } = require('mongodb');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mysql = require('mysql');
+
 const router = express.Router();
 const app = express();
 
@@ -160,142 +11,139 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const pool = mysql.createPool({
-  host: 'dmf-db.cd0i6o42e4on.ca-central-1.rds.amazonaws.com',
-  user: 'admin',
-  password: 'goldenmatrix24483',
-  database: 'dmf_db',
-  port: '3306',
-});
+const uri = "mongodb+srv://dmf:dmf2024.@dalmach-foundation-clus.zvrhlqx.mongodb.net/?retryWrites=true&w=majority&appName=Dalmach-Foundation-Cluster";
+const client = new MongoClient(uri);
 
-pool.getConnection((err, conn) => {
-  if (err) {
-    console.error('Error connecting to MySQL database:', err);
-    return;
+async function connectToDatabase() {
+  try {
+    await client.connect();
+    console.log("Team Management Connected to MongoDB");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
   }
-  console.log('Team Connected to MySQL database');
-});
+}
 
-router.put('/submit-team-form', (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://dmfc.vercel.app');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-}, (req, res) => {
+connectToDatabase();
+
+const db = client.db("dmf_db");
+const teamCollection = db.collection("team");
+
+router.put('/submit-team-form', async (req, res) => {
   const { fullName, address, phoneNumber, email, role } = req.body;
 
-  const query = 'INSERT INTO team (fullName, address, phoneNumber, email, role, status) VALUES (?, ?, ?, ?, ?, ?)';
-  const values = [fullName, address, phoneNumber, email, role, 'pending'];
+  const teamMember = {
+    fullName,
+    address,
+    phoneNumber,
+    email,
+    role,
+    status: 'pending',
+    createdAt: new Date()
+  };
 
-  pool.query(query, values, (error, results) => {
-    if (error) {
-      console.error('Error executing SQL query:', error);
-      res.status(500).json({ error: 'Error submitting form' });
-    } else {
-      const insertedId = results.insertId;
-      res.status(200).json({ message: 'Form submitted successfully', insertedId });
-    }
-  });
+  try {
+    const result = await teamCollection.insertOne(teamMember);
+    console.log('Team member form submitted successfully:', result);
+    res.status(200).json({ message: 'Form submitted successfully', insertedId: result.insertedId });
+  } catch (error) {
+    console.error('Error submitting form:', error);
+    res.status(500).json({ message: 'Error submitting form', error: error.message });
+  }
 });
 
-router.post('/accept-request/:id', (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://dmfc.vercel.app');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-}, (req, res) => {
+router.post('/accept-request/:id', async (req, res) => {
   const userId = req.params.id;
 
-  if (!userId || isNaN(userId)) {
-    res.status(400).json({ error: 'Invalid user ID' });
-    return;
-  }
+  try {
+    const result = await teamCollection.updateOne(
+      { _id: new ObjectId(userId) },
+      { $set: { status: "accepted" } }
+    );
 
-  const query = 'UPDATE team SET status = "accepted" WHERE id = ?';
-  const values = [userId];
-
-  pool.query(query, values, (error, results) => {
-    if (error) {
-      console.error('Error executing SQL query:', error);
-      res.status(500).json({ error: 'Error accepting request' });
-    } else {
-      res.status(200).json({ message: 'Request accepted successfully' });
+    if (result.matchedCount === 0) {
+      res.status(404).json({ message: 'User not found' });
+      return;
     }
-  });
+
+    console.log(`User with ID ${userId} accepted successfully`);
+    res.status(200).json({ message: 'Request accepted successfully' });
+  } catch (error) {
+    console.error('Error accepting request:', error);
+    res.status(500).json({ message: 'Error accepting request', error: error.message });
+  }
 });
 
-router.get('/get-team-members', (req, res) => {
+router.get('/get-team-members', async (req, res) => {
   const status = req.query.status;
   const email = req.query.email;
-  let query = 'SELECT id, fullName, email, address, phoneNumber, role, createdAt FROM team';
-  let whereClause = '';
+  let query = {};
 
   if (status === 'pending') {
-    whereClause = ' WHERE status = "pending"';
+    query.status = "pending";
   } else if (status === 'accepted') {
-    whereClause = ' WHERE status = "accepted"';
+    query.status = "accepted";
   }
 
   if (email) {
-    if (whereClause) {
-      whereClause += ` AND email = '${email}'`;
-    } else {
-      whereClause = ` WHERE email = '${email}'`;
-    }
+    query.email = email;
   }
 
-  query += whereClause;
+  try {
+    const teamMembers = await teamCollection.find(query).toArray();
+    const formattedTeamMembers = teamMembers.map(member => ({
+      id: member._id,
+      fullName: member.fullName,
+      email: member.email,
+      address: member.address,
+      phoneNumber: member.phoneNumber,
+      role: member.role,
+      createdAt: member.createdAt
+    }));
 
-  pool.query(query, (error, results) => {
-    if (error) {
-      console.error('Error executing SQL query:', error);
-      res.status(500).json({ error: 'Error fetching team members' });
-    } else {
-      res.status(200).json(results);
-    }
-  });
+    console.log('Team members fetched successfully:', formattedTeamMembers);
+    res.status(200).json(formattedTeamMembers);
+  } catch (error) {
+    console.error('Error fetching team members:', error);
+    res.status(500).json({ message: 'Error fetching team members', error: error.message });
+  }
 });
 
-router.delete('/delete-team-member/:id', (req, res) => {
+router.delete('/delete-team-member/:id', async (req, res) => {
   const userId = req.params.id;
 
-  if (!userId || isNaN(userId)) {
-    res.status(400).json({ error: 'Invalid user ID' });
-    return;
-  }
+  try {
+    const result = await teamCollection.deleteOne({ _id: new ObjectId(userId) });
 
-  const query = 'DELETE FROM team WHERE id = ?';
-  const values = [userId];
-
-  pool.query(query, values, (error, results) => {
-    if (error) {
-      console.error('Error executing SQL query:', error);
-      res.status(500).json({ error: 'Error deleting team member' });
-    } else {
-      res.status(200).json({ message: 'Team member deleted successfully' });
+    if (result.deletedCount === 0) {
+      res.status(404).json({ message: 'Team member not found' });
+      return;
     }
-  });
+
+    console.log(`Team member with ID ${userId} deleted successfully`);
+    res.status(200).json({ message: 'Team member deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting team member:', error);
+    res.status(500).json({ message: 'Error deleting team member', error: error.message });
+  }
 });
 
-router.delete('/reject-request/:id', (req, res) => {
+router.delete('/reject-request/:id', async (req, res) => {
   const userId = req.params.id;
 
-  if (!userId || isNaN(userId)) {
-    res.status(400).json({ error: 'Invalid user ID' });
-    return;
-  }
+  try {
+    const result = await teamCollection.deleteOne({ _id: new ObjectId(userId), status: "pending" });
 
-  const query = 'DELETE FROM team WHERE id = ? AND status = "pending"';
-  const values = [userId];
-
-  pool.query(query, values, (error, results) => {
-    if (error) {
-      console.error('Error executing SQL query:', error);
-      res.status(500).json({ error: 'Error rejecting request' });
-    } else {
-      res.status(200).json({ message: 'Request rejected successfully' });
+    if (result.deletedCount === 0) {
+      res.status(404).json({ message: 'Pending request not found' });
+      return;
     }
-  });
+
+    console.log(`Request with ID ${userId} rejected successfully`);
+    res.status(200).json({ message: 'Request rejected successfully' });
+  } catch (error) {
+    console.error('Error rejecting request:', error);
+    res.status(500).json({ message: 'Error rejecting request', error: error.message });
+  }
 });
 
 module.exports = router;

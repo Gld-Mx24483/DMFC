@@ -1,7 +1,8 @@
 // team.js
+import emailjs from 'emailjs-com';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import emailjs from 'emailjs-com';
+import api from '../services/api';
 import './team.css';
 
 const TeamForm = () => {
@@ -28,14 +29,7 @@ const TeamForm = () => {
 
     const role = formData.role === 'custom' ? formData.customRole : formData.role;
 
-    fetch('https://dmfc-server-sql.vercel.app/submit-team-form', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ...formData, role }),
-    })
-      .then((response) => response.json())
+    api.team.submitForm({ ...formData, role })
       .then((data) => {
         console.log('Team form submitted successfully:', data);
         alert('Team form submitted successfully!');
@@ -69,8 +63,6 @@ const TeamForm = () => {
         alert('Error submitting team form!');
       });
   };
-
-  // emailjs.init('service_97230z5');
 
   return (
     <div className="teams-main-container">

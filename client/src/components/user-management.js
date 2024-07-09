@@ -1,8 +1,9 @@
 // user-management.js
-import React, { useState, useEffect } from 'react';
-import './user-management.css';
+import React, { useEffect, useState } from 'react';
+import api from '../services/api';
 import IncomingRequestTable from './incomingRequestTable';
 import MembersTable from './membersTable';
+import './user-management.css';
 import VolunteerTable from './volunteerTable';
 
 const UserMan = () => {
@@ -20,13 +21,8 @@ const UserMan = () => {
 
   const fetchIncomingRequests = async () => {
     try {
-      const response = await fetch('https://dmfc-server-sql.vercel.app/get-team-members?status=pending');
-      if (response.ok) {
-        const data = await response.json();
-        setIncomingRequests(data);
-      } else {
-        setError('Error fetching incoming requests');
-      }
+      const data = await api.team.getMembers('pending');
+      setIncomingRequests(data);
     } catch (error) {
       setError('Error fetching incoming requests');
     } finally {
@@ -36,13 +32,8 @@ const UserMan = () => {
   
   const fetchTeamMembers = async () => {
     try {
-      const response = await fetch('https://dmfc-server-sql.vercel.app/get-team-members?status=accepted');
-      if (response.ok) {
-        const data = await response.json();
-        setTeamMembers(data);
-      } else {
-        setError('Error fetching team members');
-      }
+      const data = await api.team.getMembers('accepted');
+      setTeamMembers(data);
     } catch (error) {
       setError('Error fetching team members');
     } finally {
@@ -52,16 +43,9 @@ const UserMan = () => {
 
   const handleAcceptRequest = async (userId) => {
     try {
-      const response = await fetch(`https://dmfc-server-sql.vercel.app/accept-request/${userId}`, {
-        method: 'POST',
-      });
-  
-      if (response.ok) {
-        fetchIncomingRequests();
-        fetchTeamMembers();
-      } else {
-        setError('Error accepting request');
-      }
+      await api.team.acceptRequest(userId);
+      fetchIncomingRequests();
+      fetchTeamMembers();
     } catch (error) {
       setError('Error accepting request');
     }

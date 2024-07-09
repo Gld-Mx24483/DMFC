@@ -43,7 +43,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const galleryAPI = require('./gallery-api');
-// const teamAPI = require('./team-api');
+const teamAPI = require('./team-api');
 // const volunteerAPI = require('./volunteer-api');
 // const contactAPI = require('./contact-api');
 const contentManagementAPI = require('./content-management-api');
@@ -56,7 +56,7 @@ app.use(bodyParser.urlencoded({  limit: '100000mb', extended: true }));
 app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 
-// app.use('/', teamAPI);
+app.use('/', teamAPI);
 app.use('/', galleryAPI);
 // app.use('/', contactAPI);
 app.use('/', contentManagementAPI);

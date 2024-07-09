@@ -1,8 +1,9 @@
 // IncomingRequestTable.js
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import emailjs from 'emailjs-com';
+import React, { useState } from 'react';
+import api from '../services/api';
 
 const IncomingRequestTable = ({ requests, onAcceptRequest, fetchIncomingRequests }) => {
   const [nameFilter, setNameFilter] = useState('');
@@ -40,33 +41,27 @@ const IncomingRequestTable = ({ requests, onAcceptRequest, fetchIncomingRequests
   
     if (acceptConfirmation) {
       try {
-        const response = await fetch(`https://dmfc-server-sql.vercel.app/accept-request/${userId}`, {
-          method: 'POST',
-        });
+        await api.team.acceptRequest(userId);
+        fetchIncomingRequests();
   
-        if (response.ok) {
-          fetchIncomingRequests();
+        // Send email
+        const templateParams = {
+          to_email: email,
+          message: 'Your request has been accepted. Welcome to our team!',
+        };
   
-          // Send email
-          const templateParams = {
-            to_email: email,
-            message: 'Your request has been accepted. Welcome to our team!',
-          };
-  
-          emailjs.send('service_97230z5', 'template_3ytf60q', templateParams, 'ig47yihiXPhRzPqZH')
-            .then((response) => {
-              console.log('Email sent:', response);
-              alert('Request accepted and email sent successfully!');
-            })
-            .catch((error) => {
-              console.error('Error sending email:', error);
-              alert('Request accepted, but there was an error sending the email!');
-            });
-        } else {
-          console.error('Error accepting request:', response.status);
-        }
+        emailjs.send('service_97230z5', 'template_3ytf60q', templateParams, 'ig47yihiXPhRzPqZH')
+          .then((response) => {
+            console.log('Email sent:', response);
+            alert('Request accepted and email sent successfully!');
+          })
+          .catch((error) => {
+            console.error('Error sending email:', error);
+            alert('Request accepted, but there was an error sending the email!');
+          });
       } catch (error) {
         console.error('Error accepting request:', error);
+        alert('Error accepting request');
       }
     }
   };
@@ -76,18 +71,12 @@ const IncomingRequestTable = ({ requests, onAcceptRequest, fetchIncomingRequests
 
     if (rejectConfirmation) {
       try {
-        const response = await fetch(`https://dmfc-server-sql.vercel.app/reject-request/${userId}`, {
-          method: 'DELETE',
-        });
-
-        if (response.ok) {
-          fetchIncomingRequests();
-          alert("Successfully deleted");
-        } else {
-          console.error('Error rejecting request:', response.status);
-        }
+        await api.team.rejectRequest(userId);
+        fetchIncomingRequests();
+        alert("Successfully deleted");
       } catch (error) {
         console.error('Error rejecting request:', error);
+        alert('Error rejecting request');
       }
     }
   };

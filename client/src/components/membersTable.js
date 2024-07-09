@@ -1,9 +1,10 @@
-//membersTable.js
-import React, { useState } from 'react';
+// MembersTable.js
+import { faEllipsisH, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisH, faTrash, faPen } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from 'react';
+import api from '../services/api';
 
-const MembersTable = ({ members }) => {
+const MembersTable = ({ members, fetchTeamMembers }) => {
   const [showMoreOptionsDropdown, setShowMoreOptionsDropdown] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
@@ -47,18 +48,13 @@ const MembersTable = ({ members }) => {
     try {
       const confirmDelete = window.confirm('Delete User data?');
       if (confirmDelete) {
-        const response = await fetch(`https://dmfc-server-sql.vercel.app/delete-team-member/${userId}`, {
-          method: 'DELETE',
-        });
-
-        if (response.ok) {
-          // Fetch updated team members data
-        } else {
-          console.error('Error deleting user:', response.status);
-        }
+        await api.team.deleteMember(userId);
+        fetchTeamMembers(); // Fetch updated team members data
+        alert('User deleted successfully');
       }
     } catch (error) {
       console.error('Error deleting user:', error);
+      alert('Error deleting user');
     }
   };
 
@@ -88,7 +84,7 @@ const MembersTable = ({ members }) => {
               <td data-title="Address">{member.address}</td>
               <td data-title="Phone Number">{member.phoneNumber}</td>
               <td data-title="Role">{member.role}</td>
-              <td data-title="Date Added"> {formatDate(member.createdAt)}</td>
+              <td data-title="Date Added">{formatDate(member.createdAt)}</td>
               <td data-title="More Options">
                 <div className="more-options">
                   <FontAwesomeIcon icon={faEllipsisH} onClick={() => toggleMoreOptionsDropdown(index)} />

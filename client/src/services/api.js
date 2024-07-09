@@ -73,6 +73,41 @@ const api = {
         method: 'DELETE',
       }).then(handleResponse),
   },
+
+  team: {
+    submitForm: (formData) =>
+      fetch(`${BASE_URL}/submit-team-form`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      }).then(handleResponse),
+
+    acceptRequest: (userId) =>
+      fetch(`${BASE_URL}/accept-request/${userId}`, {
+        method: 'POST',
+      }).then(handleResponse),
+
+    getMembers: (status, email) => {
+      let url = `${BASE_URL}/get-team-members`;
+      const params = new URLSearchParams();
+      if (status) params.append('status', status);
+      if (email) params.append('email', email);
+      if (params.toString()) url += `?${params.toString()}`;
+      return fetch(url).then(handleResponse);
+    },
+
+    deleteMember: (userId) =>
+      fetch(`${BASE_URL}/delete-team-member/${userId}`, {
+        method: 'DELETE',
+      }).then(handleResponse),
+
+    rejectRequest: (userId) =>
+      fetch(`${BASE_URL}/reject-request/${userId}`, {
+        method: 'DELETE',
+      }).then(handleResponse),
+  },
 };
 
 export default api;
