@@ -1,136 +1,10 @@
-// // gallery-api.js
-// const express = require('express');
-// const bodyParser = require('body-parser');
-// const cors = require('cors');
-// const multer = require('multer');
-// const path = require('path');
-// const fs = require('fs');
-// const mysql = require('mysql');
-
-// const router = express.Router();
-// const app = express();
-
-// app.use(cors());
-// app.use(express.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     const uploadsDir = path.join(__dirname, 'uploads');
-//     if (!fs.existsSync(uploadsDir)) {
-//       fs.mkdirSync(uploadsDir);
-//     }
-//     cb(null, uploadsDir);
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, file.originalname);
-//   },
-// });
-
-// const upload = multer({ storage: storage });
-
-// const connection = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: 'Golden m@trix24483',
-//     database: 'dmf_db'
-//   });
-  
-//   connection.connect((err) => {
-//     if (err) {
-//       console.error('Error connecting to MySQL database:', err);
-//       return;
-//     }
-//     console.log('Gallery Connected to MySQL database');
-//   });
-  
-//   // router.post('/upload-media', upload.single('media'), (req, res) => {
-//     router.post('/upload-media', (req, res, next) => {
-//       res.header('Access-Control-Allow-Origin', 'https://dmfc.vercel.app'); // Replace with your deployed front-end URL
-//       res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-//       res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-//       next();
-//     }, upload.single('media'), (req, res) => {
-//     const { title, date } = req.body;
-//     let imagePath = null;
-//     let videoPath = null;
-  
-//     if (req.file) {
-//       if (req.file.mimetype.startsWith('image/')) {
-//         imagePath = req.file.originalname;
-//       } else if (req.file.mimetype.startsWith('video/')) {
-//         videoPath = req.file.originalname;
-//       }
-//     }
-  
-//     const insertQuery = 'INSERT INTO gallery (title, imagePath, videoPath, upload_date) VALUES (?, ?, ?, ?)';
-//     const values = [title, imagePath, videoPath, date];
-  
-//     connection.query(insertQuery, values, (error, results) => {
-//         if (error) {
-//           console.error('Error uploading media:', error);
-//           res.status(500).json({ message: 'Error uploading media', error: error.message });
-//           return;
-//         }
-//         console.log('Media uploaded successfully:', results);
-//         res.status(200).json({ message: 'Media uploaded successfully!', imagePath, videoPath });
-//       });
-//     });
-    
-//     router.get('/get-media', (req, res) => {
-//       const selectQuery = 'SELECT id, title, imagePath, videoPath, upload_date FROM gallery';
-//       connection.query(selectQuery, (error, results) => {
-//         if (error) {
-//           console.error('Error fetching media:', error);
-//           res.status(500).json({ message: 'Error fetching media', error: error.message });
-//           return;
-//         }
-    
-//         const fullUrl = `${req.protocol}://${req.get('host')}`;
-//         const mediaWithFullUrls = results.map(item => ({
-//           ...item,
-//           imagePath: item.imagePath ? `${fullUrl}/uploads/${item.imagePath}` : null,
-//           videoPath: item.videoPath ? `${fullUrl}/uploads/${item.videoPath}` : null,
-//         }));
-    
-//         console.log('Media fetched successfully:', mediaWithFullUrls);
-//         res.status(200).json(mediaWithFullUrls);
-//       });
-//     });
-    
-//     router.delete('/delete-media/:id', (req, res) => {
-//       const mediaId = req.params.id;
-    
-//       const deleteQuery = 'DELETE FROM gallery WHERE id = ?';
-    
-//       connection.query(deleteQuery, [mediaId], (error, results) => {
-//         if (error) {
-//           console.error('Error deleting media:', error);
-//           res.status(500).json({ message: 'Error deleting media', error: error.message });
-//           return;
-//         }
-    
-//         if (results.affectedRows === 0) {
-//           res.status(404).json({ message: 'Media not found' });
-//           return;
-//         }
-    
-//         console.log(`Media with ID ${mediaId} deleted successfully`);
-//         res.status(200).json({ message: 'Media deleted successfully' });
-//       });
-//     });
-    
-//     module.exports = router;
-
-// gallery-api.js
+//gallery-api.js
 const express = require('express');
+const { MongoClient, ObjectId } = require('mongodb');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
-const mysql = require('mysql');
+const cloudinary = require('cloudinary').v2;
 
 const router = express.Router();
 const app = express();
@@ -138,107 +12,102 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadsDir = path.join(__dirname, 'uploads');
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir);
-    }
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
+// Cloudinary configuration
+cloudinary.config({ 
+    cloud_name: 'dziio24gg', 
+    api_key: '652496532414874', 
+    api_secret: 'Tp40YqM4w7erIk2_rFHwCGR65kA' 
 });
 
+// Configure multer for memory storage
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-const pool = mysql.createPool({
-  host: 'dmf-db.cd0i6o42e4on.ca-central-1.rds.amazonaws.com',
-  user: 'admin',
-  password: 'goldenmatrix24483',
-  database: 'dmf_db',
-  port: '3306',
-});
+const uri = "mongodb+srv://dmf:dmf2024.@dalmach-foundation-clus.zvrhlqx.mongodb.net/?retryWrites=true&w=majority&appName=Dalmach-Foundation-Cluster";
+const client = new MongoClient(uri);
 
-pool.getConnection((err, conn) => {
-  if (err) {
-    console.error('Error connecting to MySQL database:', err);
-    return;
+async function connectToDatabase() {
+  try {
+    await client.connect();
+    console.log("Gallery Management Connected to MongoDB");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
   }
-  console.log('Gallery Connected to MySQL database');
-});
+}
 
-router.post('/upload-media', upload.single('media'), (req, res) => {
+connectToDatabase();
+
+const db = client.db("dmf_db");
+const galleryCollection = db.collection("gallery");
+
+router.post('/upload-media', upload.single('media'), async (req, res) => {
   const { title, date } = req.body;
-  let imagePath = null;
-  let videoPath = null;
+  let mediaUrl = null;
 
   if (req.file) {
-    if (req.file.mimetype.startsWith('image/')) {
-      imagePath = req.file.originalname;
-    } else if (req.file.mimetype.startsWith('video/')) {
-      videoPath = req.file.originalname;
-    }
-  }
+    try {
+      // Upload media to Cloudinary
+      const result = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { resource_type: 'auto', folder: 'gallery' },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        uploadStream.end(req.file.buffer);
+      });
 
-  const insertQuery = 'INSERT INTO gallery (title, imagePath, videoPath, upload_date) VALUES (?, ?, ?, ?)';
-  const values = [title, imagePath, videoPath, date];
+      mediaUrl = result.secure_url;
 
-  pool.query(insertQuery, values, (error, results) => {
-    if (error) {
+      const mediaItem = {
+        title,
+        mediaUrl,
+        mediaType: result.resource_type, // 'image' or 'video'
+        uploadDate: date
+      };
+
+      const insertResult = await galleryCollection.insertOne(mediaItem);
+      console.log('Media uploaded successfully:', insertResult);
+      res.status(200).json({ message: 'Media uploaded successfully!', id: insertResult.insertedId, mediaUrl });
+    } catch (error) {
       console.error('Error uploading media:', error);
       res.status(500).json({ message: 'Error uploading media', error: error.message });
-      return;
     }
-    console.log('Media uploaded successfully:', results);
-    res.status(200).json({ message: 'Media uploaded successfully!', imagePath, videoPath });
-  });
+  } else {
+    res.status(400).json({ message: 'No media file uploaded' });
+  }
 });
 
-router.get('/get-media', (req, res) => {
-  const selectQuery = 'SELECT id, title, imagePath, videoPath, upload_date FROM gallery';
-  pool.query(selectQuery, (error, results) => {
-    if (error) {
-      console.error('Error fetching media:', error);
-      res.status(500).json({ message: 'Error fetching media', error: error.message });
-      return;
-    }
-
-    const fullUrl = `${req.protocol}://${req.get('host')}`;
-    const mediaWithFullUrls = results.map(item => ({
-      ...item,
-      imagePath: item.imagePath ? `${fullUrl}/uploads/${item.imagePath}` : null,
-      videoPath: item.videoPath ? `${fullUrl}/uploads/${item.videoPath}` : null,
-    }));
-
-    console.log('Media fetched successfully:', mediaWithFullUrls);
-    res.status(200).json(mediaWithFullUrls);
-  });
+router.get('/get-media', async (req, res) => {
+  try {
+    const media = await galleryCollection.find({}).toArray();
+    console.log('Media fetched successfully:', media);
+    res.status(200).json(media);
+  } catch (error) {
+    console.error('Error fetching media:', error);
+    res.status(500).json({ message: 'Error fetching media', error: error.message });
+  }
 });
 
-router.delete('/delete-media/:id', (req, res) => {
+router.delete('/delete-media/:id', async (req, res) => {
   const mediaId = req.params.id;
 
-  const deleteQuery = 'DELETE FROM gallery WHERE id = ?';
+  try {
+    const result = await galleryCollection.deleteOne({ _id: new ObjectId(mediaId) });
 
-  pool.query(deleteQuery, [mediaId], (error, results) => {
-    if (error) {
-      console.error('Error deleting media:', error);
-      res.status(500).json({ message: 'Error deleting media', error: error.message });
-      return;
-    }
-
-    if (results.affectedRows === 0) {
+    if (result.deletedCount === 0) {
       res.status(404).json({ message: 'Media not found' });
       return;
     }
 
     console.log(`Media with ID ${mediaId} deleted successfully`);
     res.status(200).json({ message: 'Media deleted successfully' });
-  });
+  } catch (error) {
+    console.error('Error deleting media:', error);
+    res.status(500).json({ message: 'Error deleting media', error: error.message });
+  }
 });
 
 module.exports = router;

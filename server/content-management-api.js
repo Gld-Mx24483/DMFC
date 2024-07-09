@@ -1,264 +1,49 @@
-// // // content-management-api.js
-// // const express = require('express');
-// // const bodyParser = require('body-parser');
-// // const cors = require('cors');
-// // const multer = require('multer');
-// // const path = require('path');
-// // const fs = require('fs');
-// // const mysql = require('mysql');
-
-// // const router = express.Router();
-// // const app = express();
-
-// // app.use(cors());
-// // app.use(express.json());
-// // app.use(bodyParser.urlencoded({ extended: true }));
-// // app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
-
-// // const storage = multer.diskStorage({
-// //   destination: (req, file, cb) => {
-// //     const uploadsDir = path.join(__dirname, '..', 'uploads'); 
-// //     if (!fs.existsSync(uploadsDir)) {
-// //       fs.mkdirSync(uploadsDir);
-// //     }
-// //     cb(null, uploadsDir);
-// //   },
-// //   filename: (req, file, cb) => {
-// //     cb(null, file.originalname);
-// //   },
-// // });
-
-// // const upload = multer({ storage: storage });
-
-// // const connection = mysql.createConnection({
-// //   host: 'localhost',
-// //   user: 'root',
-// //   password: 'Golden m@trix24483',
-// //   database: 'dmf_db'
-// // });
-
-// // connection.connect((err) => {
-// //   if (err) {
-// //     console.error('Error connecting to MySQL database:', err);
-// //     return;
-// //   }
-// //   console.log('CMS Connected to MySQL database');
-// // });
-
-// // router.put('/save-content',upload.fields([
-// //     { name: 'image', maxCount: 1 },
-// //     { name: 'video', maxCount: 1 },
-// //   ]),
-// //   (req, res) => {
-// //     const { fullName, title, dateTime, body, uploadTime } = req.body;
-// //     let imagePath = null;
-// //     let videoPath = null;
-
-// //     if (req.files && req.files.image && req.files.image.length > 0) {
-// //       imagePath =  req.files.image[0].originalname;
-// //     }
-// //     if (req.files && req.files.video && req.files.video.length > 0) {
-// //       videoPath =  req.files.video[0].originalname;
-// //     }
-
-// //     const insertQuery =
-// //       'INSERT INTO content (imagePath, videoPath, fullName, title, dateTime, body, uploadTime) VALUES (?, ?, ?, ?, ?, ?, ?)';
-// //     const values = [imagePath, videoPath, fullName, title, dateTime, body, uploadTime];
-
-// //     connection.query(insertQuery, values, (error, results) => {
-// //       if (error) {
-// //         console.error('Error saving content:', error);
-// //         res.status(500).json({ message: 'Error saving content', error: error.message });
-// //         return;
-// //       }
-// //       console.log('Content saved successfully:', results);
-// //       res.status(200).json({ message: 'Content saved successfully!' });
-// //     });
-// //   }
-// // );
-
-// // router.post('/update-content', upload.fields([
-// //   { name: 'image', maxCount: 1 },
-// //   { name: 'video', maxCount: 1 },
-// // ]), (req, res) => {
-// //   const { id, fullName, title, dateTime, body, uploadTime } = req.body;
-// //   let imagePath = null;
-// //   let videoPath = null;
-
-// //   if (req.files && req.files.image && req.files.image.length > 0) {
-// //     imagePath = req.files.image[0].originalname;
-// //   }
-// //   if (req.files && req.files.video && req.files.video.length > 0) {
-// //     videoPath = req.files.video[0].originalname;
-// //   }
-
-// //   const updateQuery = `UPDATE content 
-// //                        SET imagePath = COALESCE(?, imagePath), 
-// //                            videoPath = COALESCE(?, videoPath),
-// //                            fullName = ?, 
-// //                            title = ?, 
-// //                            dateTime = ?, 
-// //                            body = ?, 
-// //                            uploadTime = ?
-// //                        WHERE id = ?`;
-// //   const values = [imagePath, videoPath, fullName, title, dateTime, body, uploadTime, id];
-
-// //   connection.query(updateQuery, values, (error, results) => {
-// //     if (error) {
-// //       console.error('Error updating content:', error);
-// //       res.status(500).json({ message: 'Error updating content', error: error.message });
-// //       return;
-// //     }
-
-// //     if (results.affectedRows === 0) {
-// //       res.status(404).json({ message: 'Content not found' });
-// //       return;
-// //     }
-
-// //     console.log(`Content with ID ${id} updated successfully`);
-// //     res.status(200).json({ message: 'Content updated successfully!', imagePath, videoPath });
-// //   });
-// // });
-
-// // router.delete('/delete-content/:id', (req, res) => {
-// //   const contentId = req.params.id;
-
-// //   const deleteQuery = 'DELETE FROM content WHERE id = ?';
-
-// //   connection.query(deleteQuery, [contentId], (error, results) => {
-// //     if (error) {
-// //       console.error('Error deleting content:', error);
-// //       res.status(500).json({ message: 'Error deleting content', error: error.message });
-// //       return;
-// //     }
-
-// //     if (results.affectedRows === 0) {
-// //       res.status(404).json({ message: 'Content not found' });
-// //       return;
-// //     }
-
-// //     console.log(`Content with ID ${contentId} deleted successfully`);
-// //     res.status(200).json({ message: 'Content deleted successfully' });
-// //   });
-// // });
-
-// // // Route for deleting image files
-// // router.post('/delete-image/:id', (req, res) => {
-// //     const contentId = req.params.id;
-    
-// //     const updateQuery = `UPDATE content SET imagePath = NULL WHERE id = ?`;
-    
-// //     connection.query(updateQuery, [contentId], (error, results) => {
-// //       if (error) {
-// //         console.error('Error deleting image file:', error);
-// //         res.status(500).json({ message: 'Error deleting image file', error: error.message });
-// //         return;
-// //       }
-    
-// //       if (results.affectedRows === 0) {
-// //         res.status(404).json({ message: 'Content not found' });
-// //         return;
-// //       }
-    
-// //       console.log(`Image file deleted successfully for content with ID ${contentId}`);
-// //       res.status(200).json({ message: 'Image file deleted successfully' });
-// //     });
-// //   });
-  
-// //   router.post('/delete-video/:id', (req, res) => {
-// //     const contentId = req.params.id;
-    
-// //     const updateQuery = `UPDATE content SET videoPath = NULL WHERE id = ?`;
-    
-// //     connection.query(updateQuery, [contentId], (error, results) => {
-// //       if (error) {
-// //         console.error('Error deleting video file:', error);
-// //         res.status(500).json({ message: 'Error deleting video file', error: error.message });
-// //         return;
-// //       }
-    
-// //       if (results.affectedRows === 0) {
-// //         res.status(404).json({ message: 'Content not found' });
-// //         return;
-// //       }
-    
-// //       console.log(`Video file deleted successfully for content with ID ${contentId}`);
-// //       res.status(200).json({ message: 'Video file deleted successfully' });
-// //     });
-// //   });
-  
-  
-
-// // router.get('/get-content', (req, res) => {
-// //   const selectQuery =
-// //     'SELECT id, imagePath, videoPath, fullName, title, DATE_FORMAT(dateTime, "%Y-%m-%d") as dateTime, body, uploadTime FROM content';
-// //   connection.query(selectQuery, (error, results) => {
-// //     if (error) {
-// //       console.error('Error fetching content:', error);
-// //       res.status(500).json({ message: 'Error fetching content', error: error.message });
-// //       return;
-// //     }
-
-// //     const fullUrl = `${req.protocol}://${req.get('host')}`;
-// //     const contentWithFullUrls = results.map(item => ({
-// //       ...item,
-// //       imagePath: item.imagePath ? `${fullUrl}/uploads/${item.imagePath}` : null,
-// //       videoPath: item.videoPath ? `${fullUrl}/uploads/${item.videoPath}` : null,
-// //     }));
-
-// //     console.log('Content fetched successfully:', contentWithFullUrls);
-// //     res.status(200).json(contentWithFullUrls);
-// //   });
-// // });
-
-// module.exports = router;
-
 //content-management-api.js
 const express = require('express');
+const { MongoClient, ObjectId } = require('mongodb');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
-const mysql = require('mysql');
-const cloudinary = require('./cloudinary');
-// const { splitVideo } = require('./videoSplitter');
+const cloudinary = require('cloudinary').v2;
 
 const router = express.Router();
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '100000mb' }));
-app.use(bodyParser.urlencoded({  limit: '100000mb', extended: true }));
+app.use(bodyParser.urlencoded({ limit: '100000mb', extended: true }));
 app.use(express.json());
 
-
-const storage = multer.diskStorage({
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
+// Cloudinary configuration
+cloudinary.config({ 
+    cloud_name: 'dziio24gg', 
+    api_key: '652496532414874', 
+    api_secret: 'Tp40YqM4w7erIk2_rFHwCGR65kA' 
 });
 
+// Configure multer for memory storage
+const storage = multer.memoryStorage();
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 900000000},
+  limits: { fileSize: 900000000 },
 });
 
-const pool = mysql.createPool({
-  host: 'dmf-db.cd0i6o42e4on.ca-central-1.rds.amazonaws.com',
-  user: 'admin',
-  password: 'goldenmatrix24483',
-  database: 'dmf_db',
-  port: '3306',
-});
+const uri = "mongodb+srv://dmf:dmf2024.@dalmach-foundation-clus.zvrhlqx.mongodb.net/?retryWrites=true&w=majority&appName=Dalmach-Foundation-Cluster";
+const client = new MongoClient(uri);
 
-pool.getConnection((err, conn) => {
-  if (err) {
-    console.error('Error connecting to MySQL database:', err);
-    return;
+async function connectToDatabase() {
+  try {
+    await client.connect();
+    console.log("Content Management Connected to MongoDB");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
   }
-  console.log('CMS Connected to MySQL database');
-});
+}
+
+connectToDatabase();
+
+const db = client.db("dmf_db");
+const contentCollection = db.collection("content");
 
 router.put('/save-content', upload.fields([
   { name: 'image', maxCount: 1 },
@@ -266,46 +51,50 @@ router.put('/save-content', upload.fields([
 ]), async (req, res) => {
   const { fullName, title, dateTime, body, uploadTime } = req.body;
   let imagePath = null;
-  let videoPartUrls = [];
+  let videoUrl = null;
 
   try {
     if (req.files && req.files.image && req.files.image.length > 0) {
-      const imageUploadResult = await cloudinary.uploader.upload(req.files.image[0].path, {
-        resource_type: 'image',
-        public_id: `content-images/${req.files.image[0].originalname}`,
+      const result = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { resource_type: 'image', folder: 'content-images' },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        uploadStream.end(req.files.image[0].buffer);
       });
-      imagePath = imageUploadResult.secure_url;
+      imagePath = result.secure_url;
     }
 
     if (req.files && req.files.video && req.files.video.length > 0) {
-      const videoPath = req.files.video[0].path;
-      const outputDir = path.join(__dirname, 'tmp');
-
-      if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true });
-      }
-
-      videoPartUrls = await splitVideo(videoPath, outputDir);
-
-      // Clean up temporary video chunks
-      const chunkFiles = fs.readdirSync(outputDir).map(file => path.join(outputDir, file));
-      chunkFiles.forEach(chunkFile => fs.unlinkSync(chunkFile));
-      fs.rmdirSync(outputDir);
+      const result = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { resource_type: 'video', folder: 'content-videos' },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        uploadStream.end(req.files.video[0].buffer);
+      });
+      videoUrl = result.secure_url;
     }
 
-    const insertQuery =
-      'INSERT INTO content (imagePath, videoPartUrls, fullName, title, dateTime, body, uploadTime) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    const values = [imagePath, JSON.stringify(videoPartUrls), fullName, title, dateTime, body, uploadTime];
+    const content = {
+      imagePath,
+      videoUrl,
+      fullName,
+      title,
+      dateTime,
+      body,
+      uploadTime
+    };
 
-    pool.query(insertQuery, values, (error, results) => {
-      if (error) {
-        console.error('Error saving content:', error);
-        res.status(500).json({ message: 'Error saving content', error: error.message });
-        return;
-      }
-      console.log('Content saved successfully:', results);
-      res.status(200).json({ message: 'Content saved successfully!' });
-    });
+    const result = await contentCollection.insertOne(content);
+    console.log('Content saved successfully:', result);
+    res.status(200).json({ message: 'Content saved successfully!', id: result.insertedId });
   } catch (error) {
     console.error('Error saving content:', error);
     res.status(500).json({ message: 'Error saving content', error: error.message });
@@ -318,58 +107,60 @@ router.post('/update-content', upload.fields([
 ]), async (req, res) => {
   const { id, fullName, title, dateTime, body, uploadTime } = req.body;
   let imagePath = null;
-  let videoPartUrls = [];
+  let videoUrl = null;
 
   try {
     if (req.files && req.files.image && req.files.image.length > 0) {
-      const imageUploadResult = await cloudinary.uploader.upload(req.files.image[0].path, {
-        resource_type: 'image',
-        public_id: `content-images/${req.files.image[0].originalname}`,
+      const result = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { resource_type: 'image', folder: 'content-images' },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        uploadStream.end(req.files.image[0].buffer);
       });
-      imagePath = imageUploadResult.secure_url;
+      imagePath = result.secure_url;
     }
 
     if (req.files && req.files.video && req.files.video.length > 0) {
-      const videoPath = req.files.video[0].path;
-      const videoUrl = await splitVideo(videoPath);
-      videoPartUrls.push(videoUrl);
+      const result = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { resource_type: 'video', folder: 'content-videos' },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        uploadStream.end(req.files.video[0].buffer);
+      });
+      videoUrl = result.secure_url;
     }
 
-    const updateQuery = `UPDATE content
-                         SET imagePath = COALESCE(?, imagePath),
-                             videoPartUrls = COALESCE(?, videoPartUrls),
-                             fullName = ?,
-                             title = ?,
-                             dateTime = ?,
-                             body = ?,
-                             uploadTime = ?
-                         WHERE id = ?`;
-    const values = [
-      imagePath,
-      videoPartUrls.length > 0 ? JSON.stringify(videoPartUrls) : null,
+    const updateData = {
       fullName,
       title,
       dateTime,
       body,
-      uploadTime,
-      id,
-    ];
+      uploadTime
+    };
 
-    pool.query(updateQuery, values, (error, results) => {
-      if (error) {
-        console.error('Error updating content:', error);
-        res.status(500).json({ message: 'Error updating content', error: error.message });
-        return;
-      }
+    if (imagePath) updateData.imagePath = imagePath;
+    if (videoUrl) updateData.videoUrl = videoUrl;
 
-      if (results.affectedRows === 0) {
-        res.status(404).json({ message: 'Content not found' });
-        return;
-      }
+    const result = await contentCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData }
+    );
 
-      console.log(`Content with ID ${id} updated successfully`);
-      res.status(200).json({ message: 'Content updated successfully!', imagePath, videoPartUrls });
-    });
+    if (result.matchedCount === 0) {
+      res.status(404).json({ message: 'Content not found' });
+      return;
+    }
+
+    console.log(`Content with ID ${id} updated successfully`);
+    res.status(200).json({ message: 'Content updated successfully!', imagePath, videoUrl });
   } catch (error) {
     console.error('Error updating content:', error);
     res.status(500).json({ message: 'Error updating content', error: error.message });
@@ -380,28 +171,12 @@ router.delete('/delete-content/:id', async (req, res) => {
   const contentId = req.params.id;
 
   try {
-    // First, fetch the videoPartUrls for the content to be deleted
-    const selectQuery = 'SELECT videoPartUrls FROM content WHERE id = ?';
-    const [result] = await pool.query(selectQuery, [contentId]);
+    const result = await contentCollection.deleteOne({ _id: new ObjectId(contentId) });
 
-    if (result.length === 0) {
+    if (result.deletedCount === 0) {
       res.status(404).json({ message: 'Content not found' });
       return;
     }
-
-    const videoPartUrls = result[0].videoPartUrls ? JSON.parse(result[0].videoPartUrls) : [];
-
-    // Delete video parts from Cloudinary
-    const deletePromises = videoPartUrls.map(async (videoPartUrl) => {
-      const publicId = videoPartUrl.split('/').slice(-2, -1)[0].split('.')[0];
-      await cloudinary.uploader.destroy(publicId, { resource_type: 'video' });
-    });
-
-    await Promise.all(deletePromises);
-
-    // Delete the content from the database
-    const deleteQuery = 'DELETE FROM content WHERE id = ?';
-    await pool.query(deleteQuery, [contentId]);
 
     console.log(`Content with ID ${contentId} deleted successfully`);
     res.status(200).json({ message: 'Content deleted successfully' });
@@ -411,24 +186,21 @@ router.delete('/delete-content/:id', async (req, res) => {
   }
 });
 
-router.get('/get-content', (req, res) => {
-  const selectQuery = 'SELECT id, imagePath, videoPartUrls, fullName, title, DATE_FORMAT(dateTime, "%Y-%m-%d") as dateTime, body, uploadTime FROM content';
-  pool.query(selectQuery, (error, results) => {
-    if (error) {
-      console.error('Error fetching content:', error);
-      res.status(500).json({ message: 'Error fetching content', error: error.message });
-      return;
-    }
-
-    const contentWithVideoPartUrls = results.map(item => ({
+router.get('/get-content', async (req, res) => {
+  try {
+    const content = await contentCollection.find({}).toArray();
+    const contentWithFormattedDate = content.map(item => ({
       ...item,
-      imagePath: item.imagePath ? item.imagePath : null,
-      videoPartUrls: item.videoPartUrls ? JSON.parse(item.videoPartUrls) : null,
+      id: item._id,
+      dateTime: new Date(item.dateTime).toISOString().split('T')[0],
     }));
 
-    console.log('Content fetched successfully:', contentWithVideoPartUrls);
-    res.status(200).json(contentWithVideoPartUrls);
-  });
+    console.log('Content fetched successfully:', contentWithFormattedDate);
+    res.status(200).json(contentWithFormattedDate);
+  } catch (error) {
+    console.error('Error fetching content:', error);
+    res.status(500).json({ message: 'Error fetching content', error: error.message });
+  }
 });
 
 module.exports = router;

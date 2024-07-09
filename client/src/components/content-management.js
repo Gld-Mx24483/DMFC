@@ -11,6 +11,7 @@ import 'react-calendar/dist/Calendar.css';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
+import api from '../services/api';
 import './content-management.css';
 import FileUpload from './fileupload';
 
@@ -88,32 +89,17 @@ const ContentMan = () => {
     formData.append('body', contentDetails.body);
     formData.append('uploadTime', contentDetails.uploadTime);
   
-    let totalBytes = 0;
-  
     if (imageFile) {
-      totalBytes += imageFile.size;
       formData.append('image', imageFile);
     }
   
     if (videoFile) {
-      totalBytes += videoFile.size;
       formData.append('video', videoFile);
     }
   
-    const url = editIndex !== null ? 'https://dmfc-server-sql.vercel.app/update-content' : 'https://dmfc-server-sql.vercel.app/save-content';
-    // const url = editIndex !== null ? 'http://localhost:9000/update-content' : 'http://localhost:9000/save-content';
-    const method = editIndex !== null ? 'POST' : 'PUT';
+    const apiCall = editIndex !== null ? api.content.update(formData) : api.content.create(formData);
   
-    fetch(url, {
-      method: method,
-      body: formData,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Error saving content');
-        }
-        return response.json();
-      })
+    apiCall
       .then((data) => {
         console.log('Content saved successfully:', data);
         setContentDetails({
@@ -141,19 +127,11 @@ const ContentMan = () => {
   };
 
   useEffect(() => {
-    // fetch('http://localhost:9000/get-content')
-    fetch('https://dmfc-server-sql.vercel.app/get-content')
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Content fetched:', data);
-        setContent(data);
-      })
-      .catch((error) => console.error('Error fetching content:', error));
+    fetchContent();
   }, []);
 
   const fetchContent = () => {
-    fetch('https://dmfc-server-sql.vercel.app/get-content')
-      .then((response) => response.json())
+    api.content.getAll()
       .then((data) => {
         console.log('Content fetched:', data);
         setContent(data);
@@ -176,18 +154,12 @@ const ContentMan = () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this content?");
 
     if (confirmDelete) {
-      fetch(`https://dmfc-server-sql.vercel.app/delete-content/${id}`, {
-        method: 'DELETE',
-      })
-        .then((response) => {
-          if (response.ok) {
-            const updatedContent = [...content];
-            updatedContent.splice(index, 1);
-            setContent(updatedContent);
-            alert('Content deleted successfully!');
-          } else {
-            alert('Failed to delete content!');
-          }
+      api.content.delete(id)
+        .then(() => {
+          const updatedContent = [...content];
+          updatedContent.splice(index, 1);
+          setContent(updatedContent);
+          alert('Content deleted successfully!');
         })
         .catch((error) => {
           console.error('Error deleting content:', error);
@@ -271,14 +243,14 @@ const ContentMan = () => {
             <div className="content-item" key={index.id}>
   <FontAwesomeIcon className='Pen' icon={faPen} onClick={() => handleEditContent(index)} />
   <FontAwesomeIcon className='Trash' icon={faTrash} onClick={() => handleDeleteContent(index, item.id)} />
-  {item.imagePath && <img className="media image" src={item.imagePath} alt="Preview" />}
-  {item.videoPartUrls && item.videoPartUrls.length > 0 && (
-    <div className="video-player">
-      {item.videoPartUrls.map((videoPartUrl, index) => (
-        <video key={index} controls src={videoPartUrl}></video>
-      ))}
-    </div>
-  )}
+    {item.imagePath && <img className="media image" src={item.imagePath} alt="Content Image" />}
+    {item.videoUrl && (
+      <video className="media video" controls>
+        <source src={item.videoUrl} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    )}
+ 
   <h3>{item.title}</h3>
   <p>{item.dateTime} - {item.uploadTime}</p>
   <p>{item.fullName}</p>

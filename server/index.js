@@ -42,11 +42,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-// const galleryAPI = require('./gallery-api');
+const galleryAPI = require('./gallery-api');
 // const teamAPI = require('./team-api');
 // const volunteerAPI = require('./volunteer-api');
 // const contactAPI = require('./contact-api');
-// const contentManagementAPI = require('./content-management-api');
+const contentManagementAPI = require('./content-management-api');
 const eventManagementAPI = require('./event-management-api');
 const app = express();
 
@@ -57,9 +57,9 @@ app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 
 // app.use('/', teamAPI);
-// app.use('/', galleryAPI);
+app.use('/', galleryAPI);
 // app.use('/', contactAPI);
-// app.use('/', contentManagementAPI);
+app.use('/', contentManagementAPI);
 // app.use('/', volunteerAPI);
 app.use('/', eventManagementAPI);
 app.use("/", (req,res) => {
