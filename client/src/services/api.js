@@ -61,6 +61,10 @@ const api = {
     getAll: () =>
       fetch(`${BASE_URL}/get-media`)
         .then(handleResponse),
+
+    getMedia: () =>
+      fetch(`${BASE_URL}/get-media`)
+        .then(handleResponse),
     
     upload: (formData) =>
       fetch(`${BASE_URL}/upload-media`, {
@@ -122,6 +126,57 @@ const api = {
         },
         body: JSON.stringify(formData),
       }).then(handleResponse),
+    },
+
+    contact: {
+      submitForm: (formData) =>
+        fetch(`${BASE_URL}/submit-contact-form`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        }).then(handleResponse),
+  
+      getUserMessagesWithAdminResponses: () =>
+        fetch(`${BASE_URL}/get-user-messages-with-admin-responses`)
+          .then(handleResponse),
+  
+      getAdminBroadcastMessages: () =>
+        fetch(`${BASE_URL}/get-admin-broadcast-messages`)
+          .then(handleResponse),
+    },
+
+    communication: {
+      getContactMessages: () =>
+        fetch(`${BASE_URL}/get-contact-messages`)
+          .then(handleResponse),
+  
+      getUserMessagesWithAdminResponses: () =>
+        fetch(`${BASE_URL}/get-user-messages-with-admin-responses`)
+          .then(handleResponse),
+  
+      getAdminBroadcastMessages: () =>
+        fetch(`${BASE_URL}/get-admin-broadcast-messages`)
+          .then(handleResponse),
+  
+      saveAdminResponse: (userMessageId, userEmail, adminResponse) =>
+        fetch(`${BASE_URL}/save-admin-response`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ userMessageId, userEmail, adminResponse })
+        }).then(handleResponse),
+  
+      submitAdminBroadcast: (message) =>
+        fetch(`${BASE_URL}/submit-admin-broadcast`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message }),
+        }).then(handleResponse),
     },
 };
 

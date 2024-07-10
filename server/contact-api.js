@@ -1,258 +1,159 @@
-// // contact-api.js
-// const express = require('express');
-// const router = express.Router();
-// const mysql = require('mysql');
-
-// const connection = mysql.createConnection({
-//   host: 'localhost',
-//   user: 'root',
-//   password: 'Golden m@trix24483',
-//   database: 'dmf_db'
-// });
-
-// connection.connect((err) => {
-//   if (err) {
-//     console.error('Error connecting to MySQL database:', err);
-//     return;
-//   }
-//   console.log('Connected to MySQL database');
-// });
-
-// router.post('/submit-contact-form', (req, res) => {
-//   const { name, email, phone, message } = req.body;
-
-//   const query = 'INSERT INTO contacts (name, email, phone, message) VALUES (?, ?, ?, ?)';
-//   connection.query(query, [name, email, phone, message], (error, results) => {
-//     if (error) {
-//       console.error('Error executing SQL query:', error);
-//       res.status(500).json({ error: 'Error submitting form' });
-//     } else {
-//       res.status(200).json({ message: 'Form submitted successfully' });
-//     }
-//   });
-// });
-
-// router.post('/save-admin-response', (req, res) => {
-//     const { userMessageId, userEmail, adminResponse } = req.body;
-  
-//     const query = 'INSERT INTO admin_user_messages (user_message_id, user_email, admin_message) VALUES (?, ?, ?)';
-//     connection.query(query, [userMessageId, userEmail, adminResponse], (error, results) => {
-//       if (error) {
-//         console.error('Error executing SQL query:', error);
-//         res.status(500).json({ error: 'Error saving admin response' });
-//       } else {
-//         res.status(200).json({ message: 'Admin response saved successfully' });
-//       }
-//     });
-//   });
-
-//   router.post('/submit-admin-broadcast', (req, res) => {
-//     const { message } = req.body;
-  
-//     const query = 'INSERT INTO admin_broadcast_messages (message) VALUES (?)';
-//     connection.query(query, [message], (error, results) => {
-//       if (error) {
-//         console.error('Error executing SQL query:', error);
-//         res.status(500).json({ error: 'Error submitting broadcast message' });
-//       } else {
-//         res.status(200).json({ message: 'Broadcast message submitted successfully' });
-//       }
-//     });
-//   });
-
-// router.get('/get-contact-messages', (req, res) => {
-//     const query = 'SELECT id, name, email, phone, message, created_at FROM contacts';
-//     connection.query(query, (error, results) => {
-//       if (error) {
-//         console.error('Error executing SQL query:', error);
-//         res.status(500).json({ error: 'Error fetching contact messages' });
-//       } else {
-//         res.status(200).json(results);
-//       }
-//     });
-//   });
-
-//   router.get('/get-admin-reply', (req, res) => {
-//     const userEmail = req.query.email;
-  
-//     const query = 'SELECT admin_message FROM admin_user_messages WHERE user_email = ? ORDER BY created_at DESC LIMIT 1';
-//     connection.query(query, [userEmail], (error, results) => {
-//       if (error) {
-//         console.error('Error executing SQL query:', error);
-//         res.status(500).json({ error: 'Error fetching admin reply' });
-//       } else {
-//         if (results.length > 0) {
-//           res.status(200).json({ adminReply: results[0].admin_message });
-//         } else {
-//           res.status(200).json({ adminReply: 'No reply found for the given email' });
-//         }
-//       }
-//     });
-//   });
-
-//   router.get('/get-user-messages-with-admin-responses', (req, res) => {
-//     const query = `
-//       SELECT c.id, c.name, c.email, c.message, c.created_at, aum.admin_message
-//       FROM contacts c
-//       LEFT JOIN admin_user_messages aum ON c.id = aum.user_message_id
-//       ORDER BY c.created_at DESC
-//     `;
-  
-//     connection.query(query, (error, results) => {
-//       if (error) {
-//         console.error('Error executing SQL query:', error);
-//         res.status(500).json({ error: 'Error fetching user messages' });
-//       } else {
-//         res.status(200).json(results);
-//       }
-//     });
-//   });
-
-//   router.get('/get-admin-broadcast-messages', (req, res) => {
-//     const query = 'SELECT id, message, created_at FROM admin_broadcast_messages ORDER BY created_at DESC';
-//     connection.query(query, (error, results) => {
-//       if (error) {
-//         console.error('Error executing SQL query:', error);
-//         res.status(500).json({ error: 'Error fetching broadcast messages' });
-//       } else {
-//         res.status(200).json(results);
-//       }
-//     });
-//   });
-
-// module.exports = router;
-
 //contact-api.js
 const express = require('express');
+const { MongoClient, ObjectId } = require('mongodb');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
 const router = express.Router();
-const mysql = require('mysql');
+const app = express();
 
-const pool = mysql.createPool({
-  host: 'dmf-db.cd0i6o42e4on.ca-central-1.rds.amazonaws.com',
-  user: 'admin',
-  password: 'goldenmatrix24483',
-  database: 'dmf_db',
-  port: '3306',
-});
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-pool.getConnection((err, conn) => {
-  if (err) {
-    console.error('Error connecting to MySQL database:', err);
-    return;
+const uri = "mongodb+srv://dmf:dmf2024.@dalmach-foundation-clus.zvrhlqx.mongodb.net/?retryWrites=true&w=majority&appName=Dalmach-Foundation-Cluster";
+const client = new MongoClient(uri);
+
+async function connectToDatabase() {
+  try {
+    await client.connect();
+    console.log("Contact API Connected to MongoDB");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
   }
-  console.log('Contact Connected to MySQL database');
-});
+}
 
-router.post('/submit-contact-form', (req, res) => {
+connectToDatabase();
+
+const db = client.db("dmf_db");
+const contactsCollection = db.collection("contacts");
+const adminMessagesCollection = db.collection("admin_messages");
+const broadcastMessagesCollection = db.collection("broadcast_messages");
+
+router.post('/submit-contact-form', async (req, res) => {
   const { name, email, phone, message } = req.body;
 
-  const query = 'INSERT INTO contacts (name, email, phone, message) VALUES (?, ?, ?, ?)';
-  const values = [name, email, phone, message];
-
-  pool.query(query, values, (error, results) => {
-    if (error) {
-      console.error('Error executing SQL query:', error);
-      res.status(500).json({ error: 'Error submitting form' });
-    } else {
-      res.status(200).json({ message: 'Form submitted successfully' });
-    }
-  });
+  try {
+    const result = await contactsCollection.insertOne({
+      name,
+      email,
+      phone,
+      message,
+      created_at: new Date()
+    });
+    console.log('Contact form submitted successfully:', result);
+    res.status(200).json({ message: 'Form submitted successfully' });
+  } catch (error) {
+    console.error('Error submitting contact form:', error);
+    res.status(500).json({ error: 'Error submitting form' });
+  }
 });
 
-router.post('/save-admin-response', (req, res) => {
+router.post('/save-admin-response', async (req, res) => {
   const { userMessageId, userEmail, adminResponse } = req.body;
 
-  const query = 'INSERT INTO admin_user_messages (user_message_id, user_email, admin_message) VALUES (?, ?, ?)';
-  const values = [userMessageId, userEmail, adminResponse];
-
-  pool.query(query, values, (error, results) => {
-    if (error) {
-      console.error('Error executing SQL query:', error);
-      res.status(500).json({ error: 'Error saving admin response' });
-    } else {
-      res.status(200).json({ message: 'Admin response saved successfully' });
-    }
-  });
+  try {
+    const result = await adminMessagesCollection.insertOne({
+      user_message_id: userMessageId,
+      user_email: userEmail,
+      admin_message: adminResponse,
+      created_at: new Date()
+    });
+    console.log('Admin response saved successfully:', result);
+    res.status(200).json({ message: 'Admin response saved successfully' });
+  } catch (error) {
+    console.error('Error saving admin response:', error);
+    res.status(500).json({ error: 'Error saving admin response' });
+  }
 });
 
-router.post('/submit-admin-broadcast', (req, res) => {
+router.post('/submit-admin-broadcast', async (req, res) => {
   const { message } = req.body;
 
-  const query = 'INSERT INTO admin_broadcast_messages (message) VALUES (?)';
-  const values = [message];
-
-  pool.query(query, values, (error, results) => {
-    if (error) {
-      console.error('Error executing SQL query:', error);
-      res.status(500).json({ error: 'Error submitting broadcast message' });
-    } else {
-      res.status(200).json({ message: 'Broadcast message submitted successfully' });
-    }
-  });
+  try {
+    const result = await broadcastMessagesCollection.insertOne({
+      message,
+      created_at: new Date()
+    });
+    console.log('Broadcast message submitted successfully:', result);
+    res.status(200).json({ message: 'Broadcast message submitted successfully' });
+  } catch (error) {
+    console.error('Error submitting broadcast message:', error);
+    res.status(500).json({ error: 'Error submitting broadcast message' });
+  }
 });
 
-router.get('/get-contact-messages', (req, res) => {
-  const query = 'SELECT id, name, email, phone, message, created_at FROM contacts';
-
-  pool.query(query, (error, results) => {
-    if (error) {
-      console.error('Error executing SQL query:', error);
-      res.status(500).json({ error: 'Error fetching contact messages' });
-    } else {
-      res.status(200).json(results);
-    }
-  });
+router.get('/get-contact-messages', async (req, res) => {
+  try {
+    const messages = await contactsCollection.find({}).toArray();
+    res.status(200).json(messages);
+  } catch (error) {
+    console.error('Error fetching contact messages:', error);
+    res.status(500).json({ error: 'Error fetching contact messages' });
+  }
 });
 
-router.get('/get-admin-reply', (req, res) => {
+router.get('/get-admin-reply', async (req, res) => {
   const userEmail = req.query.email;
 
-  const query = 'SELECT admin_message FROM admin_user_messages WHERE user_email = ? ORDER BY created_at DESC LIMIT 1';
-  const values = [userEmail];
+  try {
+    const reply = await adminMessagesCollection.findOne(
+      { user_email: userEmail },
+      { sort: { created_at: -1 } }
+    );
 
-  pool.query(query, values, (error, results) => {
-    if (error) {
-      console.error('Error executing SQL query:', error);
-      res.status(500).json({ error: 'Error fetching admin reply' });
+    if (reply) {
+      res.status(200).json({ adminReply: reply.admin_message });
     } else {
-      if (results.length > 0) {
-        res.status(200).json({ adminReply: results[0].admin_message });
-      } else {
-        res.status(200).json({ adminReply: 'No reply found for the given email' });
-      }
+      res.status(200).json({ adminReply: 'No reply found for the given email' });
     }
-  });
+  } catch (error) {
+    console.error('Error fetching admin reply:', error);
+    res.status(500).json({ error: 'Error fetching admin reply' });
+  }
 });
 
-router.get('/get-user-messages-with-admin-responses', (req, res) => {
-  const query = `
-    SELECT c.id, c.name, c.email, c.message, c.created_at, aum.admin_message
-    FROM contacts c
-    LEFT JOIN admin_user_messages aum ON c.id = aum.user_message_id
-    ORDER BY c.created_at DESC
-  `;
+router.get('/get-user-messages-with-admin-responses', async (req, res) => {
+  try {
+    const messages = await contactsCollection.aggregate([
+      {
+        $lookup: {
+          from: "admin_messages",
+          localField: "_id",
+          foreignField: "user_message_id",
+          as: "admin_response"
+        }
+      },
+      {
+        $project: {
+          id: "$_id",
+          name: 1,
+          email: 1,
+          message: 1,
+          created_at: 1,
+          admin_message: { $arrayElemAt: ["$admin_response.admin_message", 0] }
+        }
+      },
+      { $sort: { created_at: -1 } }
+    ]).toArray();
 
-  pool.query(query, (error, results) => {
-    if (error) {
-      console.error('Error executing SQL query:', error);
-      res.status(500).json({ error: 'Error fetching user messages' });
-    } else {
-      res.status(200).json(results);
-    }
-  });
+    res.status(200).json(messages);
+  } catch (error) {
+    console.error('Error fetching user messages with admin responses:', error);
+    res.status(500).json({ error: 'Error fetching user messages' });
+  }
 });
 
-router.get('/get-admin-broadcast-messages', (req, res) => {
-  const query = 'SELECT id, message, created_at FROM admin_broadcast_messages ORDER BY created_at DESC';
-
-  pool.query(query, (error, results) => {
-    if (error) {
-      console.error('Error executing SQL query:', error);
-      res.status(500).json({ error: 'Error fetching broadcast messages' });
-    } else {
-      res.status(200).json(results);
-    }
-  });
+router.get('/get-admin-broadcast-messages', async (req, res) => {
+  try {
+    const messages = await broadcastMessagesCollection.find({})
+      .sort({ created_at: -1 })
+      .toArray();
+    res.status(200).json(messages);
+  } catch (error) {
+    console.error('Error fetching broadcast messages:', error);
+    res.status(500).json({ error: 'Error fetching broadcast messages' });
+  }
 });
 
 module.exports = router;

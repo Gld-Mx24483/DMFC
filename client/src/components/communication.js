@@ -1,8 +1,9 @@
 // communication.js
-import React, { useState, useEffect } from 'react';
-import './communication.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
+import api from '../services/api';
+import './communication.css';
 
 const Comm = () => {
   const [contactMessages, setContactMessages] = useState([]);
@@ -13,8 +14,7 @@ const Comm = () => {
   useEffect(() => {
     const fetchContactMessages = async () => {
       try {
-        const response = await fetch('https://dmfc-server-sql.vercel.app/get-contact-messages');
-        const data = await response.json();
+        const data = await api.communication.getContactMessages();
         setContactMessages(data);
         const sortedUserMessages = data.map(message => ({
           id: message.id,
@@ -36,8 +36,7 @@ const Comm = () => {
   useEffect(() => {
     const fetchUserMessagesWithAdminResponses = async () => {
       try {
-        const response = await fetch('https://dmfc-server-sql.vercel.app/get-user-messages-with-admin-responses');
-        const data = await response.json();
+        const data = await api.communication.getUserMessagesWithAdminResponses();
         const sortedUserMessages = data
           .map((message) => ({
             id: message.id,
@@ -47,7 +46,7 @@ const Comm = () => {
             date: new Date(message.created_at),
             adminResponse: message.admin_message || '',
           }))
-          .sort((a, b) => b.date - a.date); // Sort in descending order of date/time
+          .sort((a, b) => b.date - a.date);
         setUserMessages(sortedUserMessages);
       } catch (error) {
         console.error('Error fetching user messages with admin responses:', error);
@@ -60,8 +59,7 @@ const Comm = () => {
   useEffect(() => {
     const fetchAdminBroadcastMessages = async () => {
       try {
-        const response = await fetch('https://dmfc-server-sql.vercel.app/get-admin-broadcast-messages');
-        const data = await response.json();
+        const data = await api.communication.getAdminBroadcastMessages();
         setUserMessages((prevMessages) => [
           ...prevMessages,
           ...data.map((message) => ({
@@ -105,7 +103,6 @@ const Comm = () => {
       setAdminResponseToUser('');
       setSelectedUserMessageId(null);
   
-      // Save the admin's response to the database
       const selectedMessage = userMessages.find(msg => msg.id === selectedUserMessageId);
       saveAdminResponseToDatabase(selectedUserMessageId, selectedMessage.email, message);
     }
@@ -113,19 +110,8 @@ const Comm = () => {
   
   const saveAdminResponseToDatabase = async (userMessageId, userEmail, adminResponse) => {
     try {
-      const response = await fetch('https://dmfc-server-sql.vercel.app/save-admin-response', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ userMessageId, userEmail, adminResponse })
-      });
-  
-      if (response.ok) {
-        console.log('Admin response saved successfully');
-      } else {
-        console.error('Error saving admin response');
-      }
+      await api.communication.saveAdminResponse(userMessageId, userEmail, adminResponse);
+      console.log('Admin response saved successfully');
     } catch (error) {
       console.error('Error saving admin response:', error);
     }
@@ -168,27 +154,14 @@ const GroupChatAppInterface = ({
     const message = adminResponse.trim();
     if (message !== '') {
       if (selectedMessageId) {
-        // Send the message as a response to the selected message
         onMessageSend();
       } else {
-        // Send the message as a broadcast message
         try {
-          const response = await fetch('https://dmfc-server-sql.vercel.app/submit-admin-broadcast', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ message }),
-          });
-  
-          if (response.ok) {
-            console.log('Broadcast message submitted successfully');
-            onAdminResponseChange('');
-            alert('Broadcast Sent Successfully'); // Display success prompt
-            window.location.reload(); // Reload the component
-          } else {
-            console.error('Error submitting broadcast message');
-          }
+          await api.communication.submitAdminBroadcast(message);
+          console.log('Broadcast message submitted successfully');
+          onAdminResponseChange('');
+          alert('Broadcast Sent Successfully');
+          window.location.reload();
         } catch (error) {
           console.error('Error submitting broadcast message:', error);
         }

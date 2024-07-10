@@ -1,8 +1,9 @@
 // Gal.js
-import React, { useState, useEffect, useRef } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight, faCompress, faExpand } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useRef, useState } from 'react';
 import screenfull from 'screenfull';
+import api from '../services/api';
 import './gallery-user.css';
 
 const Gal = () => {
@@ -33,21 +34,21 @@ const Gal = () => {
   }, [isSliding, isVideoPlaying]);
 
   useEffect(() => {
-    if (mediaList.length > 0 && mediaList[currentIndex] && mediaList[currentIndex].videoPath) {
+    if (mediaList.length > 0 && mediaList[currentIndex] && mediaList[currentIndex].mediaType === 'video') {
       const videoElement = videoRef.current;
       videoElement.load();
     }
   }, [currentIndex, mediaList]);
 
-  const fetchMedia = () => {
-    fetch('https://dmfc-server-sql.vercel.app/get-media')
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Media fetched:', data);
-        setMediaList(data);
-        setIsLoading(false);
-      })
-      .catch((error) => console.error('Error fetching media:', error));
+  const fetchMedia = async () => {
+    try {
+      const data = await api.gallery.getMedia();
+      console.log('Media fetched:', data);
+      setMediaList(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching media:', error);
+    }
   };
 
   const handlePrevious = () => {
@@ -92,8 +93,10 @@ const Gal = () => {
         <div className="gal-content">
           <div className="slideshow">
             <div className={`slide ${isSliding ? 'slide-animation' : ''}`} onAnimationEnd={() => setIsSliding(false)}>
-              {mediaList[currentIndex]?.imagePath && <img src={mediaList[currentIndex].imagePath} alt="Media" />}
-              {mediaList[currentIndex]?.videoPath && (
+              {mediaList[currentIndex]?.mediaType === 'image' && (
+                <img src={mediaList[currentIndex].mediaUrl} alt={mediaList[currentIndex].title} />
+              )}
+              {mediaList[currentIndex]?.mediaType === 'video' && (
                 <video
                   ref={videoRef}
                   controls
@@ -101,7 +104,7 @@ const Gal = () => {
                   onPause={() => handleVideoPlaying(false)}
                   onEnded={() => handleVideoPlaying(false)}
                 >
-                  <source src={mediaList[currentIndex].videoPath} type="video/mp4" />
+                  <source src={mediaList[currentIndex].mediaUrl} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               )}
@@ -116,15 +119,15 @@ const Gal = () => {
             </button> 
           </div>
           <button className="fullscreen" onClick={handleFullscreen}>
-    <FontAwesomeIcon icon={isFullscreen? faCompress : faExpand} />
-  </button>
-  <div className="slide-info">
-  {mediaList.length > 0 && (
-    <span>
-      {currentIndex + 1}/{mediaList.length}
-    </span>
-  )}
-</div>
+            <FontAwesomeIcon icon={isFullscreen ? faCompress : faExpand} />
+          </button>
+          <div className="slide-info">
+            {mediaList.length > 0 && (
+              <span>
+                {currentIndex + 1}/{mediaList.length}
+              </span>
+            )}
+          </div>
         </div>
       )}
     </div>

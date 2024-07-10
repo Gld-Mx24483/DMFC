@@ -1,9 +1,10 @@
 // contact.js
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './contact.css';
+import { faEnvelope, faMapMarkerAlt, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMapMarkerAlt, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import api from '../services/api';
+import './contact.css';
 
 const Contact = () => {
   const navigate = useNavigate();
@@ -23,8 +24,7 @@ const Contact = () => {
   useEffect(() => {
     const fetchUserMessagesWithAdminResponses = async () => {
       try {
-        const response = await fetch('https://dmfc-server-sql.vercel.app/get-user-messages-with-admin-responses');
-        const data = await response.json();
+        const data = await api.contact.getUserMessagesWithAdminResponses();
         setUserMessages(data);
       } catch (error) {
         console.error('Error fetching user messages with admin responses:', error);
@@ -37,8 +37,7 @@ const Contact = () => {
   useEffect(() => {
     const fetchAdminBroadcastMessages = async () => {
       try {
-        const response = await fetch('https://dmfc-server-sql.vercel.app/get-admin-broadcast-messages');
-        const data = await response.json();
+        const data = await api.contact.getAdminBroadcastMessages();
         setGlobalReplyMessages(data);
       } catch (error) {
         console.error('Error fetching admin broadcast messages:', error);
@@ -61,32 +60,24 @@ const Contact = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    fetch('https://dmfc-server-sql.vercel.app/submit-contact-form', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Contact form submitted successfully:', data);
-        alert('Contact form submitted successfully!');
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          message: '',
-        });
-        navigate('/');
-      })
-      .catch((error) => {
-        console.error('Error submitting contact form:', error);
-        alert('Error submitting contact form!');
+    try {
+      const data = await api.contact.submitForm(formData);
+      console.log('Contact form submitted successfully:', data);
+      alert('Contact form submitted successfully!');
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: '',
       });
+      navigate('/');
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      alert('Error submitting contact form!');
+    }
   };
 
   return (
