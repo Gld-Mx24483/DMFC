@@ -178,6 +178,29 @@ const api = {
           body: JSON.stringify({ message }),
         }).then(handleResponse),
     },
+
+    blogs: {
+      getAll: () =>
+        fetch(`${BASE_URL}/get-content`)
+          .then(handleResponse),
+      
+      create: (formData) =>
+        fetch(`${BASE_URL}/save-content`, {
+          method: 'PUT',
+          body: formData,
+        }).then(handleResponse),
+      
+      update: (formData) =>
+        fetch(`${BASE_URL}/update-content`, {
+          method: 'POST',
+          body: formData,
+        }).then(handleResponse),
+      
+      delete: (blogId) =>
+        fetch(`${BASE_URL}/delete-content/${blogId}`, {
+          method: 'DELETE',
+        }).then(handleResponse),
+    },
 };
 
 export default api;

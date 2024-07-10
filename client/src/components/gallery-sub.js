@@ -1,9 +1,10 @@
 // gallery-sub.js
-import React, { useState, useEffect } from 'react';
-import './gallery-sub.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCompress, faExpand } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
 import screenfull from 'screenfull';
+import api from '../services/api';
+import './gallery-sub.css';
 
 const GallSub = () => {
   const [mediaList, setMediaList] = useState([]);
@@ -18,8 +19,7 @@ const GallSub = () => {
   }, []);
 
   const fetchMedia = () => {
-    fetch('https://dmfc-server-sql.vercel.app/get-media')
-      .then((response) => response.json())
+    api.gallery.getAll()
       .then((data) => {
         console.log('Media fetched:', data);
         setMediaList(data);
@@ -56,28 +56,28 @@ const GallSub = () => {
           <span className="spanns">engaging videos</span> from various events
         </p>
       </div>
-      {fullScreenMedia ? (
+      {fullScreenMedia && (
         <div className="full-screen-overlay">
           <div className="full-screen-content">
-            {fullScreenMedia.imagePath && (
-              <img src={fullScreenMedia.imagePath} alt="Full Screen" />
+            {fullScreenMedia.mediaType === 'image' && (
+              <img src={fullScreenMedia.mediaUrl} alt="Full Screen" />
             )}
-            {fullScreenMedia.videoPath && (
-              <video src={fullScreenMedia.videoPath} controls autoPlay />
+            {fullScreenMedia.mediaType === 'video' && (
+              <video src={fullScreenMedia.mediaUrl} controls autoPlay />
             )}
             <button className="close-buttonnn" onClick={handleCloseFullScreen}>
-              <FontAwesomeIcon icon={faCompress}  />
+              <FontAwesomeIcon icon={faCompress} />
             </button>
           </div>
         </div>
-      ) : null}
+      )}
       <div className='media-grid-container'>
         <div className="media-grid">
           {mediaList.map((media, index) => (
             <div className="media-card" key={index}>
               <div className="media-container">
-                {media.imagePath && <img src={media.imagePath} alt="Media" />}
-                {media.videoPath && <video src={media.videoPath} controls />}
+                {media.mediaType === 'image' && <img src={media.mediaUrl} alt={media.title} />}
+                {media.mediaType === 'video' && <video src={media.mediaUrl} controls />}
                 <div className="hover-overlay">
                   <FontAwesomeIcon
                     icon={faExpand}
@@ -87,7 +87,7 @@ const GallSub = () => {
               </div>
               <div className="media-details">
                 <h3>{media.title}</h3>
-                <p>{new Date(media.upload_date).toLocaleDateString()}</p>
+                <p>{new Date(media.uploadDate).toLocaleDateString()}</p>
               </div>
             </div>
           ))}

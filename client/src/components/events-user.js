@@ -1,7 +1,8 @@
 // events-user.js
-import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
+import api from '../services/api';
 import './events-user.css';
 
 const EventsUser = () => {
@@ -11,8 +12,7 @@ const EventsUser = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch('https://dmfc-server-sql.vercel.app/get-events');
-        const data = await response.json();
+        const data = await api.events.getAll();
         setEvents(data);
       } catch (error) {
         console.error('Error fetching events:', error);
@@ -41,7 +41,7 @@ const EventsUser = () => {
       {selectedEvent ? (
         <div className="selected-event-container cont">
           <div className="selected-event-image">
-            <img src={selectedEvent.imagePath} alt={selectedEvent.title} />
+            <img src={selectedEvent.imageUrl} alt={selectedEvent.title} />
           </div>
           <div className="selected-event-content">
             <h3>{selectedEvent.title}</h3>
@@ -57,10 +57,10 @@ const EventsUser = () => {
         </div>
       ) : (
         <div className="event-cards-container cards">
-          {events.map((event, index) => (
-            <div key={index} className="event-card" onClick={() => handleEventClick(event)}>
-              {event.imagePath && (
-                <img src={event.imagePath} alt={event.title} className="event-card-image" />
+          {events.map((event) => (
+            <div key={event.id} className="event-card" onClick={() => handleEventClick(event)}>
+              {event.imageUrl && (
+                <img src={event.imageUrl} alt={event.title} className="event-card-image" />
               )}
               <div className="event-card-content">
                 <h3>{event.title}</h3>
