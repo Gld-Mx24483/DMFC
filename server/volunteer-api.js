@@ -37,7 +37,8 @@ router.put('/submit-volunteer-form', async (req, res) => {
     address,
     phoneNumber,
     email,
-    volunteerFor
+    volunteerFor,
+    submissionDate: new Date() 
   };
 
   try {

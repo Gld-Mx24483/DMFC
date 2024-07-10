@@ -20,7 +20,7 @@ const VolunteerTable = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const formattedDate = date.toLocaleString('en-US', {
+    return date.toLocaleString('en-US', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
@@ -28,7 +28,6 @@ const VolunteerTable = () => {
       minute: '2-digit',
       second: '2-digit',
     });
-    return formattedDate.replace(',', '');
   };
 
   return (
@@ -41,7 +40,7 @@ const VolunteerTable = () => {
             <th>Address</th>
             <th>Phone Number</th>
             <th>Volunteer For</th>
-            <th>Date Added</th>
+            <th>Submission Date</th>
           </tr>
         </thead>
         <tbody>
@@ -52,7 +51,7 @@ const VolunteerTable = () => {
               <td data-title="Address">{volunteer.address}</td>
               <td data-title="Phone Number">{volunteer.phoneNumber}</td>
               <td data-title="Volunteer For">{volunteer.volunteerFor}</td>
-              <td data-title="Date Added">{formatDate(volunteer.createdAt)}</td>
+              <td data-title="Submission Date">{formatDate(volunteer.submissionDate)}</td>
             </tr>
           ))}
         </tbody>
