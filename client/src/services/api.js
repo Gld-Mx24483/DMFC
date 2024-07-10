@@ -1,4 +1,4 @@
-// src/services/api.js
+//api.js
 const BASE_URL = 'http://localhost:9000';
 
 const handleResponse = async (response) => {
