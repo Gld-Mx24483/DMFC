@@ -1,5 +1,6 @@
 // VolunteerTable.js
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import api from '../services/api';
 
 const VolunteerTable = () => {
   const [volunteers, setVolunteers] = useState([]);
@@ -10,8 +11,7 @@ const VolunteerTable = () => {
 
   const fetchVolunteers = async () => {
     try {
-      const response = await fetch('https://dmfc-server-sql.vercel.app/get-volunteers');
-      const data = await response.json();
+      const data = await api.volunteers.getAll();
       setVolunteers(data);
     } catch (error) {
       console.error('Error fetching volunteers:', error);

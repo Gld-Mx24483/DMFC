@@ -1,70 +1,8 @@
-// // volunteer-api.js
-// const express = require('express');
-// const bodyParser = require('body-parser');
-// const cors = require('cors');
-// const mysql = require('mysql');
-
-// const router = express.Router();
-// const app = express();
-
-// app.use(cors());
-// app.use(express.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-
-// const connection = mysql.createConnection({
-//   host: 'localhost',
-//   user: 'root',
-//   password: 'Golden m@trix24483',
-//   database: 'dmf_db'
-// });
-
-// connection.connect((err) => {
-//   if (err) {
-//     console.error('Error connecting to MySQL database:', err);
-//     return;
-//   }
-//   console.log('Vlt Connected to MySQL database');
-// });
-
-// // Handle form submission
-// router.put('/submit-volunteer-form', (req, res) => {
-//   const { fullName, address, phoneNumber, email, volunteerFor } = req.body;
-
-//   const query = 'INSERT INTO volunteers (fullName, address, phoneNumber, email, volunteerFor) VALUES (?, ?, ?, ?, ?)';
-//   connection.query(query, [fullName, address, phoneNumber, email, volunteerFor], (error, results) => {
-//     if (error) {
-//       console.error('Error executing SQL query:', error);
-//       res.status(500).json({ error: 'Error submitting form' });
-//     } else {
-//       res.status(200).json({ message: 'Form submitted successfully' });
-//     }
-//   });
-// });
-
-// // volunteer-api.js
-// // ...
-
-// router.get('/get-volunteers', (req, res) => {
-//   const query = 'SELECT * FROM volunteers';
-//   connection.query(query, (error, results) => {
-//     if (error) {
-//       console.error('Error executing SQL query:', error);
-//       res.status(500).json({ error: 'Error fetching volunteers' });
-//     } else {
-//       res.status(200).json(results);
-//     }
-//   });
-// });
-
-// // ...
-
-// module.exports = router;
-
-
+//volunteer-api.js
 const express = require('express');
+const { MongoClient, ObjectId } = require('mongodb');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mysql = require('mysql');
 
 const router = express.Router();
 const app = express();
@@ -73,49 +11,79 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const pool = mysql.createPool({
-  host: 'dmf-db.cd0i6o42e4on.ca-central-1.rds.amazonaws.com',
-  user: 'admin',
-  password: 'goldenmatrix24483',
-  database: 'dmf_db',
-  port: '3306',
-});
+const uri = "mongodb+srv://dmf:dmf2024.@dalmach-foundation-clus.zvrhlqx.mongodb.net/?retryWrites=true&w=majority&appName=Dalmach-Foundation-Cluster";
+const client = new MongoClient(uri);
 
-pool.getConnection((err, conn) => {
-  if (err) {
-    console.error('Error connecting to MySQL database:', err);
-    return;
+async function connectToDatabase() {
+  try {
+    await client.connect();
+    console.log("Volunteer Management Connected to MongoDB");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
   }
-  console.log('Vlt Connected to MySQL database');
-});
+}
+
+connectToDatabase();
+
+const db = client.db("dmf_db");
+const volunteersCollection = db.collection("volunteers");
 
 // Handle form submission
-router.put('/submit-volunteer-form', (req, res) => {
+router.put('/submit-volunteer-form', async (req, res) => {
   const { fullName, address, phoneNumber, email, volunteerFor } = req.body;
 
-  const query = 'INSERT INTO volunteers (fullName, address, phoneNumber, email, volunteerFor) VALUES (?, ?, ?, ?, ?)';
-  const values = [fullName, address, phoneNumber, email, volunteerFor];
+  const volunteer = {
+    fullName,
+    address,
+    phoneNumber,
+    email,
+    volunteerFor
+  };
 
-  pool.query(query, values, (error, results) => {
-    if (error) {
-      console.error('Error executing SQL query:', error);
-      res.status(500).json({ error: 'Error submitting form' });
-    } else {
-      res.status(200).json({ message: 'Form submitted successfully' });
-    }
-  });
+  try {
+    const result = await volunteersCollection.insertOne(volunteer);
+    console.log('Volunteer form submitted successfully:', result);
+    res.status(200).json({ message: 'Form submitted successfully', id: result.insertedId });
+  } catch (error) {
+    console.error('Error submitting volunteer form:', error);
+    res.status(500).json({ message: 'Error submitting form', error: error.message });
+  }
 });
 
-router.get('/get-volunteers', (req, res) => {
-  const query = 'SELECT * FROM volunteers';
-  pool.query(query, (error, results) => {
-    if (error) {
-      console.error('Error executing SQL query:', error);
-      res.status(500).json({ error: 'Error fetching volunteers' });
-    } else {
-      res.status(200).json(results);
+router.get('/get-volunteers', async (req, res) => {
+  try {
+    const volunteers = await volunteersCollection.find({}).toArray();
+    const volunteersWithIds = volunteers.map(volunteer => ({
+      ...volunteer,
+      id: volunteer._id
+    }));
+
+    console.log('Volunteers fetched successfully:', volunteersWithIds);
+    res.status(200).json(volunteersWithIds);
+  } catch (error) {
+    console.error('Error fetching volunteers:', error);
+    res.status(500).json({ message: 'Error fetching volunteers', error: error.message });
+  }
+});
+
+// New route to delete a volunteer
+router.delete('/delete-volunteer/:id', async (req, res) => {
+  const volunteerId = req.params.id;
+
+  try {
+    const result = await volunteersCollection.deleteOne({ _id: new ObjectId(volunteerId) });
+
+    if (result.deletedCount === 0) {
+      res.status(404).json({ message: 'Volunteer not found' });
+      return;
     }
-  });
+
+    console.log(`Volunteer with ID ${volunteerId} deleted successfully`);
+    res.status(200).json({ message: 'Volunteer deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting volunteer:', error);
+    res.status(500).json({ message: 'Error deleting volunteer', error: error.message });
+  }
 });
 
 module.exports = router;

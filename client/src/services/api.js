@@ -108,6 +108,21 @@ const api = {
         method: 'DELETE',
       }).then(handleResponse),
   },
+
+  volunteers: {
+    getAll: () =>
+      fetch(`${BASE_URL}/get-volunteers`)
+        .then(handleResponse),
+    
+    create: (formData) =>
+      fetch(`${BASE_URL}/submit-volunteer-form`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      }).then(handleResponse),
+    },
 };
 
 export default api;

@@ -1,5 +1,7 @@
+// involve.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../services/api'; // Make sure this path is correct
 import './about-us-main.css';
 import './involve.css';
 
@@ -21,33 +23,25 @@ const Volunteer = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    fetch('https://dmfc-server-sql.vercel.app/submit-volunteer-form', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Volunteer form submitted successfully:', data);
-        alert('Volunteer form submitted successfully!');
-        setFormData({
-          fullName: '',
-          address: '',
-          phoneNumber: '',
-          email: '',
-          volunteerFor: '',
-        });
-        navigate('/');
-      })
-      .catch((error) => {
-        console.error('Error submitting volunteer form:', error);
-        alert('Error submitting volunteer form!');
+    try {
+      const data = await api.volunteers.create(formData);
+      console.log('Volunteer form submitted successfully:', data);
+      alert('Volunteer form submitted successfully!');
+      setFormData({
+        fullName: '',
+        address: '',
+        phoneNumber: '',
+        email: '',
+        volunteerFor: '',
       });
+      navigate('/');
+    } catch (error) {
+      console.error('Error submitting volunteer form:', error);
+      alert('Error submitting volunteer form!');
+    }
   };
 
   return (
