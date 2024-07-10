@@ -1,8 +1,0 @@
-ALTER TABLE volunteers CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE team CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE gallery CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE events CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE content CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE contacts CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE admin_broadcast_messages CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE admin_user_messages CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
