@@ -1,6 +1,6 @@
 //api.js
 // const BASE_URL = 'http://localhost:9000';
-const BASE_URL = 'https://dmfc-server.vercel.app';
+const BASE_URL = 'https://dmfc-service.vercel.app';
 
 const handleResponse = async (response) => {
   if (!response.ok) {
