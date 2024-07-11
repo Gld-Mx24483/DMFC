@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({  limit: '100000mb', extended: true }));
 app.use(express.json());
 
 app.use("/", (req,res) => {
-  res.send("Server is running fast.");
+  res.send("Server deployed and running on vercel.");
 })
 app.use('/', teamAPI);
 app.use('/', galleryAPI);
