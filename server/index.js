@@ -26,12 +26,8 @@ app.use("/", (req,res) => {
   res.send("Server is running.");
 })
 app.use(cors({
-  origin: 'https://dmfc.vercel.app'
+  origin: 'https://dmfc-server--chi.vercel.app/'
 }));
-
-// app.use(cors({
-//   origin: 'http://localhost:9000'
-// }));
 
 const port = process.env.PORT || 9000;
 app.listen(port, () => {
