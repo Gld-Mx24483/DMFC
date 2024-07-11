@@ -26,7 +26,7 @@ app.use("/", (req,res) => {
   res.send("Server is running.");
 })
 app.use(cors({
-  origin: 'https://dmfc-server--chi.vercel.app'
+  origin: 'https://dmfc-backend-server.vercel.app/'
 }));
 
 const port = process.env.PORT || 9000;
