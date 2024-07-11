@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const uri = "mongodb+srv://dmf:dmf2024.@dalmach-foundation-clus.zvrhlqx.mongodb.net/?retryWrites=true&w=majority&appName=Dalmach-Foundation-Cluster";
+const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 
 async function connectToDatabase() {
