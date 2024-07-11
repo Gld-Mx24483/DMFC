@@ -10,6 +10,7 @@ const contactAPI = require('./contact-api');
 const contentManagementAPI = require('./content-management-api');
 const eventManagementAPI = require('./event-management-api');
 const app = express();
+const { MongoClient } = require('mongodb');
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '100000mb' }));
