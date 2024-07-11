@@ -25,7 +25,7 @@ cloudinary.config({
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-const uri = process.env.MONGODB_URI;
+const uri = process.env.MONGODB_CONNECT_URI;
 const client = new MongoClient(uri);
 
 async function connectToDatabase() {
