@@ -1,10 +1,10 @@
-//content-management-api.js
 const express = require('express');
 const { MongoClient, ObjectId } = require('mongodb');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
+require('dotenv').config();
 
 const router = express.Router();
 const app = express();
@@ -16,9 +16,9 @@ app.use(express.json());
 
 // Cloudinary configuration
 cloudinary.config({ 
-    cloud_name: 'dziio24gg', 
-    api_key: '652496532414874', 
-    api_secret: 'Tp40YqM4w7erIk2_rFHwCGR65kA' 
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 // Configure multer for memory storage
@@ -28,7 +28,7 @@ const upload = multer({
   limits: { fileSize: 900000000 },
 });
 
-const uri = "mongodb+srv://dmf:dmf2024.@dalmach-foundation-clus.zvrhlqx.mongodb.net/?retryWrites=true&w=majority&appName=Dalmach-Foundation-Cluster";
+const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 
 async function connectToDatabase() {
