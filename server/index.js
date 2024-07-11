@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({  limit: '100000mb', extended: true }));
 app.use(express.json());
 
 app.use("/", (req,res) => {
-  res.send("Server is running.");
+  res.send("Server is running fast.");
 })
 app.use('/', teamAPI);
 app.use('/', galleryAPI);
@@ -27,13 +27,13 @@ app.use('/', contentManagementAPI);
 app.use('/', volunteerAPI);
 app.use('/', eventManagementAPI);
 
-// app.use(cors({
-//   origin: 'https://dmfc-backend-server.vercel.app'
-// }));
-
 app.use(cors({
-  origin: 'http://localhost:3000'
+  origin: 'https://dmfc.vercel.app'
 }));
+
+// app.use(cors({
+//   origin: 'http://localhost:3000'
+// }));
 
 const port = process.env.PORT || 9000;
 app.listen(port, () => {
